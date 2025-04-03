@@ -65,8 +65,8 @@ public class User implements Serializable {
     }
 
     public String toString() {
-        return username + " " + name + " " + email + " " + phone_number + " " + address + " " + password + " " + status;
-
+        return username + "," + name + "," + email + "," + phone_number + "," + address + "," + password + "," + status;
     }
+
 
 }

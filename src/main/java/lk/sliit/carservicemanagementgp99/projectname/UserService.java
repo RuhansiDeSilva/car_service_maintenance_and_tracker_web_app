@@ -5,8 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class UserService {
-    private static final String FILE_PATH = "\"C:\\Users\\ASUS\\Desktop\\Project File\\User.txt\"";
-    private LinkedList<User> users;
+    private static final String FILE_PATH = "C:\\Users\\ASUS\\Desktop\\Project File\\User.txt";
+
+    private final LinkedList<User> users;
 
     public UserService() {
         users = new LinkedList<>();
@@ -25,7 +26,7 @@ public class UserService {
     }
 
     // Update User
-    public boolean updateUser(String username, String name, String email, String phone, String password, String address, String status) {
+    public void updateUser(String username, String name, String email, String phone, String password, String address, String status) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
                 user.setName(name);
@@ -35,17 +36,15 @@ public class UserService {
                 user.setAddress(address);
                 user.setStatus(status);
                 saveUsersToFile();
-                return true;
+                return;
             }
         }
-        return false;
     }
 
     // Delete User
-    public boolean deleteUser(String username) {
+    public void deleteUser(String username) {
         boolean removed = users.removeIf(user -> user.getUsername().equals(username));
         if (removed) saveUsersToFile();
-        return removed;
     }
 
     // File Handling Methods
