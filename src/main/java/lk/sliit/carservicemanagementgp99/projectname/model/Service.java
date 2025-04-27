@@ -36,6 +36,7 @@ public class Service implements Serializable {
                 "," + serviceType + "," + cost;
     }
     // Helper method to parse a date string
+
     public static Date parseDate(String dateString) throws Exception {
         return dateFormat.parse(dateString);
     }
