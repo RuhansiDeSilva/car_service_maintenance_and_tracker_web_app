@@ -18,7 +18,6 @@ public class Invoice implements Serializable {
     public double getTotalAmount() { return totalAmount; }
 
     // Convert invoice object to a file string
-
     public String toFileString() {
         return invoiceID + "," + service.getServiceID() + "," + totalAmount;
     }
