@@ -20,7 +20,7 @@ public class ServiceServlet extends HttpServlet {
     private ServiceHistory serviceHistory;
     private List<Invoice> invoiceList;
 
-    //file path for project folder
+    // file paths
     private static final String SERVICE_FILE = "data/services.txt";
     private static final String INVOICE_FILE = "data/invoices.txt";
 

@@ -23,6 +23,7 @@ public class Service implements Serializable {
         this.serviceType = serviceType;
         this.cost = cost;
     }
+    // Getters
     public String getServiceID() { return serviceID; }
     public String getCustomerName() { return customerName; }
     public String getVehicleNumber() { return vehicleNumber; }

@@ -29,7 +29,6 @@ public class ServiceHistory {
             current.next = newNode;
         }
     }
-
     // Search service by ID
     public Service searchServicebyID(String serviceID) {
         Node current = head;
