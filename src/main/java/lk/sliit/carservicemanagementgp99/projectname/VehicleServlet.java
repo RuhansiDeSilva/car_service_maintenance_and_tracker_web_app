@@ -1,140 +1,72 @@
-package com.cartracker;
+package vehicle.vehiclemanagement;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.ArrayList;
+import jakarta.servlet.http.*;
+
+import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/VehicleServlet")
 public class VehicleServlet extends HttpServlet {
-    private static final String DIRECTORY = "C:\\Users\\user\\OneDrive - Sri Lanka Institute of Information Technology\\Desktop\\vehicleinfo";
-    private static final String VEHICLE_FILE = DIRECTORY + "\\vehicle_data.txt";
-    private static final String SERVICE_FILE = DIRECTORY + "\\service_records.txt";
+    private VehicleManager manager;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-
-        if ("addVehicle".equals(action)) {
-            addVehicle(request, response);
-        } else if ("addService".equals(action)) {
-            addServiceRecord(request, response);
-        } else if ("deleteVehicle".equals(action)) {
-            deleteVehicle(request, response);
-        } else if ("deleteService".equals(action)) {
-            deleteServiceRecord(request, response);
-        } else if ("updateVehicle".equals(action)) {
-            updateVehicle(request, response);
-        } else if ("updateService".equals(action)) {
-            updateServiceRecord(request, response);
-        }
+    @Override
+    public void init() throws ServletException {
+        manager = new VehicleManager();
     }
 
-    private void addVehicle(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String regNumber = request.getParameter("id");
-        String owner = request.getParameter("owner");
-        String model = request.getParameter("model");
-        String type = request.getParameter("type");
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        String plate  = req.getParameter("numberPlate");
 
-        if (regNumber == null || owner == null || model == null || type == null) {
-            response.getWriter().write("Invalid input!");
-            return;
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(VEHICLE_FILE, true))) {
-            writer.write(regNumber + "," + owner + "," + model + "," + type);
-            writer.newLine();
-        }
-
-        response.sendRedirect("vehicle_list.jsp");
-    }
-
-
-    private void addServiceRecord(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String regNumber = request.getParameter("regNumber");
-        String description = request.getParameter("description");
-
-        if (regNumber == null || description == null) {
-            response.getWriter().write("Invalid input!");
-            return;
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(SERVICE_FILE, true))) {
-            writer.write(regNumber + "," + description);
-            writer.newLine();
-        }
-
-        response.sendRedirect("service_history.jsp");
-    }
-
-
-    private void deleteVehicle(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String regNumberToDelete = request.getParameter("id");
-        modifyFile(VEHICLE_FILE, regNumberToDelete, false);
-        response.sendRedirect("vehicle_list.jsp");
-    }
-
-
-    private void deleteServiceRecord(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String regNumberToDelete = request.getParameter("regNumber");
-        modifyFile(SERVICE_FILE, regNumberToDelete, false);
-        response.sendRedirect("service_history.jsp");
-    }
-
-
-    private void updateVehicle(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String regNumber = request.getParameter("id");
-        String newOwner = request.getParameter("owner");
-        String newModel = request.getParameter("model");
-        String newType = request.getParameter("type");
-
-        modifyFile(VEHICLE_FILE, regNumber, true, newOwner, newModel, newType);
-        response.sendRedirect("vehicle_list.jsp");
-    }
-
-
-    private void updateServiceRecord(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String regNumber = request.getParameter("regNumber");
-        String newDescription = request.getParameter("description");
-
-        modifyFile(SERVICE_FILE, regNumber, true, newDescription);
-        response.sendRedirect("service_history.jsp");
-    }
-
-
-    private void modifyFile(String filePath, String identifier, boolean isUpdate, String... newValues) throws IOException {
-        File inputFile = new File(filePath);
-        File tempFile = new File(DIRECTORY + "\\temp_file.txt");
-
-        List<String> lines = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-
-                if (line.startsWith(identifier + ",")) {
-                    if (isUpdate) {
-
-                        line = identifier + "," + String.join(",", newValues);
-                    } else {
-
-                        continue;
-                    }
-                }
-                lines.add(line);
+        if ("edit".equals(action) && plate != null) {
+            Vehicle v = manager.getVehicle(plate);
+            if (v != null) {
+                req.setAttribute("vehicle", v);
+                req.getRequestDispatcher("updateVehicle.jsp").forward(req, resp);
+                return;
             }
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
-            for (String line : lines) {
-                writer.write(line);
-                writer.newLine();
-            }
+        List<Vehicle> all = manager.getVehicles();
+        req.setAttribute("vehicles", all);
+        req.getRequestDispatcher("viewVehicles.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+
+        if ("add".equals(action)) {
+            Vehicle v = formToVehicle(req);
+            manager.addVehicle(v);
+        }
+        else if ("update".equals(action)) {
+            String original = req.getParameter("originalNumberPlate");
+            Vehicle v = formToVehicle(req);
+            manager.updateVehicle(original, v);
+        }
+        else if ("delete".equals(action)) {
+            String plate = req.getParameter("numberPlate");
+            manager.deleteVehicle(plate);
         }
 
-        inputFile.delete();
-        tempFile.renameTo(inputFile);
+        resp.sendRedirect(req.getContextPath() + "/VehicleServlet");
+    }
+
+    private Vehicle formToVehicle(HttpServletRequest req) {
+        String reg   = req.getParameter("registrationNumber");
+        String plate = req.getParameter("numberPlate");
+        String type  = req.getParameter("vehicleType");
+        String owner = req.getParameter("owner");
+        int    mil   = Integer.parseInt(req.getParameter("mileage"));
+        String model = req.getParameter("model");
+        int    yr    = Integer.parseInt(req.getParameter("year"));
+        String appt  = req.getParameter("appointment");
+        String svc   = req.getParameter("serviceType");
+
+        return new Vehicle(reg, plate, type, owner, mil, model, yr, appt, svc);
     }
 }
