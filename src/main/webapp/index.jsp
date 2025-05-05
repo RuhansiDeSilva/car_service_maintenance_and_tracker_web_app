@@ -5,8 +5,8 @@
     VehicleManager mgr = new VehicleManager();
     List<?> all = mgr.getVehicles();
     int totalVehicles   = all.size();
-    int pendingServices = 0; // Will be implemented with service tracking
-    int completedToday  = 0; // Will be implemented with service tracking
+    int pendingServices = 0;
+    int completedToday  = 0; 
 %>
 <!DOCTYPE html>
 <html lang="en">
