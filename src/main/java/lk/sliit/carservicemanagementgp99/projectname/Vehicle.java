@@ -8,8 +8,8 @@ public class Vehicle {
     private int mileage;
     private String model;
     private int year;
-    private String appointment;   // “Appointment” or “Direct”
-    private String serviceType;   // e.g. “Full Service”, “Oil Change”
+    private String appointment;  
+    private String serviceType;   
 
     public Vehicle(String registrationNumber,
                    String numberPlate,
@@ -31,7 +31,7 @@ public class Vehicle {
         this.serviceType       = serviceType;
     }
 
-    // --- Getters & Setters ---
+  
     public String getRegistrationNumber() { return registrationNumber; }
     public void setRegistrationNumber(String registrationNumber) { this.registrationNumber = registrationNumber; }
 
