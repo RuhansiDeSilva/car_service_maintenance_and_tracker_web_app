@@ -1,24 +1,22 @@
 package lk.sliit.carservicemanagementgp99.projectname.model;
 
-import java.io.Serializable;
 
-public class Invoice implements Serializable {
-    private String invoiceID;
-    private Service service;
-    private double totalAmount;
+public class Invoice {
+    private String invoiceId;
+    private String customerName;
+    private String serviceId;
+    private double amount;
 
-    public Invoice(String invoiceID, Service service) {
-        this.invoiceID = invoiceID;
-        this.service = service;
-        this.totalAmount = service.getCost();
+    public Invoice(String invoiceId, String customerName, String serviceId, double amount) {
+        this.invoiceId = invoiceId;
+        this.customerName = customerName;
+        this.serviceId = serviceId;
+        this.amount = amount;
     }
 
-    public String getInvoiceID() { return invoiceID; }
-    public Service getService() { return service; }
-    public double getTotalAmount() { return totalAmount; }
+    public String getInvoiceId() { return invoiceId; }
+    public String getCustomerName() { return customerName; }
+    public String getServiceId() { return serviceId; }
+    public double getAmount() { return amount; }
 
-    // Convert invoice object to a file string
-    public String toFileString() {
-        return invoiceID + "," + service.getServiceID() + "," + totalAmount;
-    }
 }

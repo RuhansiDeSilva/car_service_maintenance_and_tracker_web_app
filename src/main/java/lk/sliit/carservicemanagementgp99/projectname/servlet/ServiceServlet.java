@@ -5,6 +5,7 @@ import lk.sliit.carservicemanagementgp99.projectname.model.Service;
 import lk.sliit.carservicemanagementgp99.projectname.model.ServiceHistory;
 import lk.sliit.carservicemanagementgp99.projectname.model.Invoice;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.RequestDispatcher;
@@ -21,10 +22,13 @@ public class ServiceServlet extends HttpServlet {
     private List<Invoice> invoiceList;
 
     // file paths
-    private static final String SERVICE_FILE = "data/services.txt";
-    private static final String INVOICE_FILE = "data/invoices.txt";
+    private String SERVICE_FILE;
+    private String INVOICE_FILE;
 
     public void init() throws ServletException {
+        SERVICE_FILE = "C:/Users/sanjeewa/Desktop/Data/Service.txt";
+        INVOICE_FILE = "C:/Users/sanjeewa/Desktop/Data/Invoice.txt";
+
         serviceHistory = new ServiceHistory();
         invoiceList = new ArrayList<>();
         loadServices();
@@ -61,14 +65,14 @@ public class ServiceServlet extends HttpServlet {
 
         // Forward to invoice page
         request.setAttribute("invoice", invoice);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("generate_invoice.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("invoice.jsp");
         dispatcher.forward(request, response);
     }
     // Handle get request to show service history
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         serviceHistory.sortByDate();
         request.setAttribute("serviceHistory", serviceHistory);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("view_service_history.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("service_tracker.jsp");
         dispatcher.forward(request, response);
     }
     // Save service to file
