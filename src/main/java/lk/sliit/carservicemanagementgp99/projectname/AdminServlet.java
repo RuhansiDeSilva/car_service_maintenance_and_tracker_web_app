@@ -1,6 +1,5 @@
-package test3.admin;
+package lk.sliit.carservicemanagementgp99.projectname;
 
-import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -8,11 +7,11 @@ import java.io.IOException;
 
 @WebServlet("/AdminServlet")
 public class AdminServlet extends HttpServlet {
-    private final StaffManager manager = new StaffManager();
+    private final lk.sliit.carservicemanagementgp99.projectname.StaffManager manager = new lk.sliit.carservicemanagementgp99.projectname.StaffManager();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
 
         String action = request.getParameter("action");
 
@@ -33,14 +32,6 @@ public class AdminServlet extends HttpServlet {
             case "updateStatus" -> {
                 handleUpdateStatus(request);
                 response.sendRedirect("update_staff_status.jsp?success=Status+Updated");
-            }
-            case "approve" -> {
-                handleApproveRequest(request);
-                response.sendRedirect("requests.jsp?success=Request+Approved");
-            }
-            case "reject" -> {
-                handleRejectRequest(request);
-                response.sendRedirect("requests.jsp?success=Request+Rejected");
             }
             default -> response.sendRedirect("index.jsp?error=Unknown+Action");
         }
@@ -82,19 +73,4 @@ public class AdminServlet extends HttpServlet {
             manager.updateStatus(id, status);
         }
     }
-
-    private void handleApproveRequest(HttpServletRequest request) {
-        String reqId = request.getParameter("reqId");
-        if (reqId != null) {
-            manager.updateRequest(reqId, "Approved");
-        }
-    }
-
-    private void handleRejectRequest(HttpServletRequest request) {
-        String reqId = request.getParameter("reqId");
-        if (reqId != null) {
-            manager.updateRequest(reqId, "Rejected");
-        }
-    }
 }
-

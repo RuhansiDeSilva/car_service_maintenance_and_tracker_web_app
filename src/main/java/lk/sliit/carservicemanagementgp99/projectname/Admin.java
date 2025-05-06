@@ -1,4 +1,4 @@
-package test3.admin;
+package lk.sliit.carservicemanagementgp99.projectname;
 
 public class Admin {
     private String username;
