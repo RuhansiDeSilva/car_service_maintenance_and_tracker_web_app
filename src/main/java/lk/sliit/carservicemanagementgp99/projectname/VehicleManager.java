@@ -21,7 +21,8 @@ public class VehicleManager {
     private static final String VEHICLE_FILE = Paths.get(DIRECTORY, "vehicle_data.txt").toString();
     private static final String BACKUP_FILE  = Paths.get(DIRECTORY, "vehicle_data_backup.txt").toString();
 
-    private final List<Vehicle> vehicles = new ArrayList<>();
+
+    private final LinkedList<Vehicle> vehicles = new LinkedList<>();
     private final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
 
     public VehicleManager() {
@@ -42,26 +43,30 @@ public class VehicleManager {
         }
     }
 
+
     public List<Vehicle> getVehicles() {
         rwLock.readLock().lock();
         try {
-            return Collections.unmodifiableList(new ArrayList<>(vehicles));
+           
+            return Collections.unmodifiableList(new LinkedList<>(vehicles));
         } finally {
             rwLock.readLock().unlock();
         }
     }
-
+    
     public void addVehicle(Vehicle v) {
         if (v == null) throw new IllegalArgumentException("Vehicle cannot be null");
         rwLock.writeLock().lock();
         try {
-            // no duplicate plates
-            if (vehicles.stream()
-                    .anyMatch(existing -> existing.getNumberPlate().equalsIgnoreCase(v.getNumberPlate()))) {
-                throw new IllegalArgumentException("Vehicle with number plate "
-                        + v.getNumberPlate() + " already exists");
+            
+            for (Vehicle ex : vehicles) {
+                if (ex.getNumberPlate().equalsIgnoreCase(v.getNumberPlate())) {
+                    throw new IllegalArgumentException("Vehicle with number plate "
+                            + v.getNumberPlate() + " already exists");
+                }
             }
             vehicles.add(v);
+            sortVehicles();
             persistAll();
             createBackup();
         } catch (IOException e) {
@@ -72,21 +77,26 @@ public class VehicleManager {
         }
     }
 
+
     public boolean updateVehicle(String originalPlate, Vehicle updated) {
         if (updated == null) throw new IllegalArgumentException("Updated vehicle cannot be null");
         rwLock.writeLock().lock();
         try {
-            for (int i = 0; i < vehicles.size(); i++) {
-                Vehicle current = vehicles.get(i);
-                if (current.getNumberPlate().equalsIgnoreCase(originalPlate)) {
+            ListIterator<Vehicle> it = vehicles.listIterator();
+            while (it.hasNext()) {
+                Vehicle curr = it.next();
+                if (curr.getNumberPlate().equalsIgnoreCase(originalPlate)) {
                     // if plate changed, ensure no conflict
-                    if (!originalPlate.equalsIgnoreCase(updated.getNumberPlate()) &&
-                            vehicles.stream()
-                                    .anyMatch(v -> v.getNumberPlate().equalsIgnoreCase(updated.getNumberPlate()))) {
-                        throw new IllegalArgumentException("Another vehicle with number plate "
-                                + updated.getNumberPlate() + " already exists");
+                    if (!originalPlate.equalsIgnoreCase(updated.getNumberPlate())) {
+                        for (Vehicle v : vehicles) {
+                            if (v.getNumberPlate().equalsIgnoreCase(updated.getNumberPlate())) {
+                                throw new IllegalArgumentException("Another vehicle with number plate "
+                                        + updated.getNumberPlate() + " already exists");
+                            }
+                        }
                     }
-                    vehicles.set(i, updated);
+                    it.set(updated);
+                    sortVehicles();
                     persistAll();
                     createBackup();
                     return true;
@@ -101,6 +111,7 @@ public class VehicleManager {
         }
     }
 
+
     public boolean deleteVehicle(String numberPlate) {
         rwLock.writeLock().lock();
         try {
@@ -108,6 +119,7 @@ public class VehicleManager {
                     v.getNumberPlate().equalsIgnoreCase(numberPlate)
             );
             if (removed) {
+                sortVehicles();
                 persistAll();
                 createBackup();
             }
@@ -120,18 +132,22 @@ public class VehicleManager {
         }
     }
 
+
     public Vehicle getVehicle(String plate) {
         if (plate == null || plate.trim().isEmpty()) return null;
         rwLock.readLock().lock();
         try {
-            return vehicles.stream()
-                    .filter(v -> v.getNumberPlate().equalsIgnoreCase(plate.trim()))
-                    .findFirst()
-                    .orElse(null);
+            for (Vehicle v : vehicles) {
+                if (v.getNumberPlate().equalsIgnoreCase(plate.trim())) {
+                    return v;
+                }
+            }
+            return null;
         } finally {
             rwLock.readLock().unlock();
         }
     }
+
 
     private void loadVehicles() {
         rwLock.writeLock().lock();
@@ -157,15 +173,15 @@ public class VehicleManager {
                     }
                     try {
                         Vehicle v = new Vehicle(
-                                f[0].trim(),                  // registrationNumber
-                                f[1].trim(),                  // numberPlate
-                                f[2].trim(),                  // vehicleType
-                                f[3].trim(),                  // owner
-                                Integer.parseInt(f[4].trim()),// mileage
-                                f[5].trim(),                  // model
-                                Integer.parseInt(f[6].trim()),// year
-                                f[7].trim(),                  // appointment
-                                f[8].trim()                   // serviceType
+                                f[0].trim(),                 
+                                f[1].trim(),                 
+                                f[2].trim(),                 
+                                f[3].trim(),                  
+                                Integer.parseInt(f[4].trim()),
+                                f[5].trim(),                  
+                                Integer.parseInt(f[6].trim()),
+                                f[7].trim(),                  
+                                f[8].trim()                   
                         );
                         vehicles.add(v);
                     } catch (NumberFormatException nfe) {
@@ -183,6 +199,7 @@ public class VehicleManager {
         }
     }
 
+
     private void persistAll() throws IOException {
         Path tmp = Paths.get(VEHICLE_FILE + ".tmp");
         try (BufferedWriter out = Files.newBufferedWriter(tmp)) {
@@ -191,17 +208,53 @@ public class VehicleManager {
                 out.newLine();
             }
         }
-        // atomic replace
-        Files.move(tmp, Paths.get(VEHICLE_FILE),
-                StandardCopyOption.REPLACE_EXISTING);
+        Files.move(tmp, Paths.get(VEHICLE_FILE), StandardCopyOption.REPLACE_EXISTING);
     }
+
 
     private void createBackup() throws IOException {
         Path src = Paths.get(VEHICLE_FILE);
         if (Files.exists(src)) {
-            Files.copy(src, Paths.get(BACKUP_FILE),
-                    StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(src, Paths.get(BACKUP_FILE), StandardCopyOption.REPLACE_EXISTING);
             LOGGER.info("Backup created");
+        }
+    }
+
+
+    public boolean restoreFromBackup() {
+        rwLock.writeLock().lock();
+        try {
+            Path backup = Paths.get(BACKUP_FILE);
+            if (!Files.exists(backup)) return false;
+            Files.copy(backup, Paths.get(VEHICLE_FILE), StandardCopyOption.REPLACE_EXISTING);
+            loadVehicles();
+            return true;
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to restore backup", e);
+            throw new UncheckedIOException(e);
+        } finally {
+            rwLock.writeLock().unlock();
+        }
+    }
+
+
+    private void sortVehicles() {
+        int n = vehicles.size();
+        for (int i = 0; i < n - 1; i++) {
+            int minIdx = i;
+            String minPlate = vehicles.get(i).getNumberPlate();
+            for (int j = i + 1; j < n; j++) {
+                String plateJ = vehicles.get(j).getNumberPlate();
+                if (plateJ.compareToIgnoreCase(minPlate) < 0) {
+                    minIdx = j;
+                    minPlate = plateJ;
+                }
+            }
+            if (minIdx != i) {
+                Vehicle tmp = vehicles.get(i);
+                vehicles.set(i, vehicles.get(minIdx));
+                vehicles.set(minIdx, tmp);
+            }
         }
     }
 
@@ -217,22 +270,5 @@ public class VehicleManager {
                 Objects.toString(v.getAppointment(), ""),
                 Objects.toString(v.getServiceType(), "")
         );
-    }
-
-    public boolean restoreFromBackup() {
-        rwLock.writeLock().lock();
-        try {
-            Path backup = Paths.get(BACKUP_FILE);
-            if (!Files.exists(backup)) return false;
-            Files.copy(backup, Paths.get(VEHICLE_FILE),
-                    StandardCopyOption.REPLACE_EXISTING);
-            loadVehicles();
-            return true;
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Failed to restore backup", e);
-            throw new UncheckedIOException(e);
-        } finally {
-            rwLock.writeLock().unlock();
-        }
     }
 }
