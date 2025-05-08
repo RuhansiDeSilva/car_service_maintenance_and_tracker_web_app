@@ -11,6 +11,7 @@ public class UserManager {
         loadUsers();
     }
 
+    // Load users from users.txt (handles 6 or 7 fields)
     private void loadUsers() {
         users.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -18,7 +19,7 @@ public class UserManager {
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length == 6) {
-
+                    // Admin or Customer (no subrole)
                     String username = parts[0].trim();
                     String password = parts[1].trim();
                     String fullName = parts[2].trim();
@@ -32,11 +33,11 @@ public class UserManager {
                     } else if ("Admin".equalsIgnoreCase(role)) {
                         user = new Admin(username, password, fullName, email, phone);
                     } else {
-                        continue;
+                        continue; // Skip invalid roles
                     }
                     users.add(user);
                 } else if (parts.length == 7) {
-
+                    // Staff (with subrole)
                     String username = parts[0].trim();
                     String password = parts[1].trim();
                     String fullName = parts[2].trim();
@@ -50,7 +51,7 @@ public class UserManager {
                         users.add(staff);
                     }
                 } else {
-
+                    // Skip malformed lines
                     System.out.println("Skipping invalid user entry: " + line);
                 }
             }
@@ -59,6 +60,7 @@ public class UserManager {
         }
     }
 
+    // Save users to users.txt
     private void saveUsers() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (User user : users) {
@@ -77,14 +79,14 @@ public class UserManager {
         }
     }
 
-
+    // Add user
     public void addUser(User user) {
         users.add(user);
-        insertionSort();
+        selectionSort();
         saveUsers();
     }
 
-
+    // Get user by username
     public User getUser(String username) {
         for (User user : users) {
             if (user.getUsername().equalsIgnoreCase(username)) {
@@ -94,19 +96,19 @@ public class UserManager {
         return null;
     }
 
-
+    // Update existing user
     public void updateUser(User updatedUser) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUsername().equalsIgnoreCase(updatedUser.getUsername())) {
                 users.set(i, updatedUser);
-                insertionSort();
+                selectionSort();
                 saveUsers();
                 return;
             }
         }
     }
 
-
+    // Delete user
     public boolean deleteUser(String username) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUsername().equalsIgnoreCase(username)) {
@@ -118,7 +120,7 @@ public class UserManager {
         return false;
     }
 
-
+    // Validate login
     public User validateLogin(String username, String password) {
         for (User user : users) {
             if (user.getUsername().equalsIgnoreCase(username) && user.getPassword().equals(password)) {
@@ -128,16 +130,21 @@ public class UserManager {
         return null;
     }
 
-
-    private void insertionSort() {
-        for (int i = 1; i < users.size(); i++) {
-            User key = users.get(i);
-            int j = i - 1;
-            while (j >= 0 && users.get(j).getUsername().compareToIgnoreCase(key.getUsername()) > 0) {
-                users.set(j + 1, users.get(j));
-                j--;
+    // Selection Sort by username
+    private void selectionSort() {
+        int n = users.size();
+        for (int i = 0; i < n - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < n; j++) {
+                if (users.get(j).getUsername().compareToIgnoreCase(users.get(minIndex).getUsername()) < 0) {
+                    minIndex = j;
+                }
             }
-            users.set(j + 1, key);
+            if (minIndex != i) {
+                User temp = users.get(i);
+                users.set(i, users.get(minIndex));
+                users.set(minIndex, temp);
+            }
         }
     }
 
