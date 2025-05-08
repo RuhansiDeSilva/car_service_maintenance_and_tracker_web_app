@@ -19,7 +19,6 @@ public class User {
         this.subrole = subrole;
     }
 
-    // Getters and Setters (Encapsulation)
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
