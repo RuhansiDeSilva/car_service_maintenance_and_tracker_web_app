@@ -1,4 +1,4 @@
-package vehicle.vehiclemanagement;
+package lk.sliit.carservicemanagementgp99.projectname;
 
 import java.io.*;
 import java.nio.file.*;
@@ -47,18 +47,18 @@ public class VehicleManager {
     public List<Vehicle> getVehicles() {
         rwLock.readLock().lock();
         try {
-           
+
             return Collections.unmodifiableList(new LinkedList<>(vehicles));
         } finally {
             rwLock.readLock().unlock();
         }
     }
-    
+
     public void addVehicle(Vehicle v) {
         if (v == null) throw new IllegalArgumentException("Vehicle cannot be null");
         rwLock.writeLock().lock();
         try {
-            
+
             for (Vehicle ex : vehicles) {
                 if (ex.getNumberPlate().equalsIgnoreCase(v.getNumberPlate())) {
                     throw new IllegalArgumentException("Vehicle with number plate "
@@ -86,7 +86,7 @@ public class VehicleManager {
             while (it.hasNext()) {
                 Vehicle curr = it.next();
                 if (curr.getNumberPlate().equalsIgnoreCase(originalPlate)) {
-                    // if plate changed, ensure no conflict
+                    
                     if (!originalPlate.equalsIgnoreCase(updated.getNumberPlate())) {
                         for (Vehicle v : vehicles) {
                             if (v.getNumberPlate().equalsIgnoreCase(updated.getNumberPlate())) {
@@ -173,15 +173,15 @@ public class VehicleManager {
                     }
                     try {
                         Vehicle v = new Vehicle(
-                                f[0].trim(),                 
-                                f[1].trim(),                 
-                                f[2].trim(),                 
-                                f[3].trim(),                  
-                                Integer.parseInt(f[4].trim()),
-                                f[5].trim(),                  
-                                Integer.parseInt(f[6].trim()),
-                                f[7].trim(),                  
-                                f[8].trim()                   
+                                f[0].trim(),                  // registrationNumber
+                                f[1].trim(),                  // numberPlate
+                                f[2].trim(),                  // vehicleType
+                                f[3].trim(),                  // owner
+                                Integer.parseInt(f[4].trim()),// mileage
+                                f[5].trim(),                  // model
+                                Integer.parseInt(f[6].trim()),// year
+                                f[7].trim(),                  // appointment
+                                f[8].trim()                   // serviceType
                         );
                         vehicles.add(v);
                     } catch (NumberFormatException nfe) {
