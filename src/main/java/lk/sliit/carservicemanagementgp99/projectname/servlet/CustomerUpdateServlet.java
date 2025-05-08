@@ -14,7 +14,7 @@ public class CustomerUpdateServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        userManager = new UserManager(); // reloads from file
+        userManager = new UserManager(); 
     }
 
     @Override
@@ -33,13 +33,12 @@ public class CustomerUpdateServlet extends HttpServlet {
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
 
-        // Create updated Customer object
+       
         Customer updatedCustomer = new Customer(username, password, fullName, email, phone);
 
-        // Update user in file
+       
         userManager.updateUser(updatedCustomer);
 
-        // Update session with new info
         session.setAttribute("currentUser", updatedCustomer);
 
         response.sendRedirect("customer_dashboard.jsp");
