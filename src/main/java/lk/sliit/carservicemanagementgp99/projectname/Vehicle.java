@@ -1,4 +1,4 @@
-package vehicle.vehiclemanagement;
+package lk.sliit.carservicemanagementgp99.projectname;
 
 public class Vehicle {
     private String registrationNumber;
@@ -8,7 +8,7 @@ public class Vehicle {
     private int mileage;
     private String model;
     private int year;
-    private String appointment;  
+    private String appointment;   
     private String serviceType;   
 
     public Vehicle(String registrationNumber,
@@ -31,7 +31,7 @@ public class Vehicle {
         this.serviceType       = serviceType;
     }
 
-  
+    
     public String getRegistrationNumber() { return registrationNumber; }
     public void setRegistrationNumber(String registrationNumber) { this.registrationNumber = registrationNumber; }
 
