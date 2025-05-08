@@ -1,34 +1,59 @@
-
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
     <title>Car Service and Maintenance Tracker</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url('images/pexels-cottonbro-4488642.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0,0.6);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        .text-outline {
+            color: white;
+            text-shadow:
+            -1px -1px 0 #000,
+            1px -1px 0 #000,
+            -1px 1px 0 #000,
+            1px 1px 0 #000;
+        }
+
+        .btn-orange-red {
+            background-color: #e63900;
+            color: white;
+            border: none;
+        }
+        .btn-orange-red:hover {
+            background-color: #cc3300;
+            color: white;
+        }
+    </style>
 </head>
 <body class="bg-light">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Car Service Tracker</a>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="service_tracker.jsp">Service Tracker</a> </li>
-        <li class="nav-item"><a class="nav-link" href="invoice.jsp">Refresh Service</a> </li>
-      </ul>
+<div class="container text-center mt-5">
+    <h1 class="mb-4 text-outline">Welcome to Car Service and Maintenance Tracker</h1>
+    <p class="lead text-white mb-4">Easily manage vehicle services, track progress, and generate invoices.</p>
+
+    <div class="d-grid gap-3 col-6 mx-auto">
+        <a href="service.jsp" class="btn btn-orange-red btn-lg">Manage Services</a>
+        <a href="service?view=tracker" class="btn btn-orange-red btn-lg">Service Tracker</a>
+        <a href="invoice.jsp" class="btn btn-orange-red btn-lg">Manage Invoices</a>
     </div>
-  </div>
-</nav>
-
-<div class="container mt-5 text-center">
-    <h1 class="text-primary mb-4">Welcome to Car Service and Maintenance Tracker</h1>
-  <p class="lead">Manage service records and generate invoices with ease.</p>
-
-  <div class="d-grid gap-3 col-6 mx-auto mt-4">
-    <a href="service_tracker.jsp" class="btn btn-outline-primary btn-lg">Go to Service Tracker</a>
-    <a href="invoice.jsp" class="btn btn-outline-success btn-lg">Go to Invoice</a>
-  </div>
 </div>
+
 </body>
 </html>

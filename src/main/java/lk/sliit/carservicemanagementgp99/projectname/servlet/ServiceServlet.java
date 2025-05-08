@@ -1,124 +1,106 @@
 package lk.sliit.carservicemanagementgp99.projectname.servlet;
 
-import jakarta.servlet.ServletContext;
-import lk.sliit.carservicemanagementgp99.projectname.model.Service;
-import lk.sliit.carservicemanagementgp99.projectname.model.ServiceHistory;
-import lk.sliit.carservicemanagementgp99.projectname.model.Invoice;
+import lk.sliit.carservicemanagementgp99.projectname.model.*;
+import lk.sliit.carservicemanagementgp99.projectname.manager.ServiceManager;
+import lk.sliit.carservicemanagementgp99.projectname.manager.InvoiceManager;
 
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 
-import java.io.*;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
+@WebServlet("/service")
 public class ServiceServlet extends HttpServlet {
-    private ServiceHistory serviceHistory;
-    private List<Invoice> invoiceList;
+    private ServiceManager serviceManager;
+    private InvoiceManager invoiceManager;
+    Service service;
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
-    // file paths
-    private String SERVICE_FILE;
-    private String INVOICE_FILE;
+    public void init() throws ServletException{
+        String servicePath = getServletContext().getRealPath("/data/services.txt");
+        String invoicePath = getServletContext().getRealPath("/data/invoices.txt");
 
-    public void init() throws ServletException {
-        SERVICE_FILE = "C:/Users/sanjeewa/Desktop/Data/Service.txt";
-        INVOICE_FILE = "C:/Users/sanjeewa/Desktop/Data/Invoice.txt";
-
-        serviceHistory = new ServiceHistory();
-        invoiceList = new ArrayList<>();
-        loadServices();
+        serviceManager = new ServiceManager(servicePath);
+        invoiceManager = new InvoiceManager(invoicePath);
     }
+
     // Handle form submission
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
-        // Get form inputs
-        String customerName = request.getParameter("customerName");
-        String vehicleNumber = request.getParameter("vehicleNumber");
-        String serviceDateStr = request.getParameter("serviceDate");
-        String serviceType = request.getParameter("serviceType");
-        double cost = Double.parseDouble(request.getParameter("cost"));
+        String action = request.getParameter("action");
 
-        // Auto generate service ID
-        String serviceID = generateServiceID();
+        if ("addService".equals(action)) {
+            try {
+                String serviceType = request.getParameter("serviceType");
+                String serviceId = request.getParameter("serviceId");
+                String customerName = request.getParameter("customerName");
+                Date date = sdf.parse(request.getParameter("date"));
+                double cost = Double.parseDouble(request.getParameter("cost"));
 
-        Date serviceDate;
-        try {
-            serviceDate = new SimpleDateFormat("yyyy-MM-dd").parse(serviceDateStr);
-        }catch (Exception e){
-            throw new ServletException("Invalid date format");
+                 serviceId = "SRV-" + System.currentTimeMillis();
+                String status = request.getParameter("status");
+
+                if ("Regular".equalsIgnoreCase(serviceType)) {
+                    service = new RegularService(serviceId, customerName, date, cost, status);
+                } else {
+                    service = new MajorRepair(serviceId, customerName, date, cost, status);
+                }
+                serviceManager.addService(service);
+                String invoiceId = "INV-" + System.currentTimeMillis();
+                Invoice invoice = new Invoice(invoiceId, customerName,serviceId, cost);
+                invoiceManager.addInvoice(invoice);
+
+                request.setAttribute("message", "Service added successfully!");
+
+            } catch (Exception e) {
+                request.setAttribute("error", "Failed to add service: " + e.getMessage());
+            }
+            request.getRequestDispatcher("service.jsp").forward(request, response);
+        } else if ("addInvoice".equals(action)) {
+            try {
+                String invoiceId = request.getParameter("invoiceId");
+                String customerName = request.getParameter("customerName");
+                String serviceId = request.getParameter("serviceId");
+                double amount = Double.parseDouble(request.getParameter("amount"));
+
+                 invoiceId = "INV-" + System.currentTimeMillis();
+
+                Invoice invoice = new Invoice(invoiceId, customerName, serviceId, amount);
+                invoiceManager.addInvoice(invoice);
+                request.setAttribute("message", "Invoice created successfully!");
+            } catch (Exception e) {
+                request.setAttribute("error", "Failed to create invoice: " + e.getMessage());
+            }
+            request.getRequestDispatcher("invoice.jsp").forward(request, response);
+        } else if("updateStatus".equals(action)) {
+            String serviceId = request.getParameter("serviceId");
+            String newStatus = request.getParameter("newStatus");
+            serviceManager.updateServiceStatus(serviceId, newStatus);
+            response.sendRedirect("service?view=tracker");
         }
-        // Generate and save service
-        Service newService = new Service(serviceID, customerName, vehicleNumber, serviceDate, serviceType, cost);
-        serviceHistory.addService(newService);
-        saveService(newService);
-
-        // auto generate and save invoice
-        String invoiceID = generateInvoiceID();
-        Invoice invoice = new Invoice(invoiceID, newService);
-        invoiceList.add(invoice);
-        saveInvoice(invoice);
-
-        // Forward to invoice page
-        request.setAttribute("invoice", invoice);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("invoice.jsp");
-        dispatcher.forward(request, response);
     }
     // Handle get request to show service history
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        serviceHistory.sortByDate();
-        request.setAttribute("serviceHistory", serviceHistory);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("service_tracker.jsp");
-        dispatcher.forward(request, response);
-    }
-    // Save service to file
-    private void saveService(Service service) throws IOException {
-        FileWriter fWriter = new FileWriter(SERVICE_FILE, true);
-        fWriter.write(service.toString() + "\n");
-        fWriter.close();
-    }
-    // Save invoice to file
-    private void saveInvoice(Invoice invoice) throws IOException {
-        FileWriter fWriter = new FileWriter(INVOICE_FILE, true);
-        fWriter.write(invoice.toString() + "\n");
-        fWriter.close();
-    }
-    // Load services from file on startup
-    private void loadServices() {
-        File file = new File(SERVICE_FILE);
-        if(!file.exists()) {
-            return;
-        }
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                String id = data[0];
-                String customerName = data[1];
-                String vehicleNumber = data[2];
-                Date date = Service.parseDate(data[3]);
-                String type = data[4];
-                double cost = Double.parseDouble(data[5]);
+        String view = request.getParameter("view");
 
-                Service service = new Service(id, customerName, vehicleNumber, date, type, cost);
-                serviceHistory.addService(service);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+        if("tracker".equals(view)) {
+            List<Service> services = serviceManager.getAllServicesSortedByDate();
+            request.setAttribute("services", services);
+            request.getRequestDispatcher("service_tracker.jsp").forward(request, response);
         }
-    }
-    // Generate random service ID
-    private String generateServiceID() {
-        int id  = (int) (Math.random() * 10000);
-        return "S" + String.format("%04d", id);
-    }
-    // Generate random invoice ID
-    private String generateInvoiceID() {
-        int id  = (int) (Math.random() * 10000);
-        return "I" + String.format("%04d", id);
+        else if("services".equals(view)) {
+            List<Service> services = serviceManager.getAllServicesSortedByDate();
+            request.setAttribute("services", services);
+            request.getRequestDispatcher("service.jsp").forward(request, response);
+        }
+        else if ("invoices".equals(view)) {
+            List<Invoice> invoices = invoiceManager.getAllInvoices();
+            request.setAttribute("invoices", invoices);
+            request.getRequestDispatcher("invoice.jsp").forward(request, response);
+        }
     }
 }

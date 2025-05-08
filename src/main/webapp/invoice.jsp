@@ -1,93 +1,129 @@
 <%@ page import="lk.sliit.carservicemanagementgp99.projectname.model.Invoice" %>
-<%@ page import="lk.sliit.carservicemanagementgp99.projectname.model.Service" %>
-<%@ page import="java.io.*" %>
-<%@ page import="java.util.*" %>
-<%@ page contentType="text/html;charset=UTF-8" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Service Tracker</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+<%@ page import="java.util.List" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url('images/19613.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+        }
+        .page-overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        .btn-orange-red {
+            background-color: #e63900;
+            color: white;
+            border: none;
+        }
+        .btn-orange-red:hover {
+            background-color: #cc3300;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Car Service Tracker</a>
+        <a class="navbar-brand" href="index.jsp">Car Service Tracker</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="service_tracker.jsp">Service Tracker</a> </li>
-                <li class="nav-item"><a class="nav-link active" href="invoice.jsp">Invoice</a> </li>
+                <li class="nav-item"><a class="nav-link" href="service.jsp">Manage Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="service?view=tracker">Service Tracker</a></li>
+                <li class="nav-item"><a class="nav-link" href="invoice.jsp">Manage Invoices</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
-<div class="container mt-4">
+<div class="container">
 
-    <h2 class="text-primary">Latest Invoice</h2>
-    <%
-        Invoice invoice= (Invoice) request.getAttribute("invoice");
-        if(invoice != null) {
-            Service service = invoice.getService();
-    %>
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Invoice ID: <%= invoice.getInvoiceID() %></h5>
-                <p>Service ID: <%= service.getServiceID() %></p>
-                <p>Customer: <%= service.getCustomerName() %></p>
-                <p>Vehicle: <%= service.getVehicleNumber() %></p>
-                <p>Type: <%= service.getServiceType() %></p>
-                <p>Date: <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(service.getServiceDate()) %></p>
-                <p><strong>Total Rs. <%= invoice.getTotalAmount() %></strong></p>
-            </div>
+    <div class="card mb-4">
+        <div class="card-header">Create Invoice</div>
+        <div class="card-body">
+            <form method="post" action="service">
+                <input type="hidden" name="action" value="addInvoice"/>
+
+                <div class="mb-3">
+                    <label>Customer Name</label>
+                    <input type="text" name="customerName" class="form-control" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label>Service ID</label>
+                    <input type="text" name="serviceId" class="form-control" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label>Amount</label>
+                    <input type="number" name="amount" class="form-control" step="0.01" required/>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create Invoice</button>
+            </form>
         </div>
-    <%
-        } else {
-    %>
-        <p>No new invoice generated in this session.</p>
-    <%
-        }
-    %>
+    </div>
 
-    <hr class="my-5">
-    <h2 class="text-primary">All Invoices</h2>
+    <%
+        String message = (String) request.getAttribute("message");
+        String error = (String) request.getAttribute("error");
+        if (message != null) {
+    %>
+    <div class="alert alert-success"><%= message %></div>
+    <% } else if (error != null) { %>
+    <div class="alert alert-danger"><%= error %></div>
+    <% } %>
 
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Invoice ID</th>
-                <th>Service Id</th>
-                <th>Total (Rs.)</th>
-            </tr>
+    <form method="get" action="service" class="mb-3">
+        <input type="hidden" name="view" value="invoices"/>
+        <button class="btn btn-outline-secondary text-white">View Invoices</button>
+    </form>
+
+    <%
+        List<Invoice> invoices = (List<Invoice>) request.getAttribute("invoices");
+        if (invoices != null && !invoices.isEmpty()) {
+    %>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Invoice ID</th>
+            <th>Customer</th>
+            <th>Service ID</th>
+            <th>Amount</th>
+        </tr>
         </thead>
         <tbody>
         <%
-            String path = application.getRealPath("/data/invoices.txt");
-            File file = new File(path);
-            if(file.exists()) {
-                BufferedReader br = new BufferedReader(new FileReader(file));
-                String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
+            for (Invoice inv : invoices) {
         %>
-                <tr>
-                    <td><%= parts[0] %></td>
-                    <td><%= parts[1] %></td>
-                    <td><%= parts[2] %></td>
-                </tr>
-        <%
-            }
-            br.close();
-            } else {
-        %>
-                <tr><td colspan="3">No invoices found.</td> </tr>
+        <tr>
+            <td><%= inv.getInvoiceId() %></td>
+            <td><%= inv.getCustomerName() %></td>
+            <td><%= inv.getServiceId() %></td>
+            <td><%= inv.getAmount() %></td>
+        </tr>
         <%
             }
         %>
         </tbody>
     </table>
+    <%
+    } else {
+    %>
+    <p class="text-white">No invoices found.</p>
+    <%
+        }
+    %>
 </div>
+
 </body>
 </html>
