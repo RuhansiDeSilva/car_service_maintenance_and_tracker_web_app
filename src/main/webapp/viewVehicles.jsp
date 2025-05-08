@@ -1,38 +1,44 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="vehicle.vehiclemanagement.VehicleManager, vehicle.vehiclemanagement.Vehicle, java.util.List" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+<%@ page import="lk.sliit.carservicemanagementgp99.projectname.VehicleManager,
+                 lk.sliit.carservicemanagementgp99.projectname.Vehicle,
+                 java.util.List" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     VehicleManager mgr = new VehicleManager();
     List<Vehicle> vehicles = mgr.getVehicles();
     request.setAttribute("vehicles", vehicles);
 %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>AutoPulse - View Vehicles</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoPulse – View Vehicles</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-red: #ff0000;
-            --dark-bg: #000000;
+            --primary-red: #dd0b1d;
+            --dark-bg: #000;
             --card-bg: #1a1a1a;
             --white: #ffffff;
             --light-gray: #e6e6e6;
         }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            color: var(--white);
+        html, body {
+            height: 100%;
             margin: 0;
-            padding: 0;
-            min-height: 100vh;
+        }
+
+        body {
             display: flex;
             flex-direction: column;
-            background: var(--dark-bg) url('https://quickcarvaluation.com/wp-content/uploads/2018/02/Vehicle-Repair-Centers.jpg') no-repeat center center fixed;
-
+            font-family: Arial, sans-serif;
+            color: var(--white);
+            background: var(--dark-bg)
+            url('https://quickcarvaluation.com/wp-content/uploads/2018/02/Vehicle-Repair-Centers.jpg')
+            no-repeat center center fixed;
             background-size: cover;
             position: relative;
         }
@@ -44,7 +50,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
             z-index: -1;
         }
 
@@ -52,136 +58,101 @@
             background-color: var(--card-bg) !important;
             border-bottom: 3px solid var(--primary-red);
         }
-
         .navbar-brand {
             font-weight: 700;
             color: var(--white) !important;
             font-size: 1.5rem;
         }
-
         .nav-link {
             color: var(--light-gray) !important;
             font-weight: 500;
-            transition: all 0.3s;
-            position: relative;
-            padding: 0.5rem 1rem !important;
-            margin: 0 0.25rem !important;
+            padding: .5rem 1rem !important;
+            margin: 0 .25rem !important;
+            transition: all .3s;
         }
-
-        .nav-link:hover {
-            color: var(--primary-red) !important;
-        }
-
+        .nav-link:hover,
         .nav-link.active {
             color: var(--primary-red) !important;
-            font-weight: 600;
         }
-
         .nav-btn {
             border-radius: 30px;
-            padding: 0.5rem 1.5rem !important;
-            margin: 0 0.5rem !important;
-            transition: all 0.3s ease;
+            padding: .5rem 1.5rem !important;
+            margin: 0 .5rem !important;
+            transition: all .3s ease;
         }
-
-        .nav-btn.add-btn {
+        .add-btn {
             background-color: var(--primary-red);
-            color: white !important;
+            color: var(--white) !important;
         }
-
-        .nav-btn.view-btn {
+        .view-btn {
             border: 2px solid var(--primary-red);
             color: var(--primary-red) !important;
         }
-
-        .nav-btn.add-btn:hover {
+        .add-btn:hover,
+        .view-btn:hover {
             background-color: #cc0000;
+            color: var(--white) !important;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
-        }
-
-        .nav-btn.view-btn:hover {
-            background-color: var(--primary-red);
-            color: white !important;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+            box-shadow: 0 5px 15px rgba(255,0,0,0.4);
         }
 
         .main-content {
-            flex: 1;
+            flex: 1 0 auto;
             padding: 2rem 0;
         }
-
         .content-box {
-            background-color: rgba(26, 26, 26, 0.9);
+            background: rgba(26,26,26,0.9);
             border-radius: 10px;
             padding: 2rem;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
             border-top: 4px solid var(--primary-red);
         }
-
         .btn-red {
             background-color: var(--primary-red);
             color: var(--white);
             border: none;
             font-weight: 600;
-            padding: 0.75rem 2rem;
-            transition: all 0.3s;
+            padding: .75rem 2rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin: 0 10px;
+            transition: all .3s;
         }
-
         .btn-red:hover {
             background-color: #cc0000;
-            color: var(--white);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+            box-shadow: 0 5px 15px rgba(255,0,0,0.4);
         }
-
         .btn-outline-red {
-            background-color: transparent;
+            background: transparent;
             color: var(--primary-red);
             border: 2px solid var(--primary-red);
             font-weight: 600;
-            padding: 0.75rem 2rem;
-            transition: all 0.3s;
+            padding: .75rem 2rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin: 0 10px;
+            transition: all .3s;
         }
-
         .btn-outline-red:hover {
             background-color: var(--primary-red);
             color: var(--white);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+            box-shadow: 0 5px 15px rgba(255,0,0,0.4);
         }
-
         .badge-plate {
             background: var(--primary-red);
             color: var(--white);
             border-radius: .5rem;
             padding: .35em .65em;
         }
-
-        .badge-app-direct {
-            background: #198754;
-        }
-
-        .badge-app-apt {
-            background: #0dcaf0;
-        }
-
+        .badge-app-direct { background: #198754; }
+        .badge-app-apt { background: #0dcaf0; }
         table th {
             border-bottom: 2px solid var(--primary-red) !important;
             color: var(--light-gray);
         }
-
-        table td {
-            color: var(--light-gray);
-        }
-
+        table td { color: var(--light-gray); }
         .action-btn {
             width: 36px;
             height: 36px;
@@ -191,24 +162,25 @@
         }
 
         footer {
-            background-color: var(--card-bg);
+            background: var(--card-bg);
             color: var(--white);
-            padding: 1.5rem 0;
             text-align: center;
+            padding: 1.5rem 0;
             border-top: 3px solid var(--primary-red);
+            margin-top: auto;
         }
-
         .copyright {
-            margin: 0;
-            font-size: 0.9rem;
+            font-size: .9rem;
             color: var(--light-gray);
+            margin: 0;
         }
     </style>
 </head>
 <body>
+
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="index.jsp">
             <i class="fas fa-car me-2"></i>AutoPulse
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -280,7 +252,7 @@
                             <tbody>
                             <c:forEach var="v" items="${vehicles}" varStatus="loop">
                                 <tr>
-                                    <td>${loop.index+1}</td>
+                                    <td>${loop.index + 1}</td>
                                     <td><span class="badge-plate">${v.numberPlate}</span></td>
                                     <td>${v.vehicleType}</td>
                                     <td>${v.owner}</td>
@@ -289,7 +261,7 @@
                                     <td>${v.year}</td>
                                     <td>
                                         <c:choose>
-                                            <c:when test="${v.appointment=='Direct'}">
+                                            <c:when test="${v.appointment eq 'Direct'}">
                                                 <span class="badge badge-app-direct">${v.appointment}</span>
                                             </c:when>
                                             <c:otherwise>
@@ -330,5 +302,6 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
