@@ -9,5 +9,8 @@
 </h1>
 <br/>
 <a href="hello-servlet">Hello Servlet</a>
+
+<a href="feedback.jsp" class="list-group-item list-group-item-action">Submit Feedback</a>
+
 </body>
 </html>
