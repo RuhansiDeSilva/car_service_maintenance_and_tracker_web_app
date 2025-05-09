@@ -59,9 +59,8 @@
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="index.jsp">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="book_service.jsp">Book Service</a></li>
-                <li class="nav-item"><a class="nav-link" href="view_appointment.jsp">My Appointments</a></li>
-                <li class="nav-item"><a class="nav-link active" href="feedback.jsp">Feedback</a></li>
+                <li class="nav-item"><a class="nav-link" href="feedbackSummary.jsp">Feedback Summary</a></li>
+                <li class="nav-item"><a class="nav-link active" href="viewFeedback.jsp">View Feedbacks</a></li>
             </ul>
         </div>
     </div>

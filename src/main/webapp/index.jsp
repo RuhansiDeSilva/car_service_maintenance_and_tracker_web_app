@@ -102,21 +102,21 @@
     </button>
     <div class="collapse navbar-collapse" id="nav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="book_service.jsp">Book Service</a></li>
-        <li class="nav-item"><a class="nav-link" href="appointments.jsp">My Appointments</a></li>
-        <li class="nav-item"><a class="nav-link" href="feedback.jsp">Feedback</a></li>
+        <li class="nav-item"><a class="nav-link" href="viewFeedback.jsp">View Feedbacks</a></li>
+        <li class="nav-item"><a class="nav-link" href="viewPublicFeedback.jsp">View Public Feedbacks</a></li>
+        <li class="nav-item"><a class="nav-link" href="feedbackSummary.jsp">Feedback Summary</a></li>
       </ul>
     </div>
   </div>
 </nav>
 <main class="container main">
   <div class="box">
-    <h1>Welcome to Service Booking</h1>
-    <a href="book_service.jsp" class="btn btn-red">
-      <i class="fas fa-book me-1"></i>Book Service
+    <h1>Welcome to Feedbacks</h1>
+    <a href="feedback.jsp" class="btn btn-red">
+      <i class="fas fa-book me-1"></i>Add Feedback
     </a>
-    <a href="appointments.jsp" class="btn btn-outline-red">
-      <i class="fas fa-list me-1"></i>View Appointments
+    <a href="feedbackSummary.jsp" class="btn btn-outline-red">
+      <i class="fas fa-list me-1"></i>Feedback Summary
     </a>
   </div>
 </main>

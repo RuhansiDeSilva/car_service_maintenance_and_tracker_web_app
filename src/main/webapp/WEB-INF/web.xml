@@ -25,6 +25,7 @@
         <url-pattern>/ViewAppointmentsServlet</url-pattern>
     </servlet-mapping>
 
+
     <!-- Configure the default welcome file -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>

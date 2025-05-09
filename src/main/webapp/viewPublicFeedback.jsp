@@ -26,7 +26,7 @@
         }
 
         .content-container {
-            flex: 1;
+            flex: 1; /* Takes remaining space */
             background: rgba(0, 0, 0, 0.85);
             padding: 30px;
             border-radius: 10px;
@@ -41,7 +41,7 @@
             text-align: center;
             padding: 10px 0;
             border-top: 2px solid #dc3545;
-            margin-top: auto;
+            margin-top: auto; /* Push to bottom */
             width: 100%;
         }
 
@@ -49,25 +49,20 @@
             background: white;
             color: black;
         }
-
         .navbar-custom {
             background-color: #111;
             border-bottom: 3px solid #dc3545;
         }
-
         .navbar-brand {
             font-weight: bold;
             color: #dc3545 !important;
         }
-
         .nav-link {
             color: #fff !important;
         }
-
         .nav-link:hover {
             color: #ffc107 !important;
         }
-
         .filter-bar {
             margin-bottom: 20px;
         }
@@ -129,7 +124,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Rating</th>
-                <th>Comments & Actions</th>
+                <th>Comments</th>
             </tr>
         </thead>
         <tbody>
@@ -138,16 +133,7 @@
                     <td><%= feedback[0] %></td>
                     <td><%= feedback[1] %></td>
                     <td><%= feedback[2] %></td>
-                    <td>
-                        <%= feedback[3] %>
-                        <form action="DeleteFeedbackServlet" method="POST" style="display:inline;" onsubmit="return confirm('Delete this feedback?');">
-                            <input type="hidden" name="name" value="<%= feedback[0] %>">
-                            <input type="hidden" name="email" value="<%= feedback[1] %>">
-                            <input type="hidden" name="rating" value="<%= feedback[2] %>">
-                            <input type="hidden" name="comment" value="<%= feedback[3] %>">
-                            <button type="submit" class="btn btn-sm btn-danger ms-2"><i class="fas fa-trash"></i></button>
-                        </form>
-                    </td>
+                    <td><%= feedback[3] %></td>
                 </tr>
             <% } %>
         </tbody>
@@ -175,44 +161,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        const table = $('#feedbackTable').DataTable({
-            pageLength: 5,
-            lengthMenu: [5, 10, 25, 50],
-            ordering: true,
-            order: [[2, 'desc']],
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    extend: 'excelHtml5',
-                    title: 'AutoPulse Feedback Records',
-                    filename: 'AutoPulse_Feedback',
-                    className: 'btn btn-success'
-                },
-                {
-                    extend: 'pdfHtml5',
-                    title: 'AutoPulse Feedback Records',
-                    filename: 'AutoPulse_Feedback',
-                    orientation: 'portrait',
-                    pageSize: 'A4',
-                    className: 'btn btn-danger'
-                },
-                {
-                    extend: 'print',
-                    title: 'AutoPulse Feedback Records',
-                    className: 'btn btn-primary'
-                }
-            ]
-        });
-
-        $('#ratingFilter').on('change', function () {
-            const selected = $(this).val();
-            table.column(2).search(selected ? '^' + selected + '$' : '', true, false).draw();
-        });
-    });
-</script>
 
 </body>
 </html>
