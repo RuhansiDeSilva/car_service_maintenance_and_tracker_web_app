@@ -104,6 +104,7 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="book_service.jsp">Book Service</a></li>
         <li class="nav-item"><a class="nav-link" href="appointments.jsp">My Appointments</a></li>
+        <li class="nav-item"><a class="nav-link" href="feedback.jsp">Feedback</a></li>
       </ul>
     </div>
   </div>
