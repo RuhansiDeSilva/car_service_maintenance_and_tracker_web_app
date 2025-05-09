@@ -1,8 +1,7 @@
-<%@ page language="java" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
-    <title>Feedback | Car Service Tracker</title>
-    <!-- Bootstrap + FontAwesome -->
+    <title>Feedback | AutoPulse</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -11,7 +10,6 @@
             background-size: cover;
             color: white;
         }
-
         .feedback-container {
             background: rgba(0, 0, 0, 0.85);
             padding: 40px;
@@ -20,30 +18,56 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.6);
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
         }
-
         .form-control {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
             color: white;
         }
-
         .form-control::placeholder {
             color: #ccc;
         }
-
-        label {
-            font-weight: bold;
+        .navbar-custom {
+            background-color: #111;
+            border-bottom: 3px solid #dc3545;
         }
-
-        .btn-submit {
-            width: 100%;
+        .navbar-brand {
             font-weight: bold;
+            color: #dc3545 !important;
+        }
+        .nav-link {
+            color: #fff !important;
+        }
+        .nav-link:hover {
+            color: #ffc107 !important;
+        }
+        footer {
+            background-color: #111;
+            color: #ccc;
+            padding: 20px 0;
+            margin-top: 60px;
+            border-top: 2px solid #dc3545;
         }
     </style>
 </head>
 <body>
 
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand" href="index.jsp"><i class="fas fa-car"></i> AutoPulse</a>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="index.jsp">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="book_service.jsp">Book Service</a></li>
+                <li class="nav-item"><a class="nav-link" href="view_appointment.jsp">My Appointments</a></li>
+                <li class="nav-item"><a class="nav-link active" href="feedback.jsp">Feedback</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Feedback Form -->
 <div class="container">
     <div class="feedback-container">
         <h3 class="text-center mb-4"><i class="fas fa-comment-dots"></i> Feedback Form</h3>
@@ -52,37 +76,34 @@
                 <label><i class="fas fa-user"></i> Name:</label>
                 <input type="text" name="name" class="form-control" placeholder="Your name" required>
             </div>
-
             <div class="mb-3">
                 <label><i class="fas fa-envelope"></i> Email:</label>
                 <input type="email" name="email" class="form-control" placeholder="Your email" required>
             </div>
-
             <div class="mb-3">
                 <label><i class="fas fa-star"></i> Rating:</label>
                 <select class="form-control" name="rating" required>
                     <option value="" disabled selected>Rate our service</option>
-                    <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
-                    <option value="4">⭐⭐⭐⭐ - Good</option>
-                    <option value="3">⭐⭐⭐ - Average</option>
-                    <option value="2">⭐⭐ - Poor</option>
-                    <option value="1">⭐ - Very Poor</option>
+                    <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733; - Excellent</option>
+                    <option value="4">&#9733;&#9733;&#9733;&#9733; - Good</option>
+                    <option value="3">&#9733;&#9733;&#9733; - Average</option>
+                    <option value="2">&#9733;&#9733; - Poor</option>
+                    <option value="1">&#9733; - Very Poor</option>
                 </select>
             </div>
-
             <div class="mb-3">
                 <label><i class="fas fa-comment"></i> Comments:</label>
-                <textarea name="comments" class="form-control" rows="4" placeholder="Write your feedback here..." required></textarea>
+                <textarea name="comments" class="form-control" rows="4" placeholder="Your feedback..." required></textarea>
             </div>
-
-            <button type="submit" class="btn btn-success btn-submit"><i class="fas fa-paper-plane"></i> Submit Feedback</button>
+            <button type="submit" class="btn btn-success w-100"><i class="fas fa-paper-plane"></i> Submit Feedback</button>
         </form>
-
-        <div class="text-center mt-3">
-            <a href="index.jsp" class="btn btn-outline-light btn-sm"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
-        </div>
     </div>
 </div>
+
+<!-- Footer -->
+<footer class="text-center mt-5">
+    <div>© 2025 AutoPulse. All rights reserved. Designed by PGNO 99</div>
+</footer>
 
 </body>
 </html>
