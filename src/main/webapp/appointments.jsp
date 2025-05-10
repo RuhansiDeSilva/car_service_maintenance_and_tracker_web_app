@@ -150,7 +150,7 @@
         }
 
         .edit-btn {
-            background-color: #38bdf8;
+            background-color: #ef4444;
             color: white;
         }
 
@@ -161,7 +161,7 @@
 
         .back-btn {
             display: inline-block;
-            background: #4f46e5;
+            background: var(--primary-red);
             color: #fff;
             padding: 0.5rem 1rem;
             border-radius: 8px;
