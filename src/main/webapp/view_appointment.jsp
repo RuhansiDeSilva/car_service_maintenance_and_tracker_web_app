@@ -96,7 +96,7 @@
             cursor: pointer;
             font-size: 0.9rem;
         }
-        .edit-btn { background-color: #38bdf8; color: white; }
+        .edit-btn { background-color: #ef4444; color: white; }
         .delete-btn { background-color: #ef4444; color: white; }
         .back-btn {
             display: inline-block;
