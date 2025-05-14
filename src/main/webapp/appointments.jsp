@@ -197,7 +197,7 @@
         <div class="collapse navbar-collapse" id="nav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="index.jsp">
+                    <a class="nav-link active" href="service_appointment.jsp">
                         <i class="fas fa-home me-1"></i>Home
                     </a>
                 </li>
@@ -259,7 +259,7 @@
         <% } %>
         </tbody>
     </table>
-    <a class="back-btn" href="index.jsp"><i class="bi bi-arrow-left me-1"></i>Back to Home</a>
+    <a class="back-btn" href="service_appointment.jsp"><i class="bi bi-arrow-left me-1"></i>Back to Home</a>
 </div>
 
 <footer>
