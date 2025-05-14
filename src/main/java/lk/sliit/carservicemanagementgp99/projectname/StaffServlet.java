@@ -19,7 +19,7 @@ public class StaffServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String action = request.getParameter("action");
         if (action == null || action.isEmpty()) {
-            redirectWithError(response, "error.jsp", "Missing action parameter");
+            redirectWithError(response, "error_staff.jsp", "Missing action parameter");
             return;
         }
 
@@ -28,11 +28,11 @@ public class StaffServlet extends HttpServlet {
                 case "add"     -> handleAddStaff(request, response);
                 case "delete"  -> handleDeleteStaff(request, response);
                 case "update"  -> handleUpdateStaff(request, response);
-                default        -> redirectWithError(response, "error.jsp", "Invalid action specified");
+                default        -> redirectWithError(response, "error_staff.jsp", "Invalid action specified");
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error processing staff action: " + action, e);
-            redirectWithError(response, "error.jsp", "Server error occurred");
+            redirectWithError(response, "error_staff.jsp", "Server error occurred");
         }
     }
 
@@ -40,7 +40,7 @@ public class StaffServlet extends HttpServlet {
         // First check for duplicates
         String duplicateReason = checkForDuplicates(request);
         if (duplicateReason != null) {
-            response.sendRedirect("error.jsp?reason=" + URLEncoder.encode(duplicateReason, StandardCharsets.UTF_8));
+            response.sendRedirect("error_staff.jsp?reason=" + URLEncoder.encode(duplicateReason, StandardCharsets.UTF_8));
             return;
         }
 
@@ -49,7 +49,7 @@ public class StaffServlet extends HttpServlet {
         if (success) {
             response.sendRedirect("add_staff.jsp?success=Staff member added successfully");
         } else {
-            redirectWithError(response, "error.jsp", "Failed to add staff member");
+            redirectWithError(response, "error_staff.jsp", "Failed to add staff member");
         }
     }
 
@@ -58,7 +58,7 @@ public class StaffServlet extends HttpServlet {
         if (staffId != null && manager.removeStaff(staffId)) {
             response.sendRedirect("update_staff_status.jsp?success=Staff member deleted successfully");
         } else {
-            redirectWithError(response, "error.jsp", "Failed to delete staff member");
+            redirectWithError(response, "error_staff.jsp", "Failed to delete staff member");
         }
     }
 
@@ -72,7 +72,7 @@ public class StaffServlet extends HttpServlet {
         if (success) {
             response.sendRedirect("staff_management.jsp?success=Staff member updated successfully");
         } else {
-            redirectWithError(response, "error.jsp", "Failed to update staff member");
+            redirectWithError(response, "error_staff.jsp", "Failed to update staff member");
         }
     }
 
@@ -145,8 +145,8 @@ public class StaffServlet extends HttpServlet {
     }
 
     private void redirectWithError(HttpServletResponse response, String page, String error) throws IOException {
-        if ("error.jsp".equals(page)) {
-            response.sendRedirect("error.jsp?message=" + URLEncoder.encode(error, StandardCharsets.UTF_8));
+        if ("error_staff.jsp".equals(page)) {
+            response.sendRedirect("error_staff.jsp?message=" + URLEncoder.encode(error, StandardCharsets.UTF_8));
         } else {
             response.sendRedirect(page + "?error=" + URLEncoder.encode(error, StandardCharsets.UTF_8));
         }
