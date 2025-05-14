@@ -207,7 +207,7 @@
         <div class="collapse navbar-collapse" id="nav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.jsp">
+                    <a class="nav-link" href="vehicleManagement.jsp">
                         <i class="fas fa-home me-1"></i>Home
                     </a>
                 </li>
@@ -280,7 +280,7 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-plus me-1"></i> Add Vehicle
                 </button>
-                <a href="index.jsp" class="btn btn-secondary">
+                <a href="vehicleManagement.jsp" class="btn btn-secondary">
                     <i class="fas fa-home me-1"></i> Back to Home
                 </a>
             </div>
