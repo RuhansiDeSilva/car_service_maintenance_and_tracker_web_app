@@ -8,9 +8,8 @@
             background: url('images/pexels-cottonbro-4488642.jpg') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin: 0;
+
         }
 
         .overlay {
@@ -44,16 +43,22 @@
 </head>
 <body class="bg-light">
 
-<div class="container text-center mt-5">
-    <h1 class="mb-4 text-outline">Welcome to Car Service and Maintenance Tracker</h1>
-    <p class="lead text-white mb-4">Easily manage vehicle services, track progress, and generate invoices.</p>
+<jsp:include page="header.jsp" />
 
-    <div class="d-grid gap-3 col-6 mx-auto">
-        <a href="service.jsp" class="btn btn-orange-red btn-lg">Manage Services</a>
-        <a href="service?view=tracker" class="btn btn-orange-red btn-lg">Service Tracker</a>
-        <a href="invoice.jsp" class="btn btn-orange-red btn-lg">Manage Invoices</a>
+    <div class="main-wrapper d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+        <div class="overlay text-center">
+        <h1 class="mb-4 text-outline">Welcome to Car Service and Maintenance Tracker</h1>
+        <p class="lead text-white mb-4">Easily manage vehicle services, track progress, and generate invoices.</p>
+
+        <div class="d-grid gap-3 col-6 mx-auto">
+            <a href="service.jsp" class="btn btn-orange-red btn-lg">Manage Services</a>
+            <a href="service?view=tracker" class="btn btn-orange-red btn-lg">Service Tracker</a>
+            <a href="invoice.jsp" class="btn btn-orange-red btn-lg">Manage Invoices</a>
+        </div>
+        </div>
     </div>
-</div>
+
+    <jsp:include page="footer.jsp" />
 
 </body>
 </html>

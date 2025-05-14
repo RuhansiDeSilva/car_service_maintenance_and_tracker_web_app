@@ -25,7 +25,7 @@ public abstract class Service {
         //return this.getClass().getSimpleName();
     //}
     public String getFormattedDate() {
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(this.date);
     }
     public String getStatus() {

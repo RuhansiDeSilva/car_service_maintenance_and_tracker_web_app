@@ -87,7 +87,7 @@ public class ServiceManager {
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for(Service s : serviceList) {
                 bw.write(s.getServiceType() + "," + s.getServiceId() + "," +
-                        s.getCustomerName() + "," + sdf.format(s.getDate()) +
+                        s.getCustomerName() + "," + sdf.format(s.getDate()) + "," +
                         s.getCost() + "," + s.getStatus());
                 bw.newLine();
             }

@@ -1,4 +1,3 @@
-
 <%@ page import="lk.sliit.carservicemanagementgp99.projectname.model.Service" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -14,17 +13,20 @@
             background-size: cover;
             min-height: 100vh;
         }
+
         .page-overlay {
             background-color: rgba(0, 0, 0, 0.6);
             padding: 40px;
             border-radius: 15px;
             margin-top: 30px;
         }
+
         .btn-orange-red {
             background-color: #e63900;
             color: white;
             border: none;
         }
+
         .btn-orange-red:hover {
             background-color: #cc3300;
             color: white;
@@ -33,29 +35,18 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="index.jsp">Car Service Tracker</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="service.jsp">Manage Services</a></li>
-                <li class="nav-item"><a class="nav-link" href="service?view=tracker">Service Tracker</a></li>
-                <li class="nav-item"><a class="nav-link" href="invoice.jsp">Manage Invoices</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<jsp:include page="header.jsp" />
 
-<div class="container">
+<div class="container page-overlay">
     <h2 class="mb-4 text-white">Vehicle Service Tracker</h2>
 
     <%
         List<Service> services = (List<Service>) request.getAttribute("services");
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+
 
         if (services != null && !services.isEmpty()) {
     %>
-    <table class="table table-bordered table-striped align-middle">
+    <table class="table table-bordered table-striped align-middle table-dark">
         <thead>
         <tr>
             <th>Service ID</th>
@@ -88,7 +79,7 @@
             <td><%= s.getServiceId() %></td>
             <td><%= s.getCustomerName() %></td>
             <td><%= s.getServiceType() %></td>
-            <td><%= sdf.format(s.getDate()) %></td>
+            <td><%= s.getFormattedDate() %></td>
             <td><%= s.getCost() %></td>
             <td><span class="<%= statusClass %>"><%= s.getStatus() %></span></td>
             <td>
@@ -100,7 +91,7 @@
                     <input type="hidden" name="serviceId" value="<%= s.getServiceId() %>"/>
                     <input type="hidden" name="newStatus" value="<%= nextStatus %>"/>
                     <span class="me-2">→ <%= nextStatus %></span>
-                    <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
+                    <button type="submit" class="btn btn-sm btn-orange-red">Update</button>
                 </form>
                 <%
                 } else {
@@ -119,11 +110,13 @@
     <%
     } else {
     %>
-    <div class="alert alert-info">No service records available.</div>
+    <div class="alert alert-info text-black">No service records available.</div>
     <%
         }
     %>
 </div>
+
+<jsp:include page="footer.jsp" />
 
 </body>
 </html>

@@ -18,7 +18,7 @@ public class ServiceServlet extends HttpServlet {
     private ServiceManager serviceManager;
     private InvoiceManager invoiceManager;
     Service service;
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public void init() throws ServletException{
         String servicePath = getServletContext().getRealPath("/data/services.txt");
