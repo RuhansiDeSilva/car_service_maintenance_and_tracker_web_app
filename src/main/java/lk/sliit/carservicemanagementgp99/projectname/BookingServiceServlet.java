@@ -1,6 +1,5 @@
 package lk.sliit.carservicemanagementgp99.projectname;
 
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -18,18 +17,39 @@ public class BookingServiceServlet extends HttpServlet {
 
         String name = request.getParameter("name");
         String vehicleType = request.getParameter("vehicleType");
-        String serviceType = request.getParameter("serviceType");
+        String[] serviceTypes = request.getParameterValues("serviceType");
+        String customService = request.getParameter("customService");
         String date = request.getParameter("date");
         String time = request.getParameter("time");
 
-        String record = name + "," + vehicleType + "," + serviceType + "," + date + "," + time + System.lineSeparator();
+        // Combine selected service types + custom
+        StringBuilder serviceTypeBuilder = new StringBuilder();
 
-        // Ensure directory exists
+        if (serviceTypes != null) {
+            for (String type : serviceTypes) {
+                serviceTypeBuilder.append(type).append(" + ");
+            }
+        }
+
+        if (customService != null && !customService.trim().isEmpty()) {
+            serviceTypeBuilder.append("Custom: ").append(customService.trim());
+        } else {
+            // Remove last " + " if exists
+            int len = serviceTypeBuilder.length();
+            if (len >= 3 && serviceTypeBuilder.substring(len - 3).equals(" + ")) {
+                serviceTypeBuilder.setLength(len - 3);
+            }
+        }
+
+        String combinedService = serviceTypeBuilder.toString();
+
+        // Create directory if not exists
         Path filePath = Paths.get(FILE_PATH);
         Files.createDirectories(filePath.getParent());
 
-        // Save to file
+        // Write to file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+            String record = name + "," + vehicleType + "," + combinedService + "," + date + "," + time + System.lineSeparator();
             writer.write(record);
         }
 
@@ -37,4 +57,3 @@ public class BookingServiceServlet extends HttpServlet {
         response.sendRedirect("appointments.jsp");
     }
 }
-
