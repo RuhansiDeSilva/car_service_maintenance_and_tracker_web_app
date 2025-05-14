@@ -3,6 +3,11 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+    <welcome-file-list>
+        <welcome-file>vehicleManagement.jsp</welcome-file>
+    </welcome-file-list>
+
+
     <!-- Define the BookingServiceServlet -->
     <servlet>
         <servlet-name>BookingServiceServlet</servlet-name>
