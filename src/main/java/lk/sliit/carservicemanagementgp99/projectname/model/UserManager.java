@@ -14,6 +14,12 @@ public class UserManager {
   
     private void loadUsers() {
         users.clear();
+
+        // Debugging file access
+        File file = new File(filePath);
+        System.out.println("File exists: " + file.exists());
+        System.out.println("File readable: " + file.canRead());
+
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -57,6 +63,7 @@ public class UserManager {
             }
         } catch (IOException e) {
             System.out.println("Error loading users: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -75,6 +82,7 @@ public class UserManager {
             }
         } catch (IOException e) {
             System.out.println("Error saving users: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
