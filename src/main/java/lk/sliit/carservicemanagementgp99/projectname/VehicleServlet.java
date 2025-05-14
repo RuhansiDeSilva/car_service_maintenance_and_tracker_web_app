@@ -1,3 +1,4 @@
+
 package lk.sliit.carservicemanagementgp99.projectname;
 
 import jakarta.servlet.ServletException;
@@ -41,9 +42,9 @@ public class VehicleServlet extends HttpServlet {
 
         if ("add".equals(action)) {
             String plate = req.getParameter("numberPlate");
-         
+
             if (manager.getVehicle(plate) != null) {
-            
+
                 req.setAttribute("plate", plate);
                 req.getRequestDispatcher("duplicateError.jsp").forward(req, resp);
                 return;
@@ -65,7 +66,7 @@ public class VehicleServlet extends HttpServlet {
     }
 
     private Vehicle formToVehicle(HttpServletRequest req) {
-        String reg   = req.getParameter("registrationNumber");
+        String reg  = req.getParameter("registrationNumber");
         String plate = req.getParameter("numberPlate");
         String type  = req.getParameter("vehicleType");
         String owner = req.getParameter("owner");
