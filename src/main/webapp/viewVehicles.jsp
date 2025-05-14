@@ -180,7 +180,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="index.jsp">
+        <a class="navbar-brand" href="vehicleManagement.jsp">
             <i class="fas fa-car me-2"></i>AutoPulse
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -190,7 +190,7 @@
         <div class="collapse navbar-collapse" id="nav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.jsp">
+                    <a class="nav-link" href="vehicleManagement.jsp">
                         <i class="fas fa-home me-1"></i>Home
                     </a>
                 </li>
@@ -215,7 +215,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="mb-0">All Vehicles</h2>
                 <div>
-                    <a href="index.jsp" class="btn btn-outline-red">
+                    <a href="vehicleManagement.jsp" class="btn btn-outline-red">
                         <i class="fas fa-home me-1"></i> Home
                     </a>
                     <a href="addVehicle.jsp" class="btn btn-red">
