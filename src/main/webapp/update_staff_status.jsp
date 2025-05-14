@@ -41,7 +41,7 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.4);
             z-index: 0;
         }
 
@@ -206,9 +206,10 @@
                         <form action="StaffServlet" method="post" style="display: inline;">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="staffId" value="<%= staff.getId() %>">
-                            <button type="submit" class="btn btn-sm btn-delete">
+                            <button type="submit" class="btn btn-sm" style="background-color: white; color: black; border: 1px solid #ccc;">
                                 <i class="fas fa-trash-alt me-1"></i>Delete
                             </button>
+
                         </form>
                     </td>
                 </tr>

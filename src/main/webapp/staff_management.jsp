@@ -65,7 +65,7 @@
             z-index: 1;
             max-width: 800px;
             margin: 2rem auto;
-            background: rgba(57, 54, 54, 0.9);
+            background: rgba(62, 59, 59, 0.8);
             border-radius: 0.5rem;
             padding: 2rem;
             box-shadow: 0 8px 16px rgba(0,0,0,0.3);
