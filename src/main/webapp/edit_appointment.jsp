@@ -140,7 +140,7 @@
         <div class="collapse navbar-collapse" id="nav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link nav-btn home-btn" href="index.jsp">
+                    <a class="nav-link nav-btn home-btn" href="service_appointment.jsp">
                         <i class="fas fa-home me-1"></i>Home
                     </a>
                 </li>
