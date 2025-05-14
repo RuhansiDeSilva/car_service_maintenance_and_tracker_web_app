@@ -86,7 +86,7 @@ public class VehicleManager {
             while (it.hasNext()) {
                 Vehicle curr = it.next();
                 if (curr.getNumberPlate().equalsIgnoreCase(originalPlate)) {
-                    
+
                     if (!originalPlate.equalsIgnoreCase(updated.getNumberPlate())) {
                         for (Vehicle v : vehicles) {
                             if (v.getNumberPlate().equalsIgnoreCase(updated.getNumberPlate())) {
