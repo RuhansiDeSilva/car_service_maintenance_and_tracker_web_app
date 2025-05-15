@@ -34,5 +34,6 @@ public abstract class Service {
     public void setStatus(String status) {
         this.status = status;
     }
+
     public abstract String getServiceType();
 }
