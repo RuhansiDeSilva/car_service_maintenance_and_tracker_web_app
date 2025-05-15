@@ -3,12 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD:src/main/webapp/index.jsp
-  <title>AutoPulse</title>
-=======
   <title>Book Service Appointment</title>
->>>>>>> 6818739 (Updated frontend):src/main/webapp/service_appointment.jsp
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
@@ -22,11 +17,9 @@
     }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      color: var(--white);
       background: var(--dark-bg) url('https://www.certifiedmastertech.com/wp-content/uploads/2019/02/9e05cab5bad8e5b48e587d7e6ddf4c71-1024x682.jpeg') no-repeat center center fixed;
       background-size: cover;
+      color: var(--white);
       position: relative;
       min-height: 100vh;
       display: flex;
@@ -35,75 +28,72 @@
     body::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background-color: rgba(0, 0, 0, 0.7);
       z-index: -1;
     }
-    /* Header */
     .navbar {
       background-color: var(--card-bg) !important;
       border-bottom: 3px solid var(--primary-red);
     }
-    .navbar-brand { font-weight: 700; color: var(--white) !important; font-size: 1.5rem; }
-    .nav-link { color: var(--light-gray) !important; transition: color 0.3s; padding: 0.5rem 1rem !important; }
-    .nav-link:hover { color: var(--primary-red) !important; }
-    .nav-btn { border-radius: 30px; padding: 0.5rem 1.5rem !important; margin-left: 0.5rem; transition: all 0.3s ease; }
-    .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,0,0,0.4); }
-    .nav-btn.book-btn { background-color: var(--primary-red); color: #fff !important; }
-    .nav-btn.view-btn { border: 2px solid var(--primary-red); color: var(--primary-red) !important; }
-    /* Main Content */
-    .container.main {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 4rem 2rem;
-      z-index: 1;
+    .navbar-brand, .nav-link {
+      color: var(--white) !important;
     }
-    .box {
-      background: rgba(26,26,26,0.8);
-      padding: 2rem 3rem;
+    .container.form-container {
+      background: rgba(55, 52, 52, 0.5);
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 2rem;
       border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      transition: transform 0.3s, box-shadow 0.3s;
     }
-    .box:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
-    .box h1 { color: var(--white); font-size: 2.5rem; margin-bottom: 2rem; }
-    .box a {
-      display: inline-block;
-      margin: 0.5rem;
-      padding: 0.75rem 2rem;
-      font-size: 1.1rem;
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #fff;
+    }
+    label {
+      color: #fff;
+      margin-top: 1rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
       border-radius: 8px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: background 0.3s, transform 0.3s;
+      border: 1px solid #ccc;
     }
-    .btn-red { background-color: var(--primary-red); color: var(--white); border: none; }
-    .btn-red:hover { background-color: #cc0000; }
-    .btn-outline-red { background-color: transparent; color: var(--primary-red); border: 2px solid var(--primary-red); }
-    .btn-outline-red:hover { background-color: var(--primary-red); color: #fff; }
-    /* Footer */
+    input[type="submit"] {
+      background-color: var(--primary-red);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    .back-btn {
+      margin-top: 1rem;
+      display: inline-block;
+      background-color: var(--primary-red);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      text-decoration: none;
+    }
     footer {
+      margin-top: auto;
       background-color: var(--card-bg);
-      padding: 1.5rem 0;
       text-align: center;
+      padding: 1rem;
       border-top: 3px solid var(--primary-red);
+      color: var(--light-gray);
     }
-    footer p { margin: 0; color: var(--light-gray); font-size: 0.9rem; }
   </style>
 </head>
 <body>
+
 <nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="#"><i class="fas fa-car me-2"></i>AutoPulse</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
     <div class="collapse navbar-collapse" id="nav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="book_service.jsp">Book Service</a></li>
@@ -112,24 +102,43 @@
     </div>
   </div>
 </nav>
-<main class="container main">
-  <div class="box">
-    <h1>Welcome to Service Booking</h1>
-    <a href="book_service.jsp" class="btn btn-red">
-      <i class="fas fa-book me-1"></i>Book Service
-    </a>
-    <a href="appointments.jsp" class="btn btn-outline-red">
-      <i class="fas fa-list me-1"></i>View Appointments
-    </a>
-  </div>
-</main>
+
+<div class="container form-container">
+  <h2>Book a Service Appointment</h2>
+  <form action="BookingServiceServlet" method="post">
+    <%--@declare id="name"--%><%--@declare id="vehicletype"--%><%--@declare id="date"--%><%--@declare id="time"--%><label for="name">Name:</label>
+    <input type="text" name="name" required>
+
+    <label for="vehicleType">Vehicle Type:</label>
+    <input type="text" name="vehicleType" required>
+
+    <label>Service Types:</label>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="serviceType" value="Regular Service" id="regularService">
+      <label class="form-check-label" for="regularService">Regular Service</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="serviceType" value="Major Repair" id="majorRepair">
+      <label class="form-check-label" for="majorRepair">Major Repair</label>
+    </div>
+
+    <label for="customService">Custom Service Name:</label>
+    <input type="text" name="customService" id="customService" placeholder="e.g., Tire Replacement">
+
+    <label for="date">Appointment Date:</label>
+    <input type="date" name="date" required>
+
+    <label for="time">Appointment Time:</label>
+    <input type="time" name="time" required>
+
+    <input type="submit" value="Book Appointment">
+  </form>
+  <a class="back-btn" href="service_appointment.jsp"><i class="bi bi-arrow-left me-1"></i>Back to Home</a>
+</div>
+
 <footer>
-  <div class="container-fluid">
-    <p>© 2025 AutoPulse. All rights reserved. Designed by PGNO 99</p>
-  </div>
+  <p>© 2025 AutoPulse. All rights reserved. Designed by PGNO 99</p>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<script>lucide.createIcons();</script>
+
 </body>
 </html>
