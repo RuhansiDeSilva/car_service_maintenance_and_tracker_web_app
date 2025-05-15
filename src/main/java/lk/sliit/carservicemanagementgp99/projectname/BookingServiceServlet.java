@@ -9,7 +9,7 @@ import java.nio.file.*;
 @WebServlet("/BookingServiceServlet")
 public class BookingServiceServlet extends HttpServlet {
 
-    private static final String FILE_PATH = "C:\\Users\\HP\\OneDrive - Sri Lanka Institute of Information Technology\\Desktop\\booking\\appointments.txt";
+    private static final String FILE_PATH = "D:\\car_service_maintenance_and_tracker_web_app\\appointment.txt";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

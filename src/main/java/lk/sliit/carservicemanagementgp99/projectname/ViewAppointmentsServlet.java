@@ -26,7 +26,7 @@ public class ViewAppointmentsServlet extends HttpServlet {
     private List<Appointment> getAppointmentsForCustomer(String customerId) {
         List<Appointment> appointments = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\HP\\OneDrive - Sri Lanka Institute of Information Technology\\Desktop\\Booking\\appointments.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("D:\\car_service_maintenance_and_tracker_web_app\\appointment.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
