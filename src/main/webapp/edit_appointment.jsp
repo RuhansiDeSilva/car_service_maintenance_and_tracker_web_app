@@ -6,7 +6,7 @@
 <%@ page import="java.io.FileReader" %>
 <%
     int index = Integer.parseInt(request.getParameter("index"));
-    String filePath = "C:\\Users\\HP\\OneDrive - Sri Lanka Institute of Information Technology\\Desktop\\booking\\appointments.txt";
+    String filePath = "D:\\car_service_maintenance_and_tracker_web_app\\appointment.txt";
     List<String> appointments = new ArrayList<>();
     try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
         String line;

@@ -7,7 +7,7 @@
     String date = request.getParameter("date");
     String time = request.getParameter("time");
 
-    String filePath = "C:\\Users\\HP\\OneDrive - Sri Lanka Institute of Information Technology\\Desktop\\booking\\appointments.txt";
+    String filePath = "D:\\car_service_maintenance_and_tracker_web_app\\appointment.txt";
     List<String> appointments = new ArrayList<>();
     BufferedReader reader = new BufferedReader(new FileReader(filePath));
     String line;

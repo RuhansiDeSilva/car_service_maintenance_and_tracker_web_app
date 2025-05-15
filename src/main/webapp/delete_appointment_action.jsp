@@ -2,7 +2,7 @@
 <%
     // Get index from form
     int index = Integer.parseInt(request.getParameter("index"));
-    String filePath = "C:\\Users\\HP\\OneDrive - Sri Lanka Institute of Information Technology\\Desktop\\booking\\appointments.txt";
+    String filePath = "D:\\car_service_maintenance_and_tracker_web_app\\appointment.txt";
 
     // Read all appointments into a list
     List<String> appointments = new ArrayList<>();
