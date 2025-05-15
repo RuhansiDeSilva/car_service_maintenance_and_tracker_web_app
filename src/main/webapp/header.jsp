@@ -39,7 +39,7 @@
 
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.jsp">Auto Pulse</a>
+        <a class="navbar-brand" href="serviceAndInvoiceindex.jsp">Auto Pulse</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="service.jsp">Manage Services</a></li>

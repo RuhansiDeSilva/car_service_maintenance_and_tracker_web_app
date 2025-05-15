@@ -144,7 +144,7 @@
     %>
 </div>
 
-<jsp:include page="footer.jsp" />
+<jsp:include page="serviceFooter.jsp" />
 
 </body>
 </html>
