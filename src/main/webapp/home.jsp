@@ -301,7 +301,7 @@
                 <h4 class="footer-title">Contact Us</h4>
                 <p><i class="fas fa-map-marker-alt me-2"></i> Gamunupura 1st Lane,Kothalawala,Kaduwela.</p>
                 <p><i class="fas fa-phone me-2"></i> 011-47-257-78 </p>
-                <p><i class="fas fa-envelope me-2"></i> info@carshinepro.com</p>
+                <p><i class="fas fa-envelope me-2"></i> info@autopulse.com</p>
                 <p><i class="fas fa-clock me-2"></i> Mon-Fri: 8AM - 6PM<br>Sat: 9AM - 4PM<br>Sun: Closed</p>
             </div>
         </div>

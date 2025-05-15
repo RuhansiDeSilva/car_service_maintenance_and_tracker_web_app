@@ -18,23 +18,13 @@
                 </ul>
             </div>
 
-            <div class="col-md-2 mb-4 mb-md-0">
-                <h4 class="footer-heading">Company</h4>
-                <ul class="footer-list">
-                    <li>About Us</li>
-                    <li>Our Team</li>
-                    <li>Careers</li>
-                    <li>Testimonials</li>
-                    <li>Blog</li>
-                </ul>
-            </div>
 
             <div class="col-md-4">
                 <h4 class="footer-heading">Contact Us</h4>
                 <ul class="footer-contact">
                     <li><i class="fas fa-map-marker-alt me-2"></i>Gamunupura 1st Lane,Kothalawala,Kaduwela.</li>
                     <li><i class="fas fa-phone me-2"></i>036-2249019</li>
-                    <li><i class="fas fa-envelope me-2"></i> info@carshinepro.com</li>
+                    <li><i class="fas fa-envelope me-2"></i> info@autopulse.com</li>
                     <li><i class="fas fa-clock me-2"></i> Mon-Fri: 8AM - 6PM<br>Sat: 9AM - 4PM<br>Sun: Closed</li>
                 </ul>
             </div>
