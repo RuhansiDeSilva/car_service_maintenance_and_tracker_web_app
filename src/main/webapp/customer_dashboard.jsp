@@ -112,7 +112,7 @@
 
             <!-- Appointments -->
             <div class="col-md-3">
-                <a href="appointments.jsp" class="dashboard-option">
+                <a href="book_service.jsp" class="dashboard-option">
                     <div class="dashboard-icon"><i class="bi bi-calendar-check"></i></div>
                     <h5>Appointments</h5>
                 </a>
