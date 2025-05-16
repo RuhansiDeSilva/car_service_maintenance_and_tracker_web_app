@@ -42,7 +42,7 @@ public class UserManager {
                         continue; 
                     }
                     users.add(user);
-                } else if (parts.length == 7) {
+                } else if (parts.length == 8) {
                     
                     String username = parts[0].trim();
                     String password = parts[1].trim();
@@ -51,9 +51,10 @@ public class UserManager {
                     String phone = parts[4].trim();
                     String role = parts[5].trim();
                     String subrole = parts[6].trim();
+                    String id = parts[7].trim();
 
                     if ("Staff".equalsIgnoreCase(role)) {
-                        User staff = new Staff(username, password, fullName, email, phone, subrole);
+                        User staff = new Staff(username, password, fullName, email, phone, subrole,id);
                         users.add(staff);
                     }
                 } else {
@@ -71,7 +72,7 @@ public class UserManager {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (User user : users) {
                 String line = user.getUsername() + "," + user.getPassword() + "," + user.getFullName() + ","
-                        + user.getEmail() + "," + user.getPhone() + "," + user.getRole();
+                        + user.getEmail() + "," + user.getPhone() + "," + user.getRole()+ "," + user.getId();
 
                 if ("Staff".equalsIgnoreCase(user.getRole())) {
                     line += "," + user.getSubrole();
