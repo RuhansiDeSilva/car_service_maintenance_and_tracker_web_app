@@ -187,7 +187,7 @@
                 <% for (Staff staff : staffList) { %>
                 <tr>
                     <td><%= staff.getId() %></td>
-                    <td><%= staff.getName() %></td>
+                    <td><%= staff.getFullName() %></td>
                     <td><%= staff.getRole() %></td>
                     <td><%= staff.getEmail() %></td>
                     <td><%= staff.getPhoneNumber() %></td>
