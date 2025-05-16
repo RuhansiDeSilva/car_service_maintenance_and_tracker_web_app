@@ -73,13 +73,12 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
     <div class="container-fluid px-4">
-        <a class="navbar-brand" href="index.jsp"><i class="fas fa-car"></i> AutoPulse</a>
+        <a class="navbar-brand" href="home.jsp"><i class="fas fa-car"></i> AutoPulse</a>
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="index.jsp">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link active" href="viewFeedback.jsp">View Feedback</a></li>
+                <li class="nav-item"><a class="nav-link" href="customer_dashboard.jsp">Back</a></li>
                 <li class="nav-item"><a class="nav-link" href="feedbackSummary.jsp">Feedback Summary</a></li>
-                <li class="nav-item"><a class="nav-link" href="LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li class="nav-item"><a class="nav-link" href="logout">Logout</a></li>
             </ul>
         </div>
     </div>
@@ -141,7 +140,7 @@
     <% } %>
 
     <div class="text-center mt-4">
-        <a href="index.jsp" class="btn btn-outline-light"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        <a href="customer_dashboard.jsp" class="btn btn-outline-light"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
     </div>
 </div>
 

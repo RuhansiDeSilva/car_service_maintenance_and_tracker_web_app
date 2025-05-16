@@ -55,12 +55,12 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
     <div class="container-fluid px-4">
-        <a class="navbar-brand" href="index.jsp"><i class="fas fa-car"></i> AutoPulse</a>
+        <a class="navbar-brand" href="home.jsp"><i class="fas fa-car"></i> AutoPulse</a>
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="index.jsp">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="home.jsp">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="feedbackSummary.jsp">Feedback Summary</a></li>
-                <li class="nav-item"><a class="nav-link active" href="viewFeedback.jsp">View Feedbacks</a></li>
+                <li class="nav-item"><a class="nav-link active" href="viewPublicFeedback.jsp">View Feedbacks</a></li>
             </ul>
         </div>
     </div>
