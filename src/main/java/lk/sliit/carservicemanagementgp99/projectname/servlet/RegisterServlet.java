@@ -1,10 +1,11 @@
 package lk.sliit.carservicemanagementgp99.projectname.servlet;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import lk.sliit.carservicemanagementgp99.projectname.model.*;
 
-import java.io.IOException;
+import java.io.*;
 
 public class RegisterServlet extends HttpServlet {
 
@@ -19,7 +20,6 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Get form input and trim
         String username = request.getParameter("username").trim();
         String password = request.getParameter("password").trim();
         String fullName = request.getParameter("fullName").trim();
@@ -27,35 +27,27 @@ public class RegisterServlet extends HttpServlet {
         String phone = request.getParameter("phone").trim();
         String role = request.getParameter("role").trim();
         String subrole = request.getParameter("subrole") != null ? request.getParameter("subrole").trim() : "";
-
-        // Check for duplicate username
+        String id = request.getParameter("ID") != null ? request.getParameter("id").trim() : "";
         if (userManager.getUser(username) != null) {
             request.setAttribute("error", "Username already exists!");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
-        // Write to file manually — avoid UserManager.addUser() if it forces extra comma
-        String line;
-
+        User user;
         if ("Staff".equalsIgnoreCase(role)) {
-            line = username + "," + password + "," + fullName + "," + email + "," + phone + "," + role + "," + subrole;
+            user = new Staff(username, password, fullName, email, phone, subrole,id);
+        } else if ("Customer".equalsIgnoreCase(role)) {
+            user = new Customer(username, password, fullName, email, phone);
+        } else if ("Admin".equalsIgnoreCase(role)) {
+            user = new Admin(username, password, fullName, email, phone);
         } else {
-            line = username + "," + password + "," + fullName + "," + email + "," + phone + "," + role;
-        }
-
-        try {
-            java.io.FileWriter fw = new java.io.FileWriter("C:\\Users\\ASUS\\Desktop\\ProjectFile\\users.txt", true);
-            java.io.BufferedWriter bw = new java.io.BufferedWriter(fw);
-            bw.write(line);
-            bw.newLine();
-            bw.close();
-        } catch (IOException e) {
-            request.setAttribute("error", "Error saving user: " + e.getMessage());
+            request.setAttribute("error", "Invalid role specified!");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
+        userManager.addUser(user);
         response.sendRedirect("login.jsp");
     }
 }

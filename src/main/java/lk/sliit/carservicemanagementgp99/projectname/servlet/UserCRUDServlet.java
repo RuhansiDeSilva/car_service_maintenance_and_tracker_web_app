@@ -48,6 +48,7 @@ public class UserCRUDServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String role = request.getParameter("role");
         String subrole = request.getParameter("subrole");
+        String id = request.getParameter("id");
 
         User updatedUser;
         switch (role.toLowerCase()) {
@@ -55,7 +56,7 @@ public class UserCRUDServlet extends HttpServlet {
                 updatedUser = new Customer(username, password, fullName, email, phone);
                 break;
             case "staff":
-                updatedUser = new Staff(username, password, fullName, email, phone, subrole);
+                updatedUser = new Staff(username, password, fullName, email, phone, subrole,id);
                 break;
             case "admin":
                 updatedUser = new Admin(username, password, fullName, email, phone);
