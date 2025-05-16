@@ -118,18 +118,17 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="dashboard-option" data-bs-toggle="modal" data-bs-target="#staffModal">
+                <a href="staff_management.jsp" class="dashboard-option">
                     <div class="dashboard-icon">👤</div>
                     <h5>Manage Staff</h5>
-                </div>
+                </a>
             </div>
 
         </div>
     </div>
 </section>
 
-<!-- Modals -->
-<jsp:include page="modal.jsp" />
+
 
 <jsp:include page="footer.jsp"/>
 
