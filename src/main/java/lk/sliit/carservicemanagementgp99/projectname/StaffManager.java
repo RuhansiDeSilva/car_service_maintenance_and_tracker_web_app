@@ -96,7 +96,7 @@ public class StaffManager {
             for (Staff staff : staffList) {
                 String line = String.join(DELIMITER,
                         staff.getId(),
-                        staff.getName(),
+                        staff.getFullName(),
                         staff.getRole(),
                         staff.getStatus(),
                         staff.getEmail() != null ? staff.getEmail() : "",

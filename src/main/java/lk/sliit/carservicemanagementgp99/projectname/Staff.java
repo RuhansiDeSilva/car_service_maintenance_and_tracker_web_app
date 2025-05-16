@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public abstract class Staff {
     private String id;
-    private String name;
+    private String fullName;
     private String role;
     private String status;
     private String email;
@@ -13,7 +13,7 @@ public abstract class Staff {
 
     public Staff(String id, String name, String role) {
         this.id = id;
-        this.name = name;
+        this.fullName = name;
         this.role = role;
         this.status = "Available";
     }
@@ -28,8 +28,8 @@ public abstract class Staff {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
     public String getRole() {

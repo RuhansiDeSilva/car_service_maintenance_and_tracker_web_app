@@ -65,7 +65,7 @@ public class StaffServlet extends HttpServlet {
     private void handleUpdateStaff(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String staffId = request.getParameter("staffId");
         if (staffId != null) {
-            manager.removeStaff(staffId); // Remove old record first
+            manager.removeStaff(staffId);
         }
 
         boolean success = processStaff(request);
@@ -96,7 +96,7 @@ public class StaffServlet extends HttpServlet {
 
     private boolean processStaff(HttpServletRequest request) {
         String id = request.getParameter("staffId");
-        String name = request.getParameter("staffName");
+        String fullName = request.getParameter("staffName");
         String role = request.getParameter("staffRole");
         String status = request.getParameter("staffStatus");
         String email = request.getParameter("staffEmail");
@@ -104,13 +104,13 @@ public class StaffServlet extends HttpServlet {
         String dateStr = request.getParameter("assignmentDate");
 
 
-        if (id == null || name == null || role == null || status == null || email == null || phone == null) {
+        if (id == null || fullName == null || role == null || status == null || email == null || phone == null) {
             LOGGER.warning("Missing required staff parameters");
             return false;
         }
 
 
-        Staff staff = createStaffInstance(id, name, role, email, phone);
+        Staff staff = createStaffInstance(id, fullName, role, email, phone);
         if (staff == null) {
             LOGGER.warning("Invalid staff role specified: " + role);
             return false;
@@ -133,13 +133,13 @@ public class StaffServlet extends HttpServlet {
         return true;
     }
 
-    private Staff createStaffInstance(String id, String name, String role, String email, String phone) {
+    private Staff createStaffInstance(String id, String fullName, String role, String email, String phone) {
         return switch (role) {
-            case "Manager" -> new Manager(id, name, email, phone);
-            case "Technician" -> new Technician(id, name, email, phone);
-            case "Engine Specialist" -> new EngineSpecialist(id, name, email, phone);
-            case "Detailer" -> new Detailer(id, name, email, phone);
-            case "Lot Attendant" -> new LotAttendant(id, name, email, phone);
+            case "Manager" -> new Manager(id, fullName, email, phone);
+            case "Technician" -> new Technician(id, fullName, email, phone);
+            case "Engine Specialist" -> new EngineSpecialist(id, fullName, email, phone);
+            case "Detailer" -> new Detailer(id, fullName, email, phone);
+            case "Lot Attendant" -> new LotAttendant(id, fullName, email, phone);
             default -> null;
         };
     }
