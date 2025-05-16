@@ -101,16 +101,22 @@
         <h1 class="mb-5 fw-bold text-white">Welcome, <%= user.getFullName() %>!</h1>
         <div class="row g-4 justify-content-center">
             <div class="col-md-3">
-                <div class="dashboard-option" data-bs-toggle="modal" data-bs-target="#appointmentModal">
+                <a href="appointments_accept.jsp" class="dashboard-option">
                     <div class="dashboard-icon">✅</div>
                     <h5>Appointment Accepting</h5>
-                </div>
+                </a>
             </div>
             <div class="col-md-3">
-                <div class="dashboard-option" data-bs-toggle="modal" data-bs-target="#invoiceModal">
+                <a href="invoiceacceptd.jsp" class="dashboard-option">
                     <div class="dashboard-icon">🧾</div>
                     <h5>Invoice Accepting</h5>
-                </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="viewFeedback.jsp" class="dashboard-option">
+                    <div class="dashboard-icon">🧾</div>
+                    <h5>FeedBack view</h5>
+                </a>
             </div>
             <div class="col-md-3">
                 <a href="staff_management.jsp" class="dashboard-option">
