@@ -43,11 +43,9 @@
         }
 
         h2 {
-
-                font-weight: bold;
-                color: #ffffff; /* White */
-            }
-
+            font-weight: bold;
+            color: #ffffff;
+        }
 
         .btn-custom {
             background-color: #dc3545;
@@ -128,6 +126,7 @@
                     <option value="Admin">Admin</option>
                 </select>
             </div>
+            <!-- Subrole -->
             <div class="mb-3" id="subroleDiv" style="display: none;">
                 <label for="subrole" class="form-label">Sub Role</label>
                 <select name="subrole" id="subrole" class="form-select">
@@ -136,6 +135,12 @@
                     <option value="Management">Management</option>
                 </select>
             </div>
+
+            <!-- Staff ID (only if role == Staff) -->
+            <div class="mb-3" id="staffIdDiv" style="display: none;">
+                <input type="text" name="staffId" class="form-control" placeholder="Staff ID " />
+            </div>
+
             <div class="d-grid">
                 <button type="submit" class="btn btn-custom">Register</button>
             </div>
@@ -161,8 +166,15 @@
     function toggleSubrole() {
         const role = document.getElementById("role").value;
         const subroleDiv = document.getElementById("subroleDiv");
-        subroleDiv.style.display = (role === "Staff") ? "block" : "none";
-        if (role !== "Staff") document.getElementById("subrole").value = "";
+        const staffIdDiv = document.getElementById("staffIdDiv");
+
+        if (role === "Staff") {
+            subroleDiv.style.display = "block";
+            staffIdDiv.style.display = "block";
+        } else {
+            subroleDiv.style.display = "none";
+            staffIdDiv.style.display = "none";
+        }
     }
 </script>
 
