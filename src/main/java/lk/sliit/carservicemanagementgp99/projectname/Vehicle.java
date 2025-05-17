@@ -10,6 +10,7 @@ public class Vehicle {
     private int year;
     private String appointment;
     private String serviceType;
+    private String customerUsername;
 
     public Vehicle(String registrationNumber,
                    String numberPlate,
@@ -19,18 +20,21 @@ public class Vehicle {
                    String model,
                    int year,
                    String appointment,
-                   String serviceType) {
+                   String serviceType,
+                   String customerUsername) {
         this.registrationNumber = registrationNumber;
-        this.numberPlate       = numberPlate;
-        this.vehicleType       = vehicleType;
-        this.owner             = owner;
-        this.mileage           = mileage;
-        this.model             = model;
-        this.year              = year;
-        this.appointment       = appointment;
-        this.serviceType       = serviceType;
+        this.numberPlate = numberPlate;
+        this.vehicleType = vehicleType;
+        this.owner = owner;
+        this.mileage = mileage;
+        this.model = model;
+        this.year = year;
+        this.appointment = appointment;
+        this.serviceType = serviceType;
+        this.customerUsername = customerUsername;
     }
 
+    // Getters and setters
 
     public String getRegistrationNumber() { return registrationNumber; }
     public void setRegistrationNumber(String registrationNumber) { this.registrationNumber = registrationNumber; }
@@ -58,4 +62,7 @@ public class Vehicle {
 
     public String getServiceType() { return serviceType; }
     public void setServiceType(String serviceType) { this.serviceType = serviceType; }
+
+    public String getCustomerUsername() { return customerUsername; }
+    public void setCustomerUsername(String customerUsername) { this.customerUsername = customerUsername; }
 }
