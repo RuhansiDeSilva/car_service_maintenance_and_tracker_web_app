@@ -1,46 +1,37 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
-<%@ page import="lk.sliit.carservicemanagementgp99.projectname.VehicleManager,
-                 lk.sliit.carservicemanagementgp99.projectname.Vehicle" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="lk.sliit.carservicemanagementgp99.projectname.Vehicle, java.util.List" %>
+<%@ page import="lk.sliit.carservicemanagementgp99.projectname.VehicleManager" %>
 <%
-    String plate = request.getParameter("numberPlate");
     VehicleManager mgr = new VehicleManager();
-    Vehicle v = mgr.getVehicle(plate);
-    if (v == null) {
-        response.sendRedirect("VehicleServlet");
-        return;
-    }
+    List<?> all = mgr.getVehicles();
+    int totalVehicles = all.size();
 %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Vehicle – AutoPulse</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>AutoCare Pro - Vehicle Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-red: #dd0b1d;
-            --dark-bg: #000;
+            --primary-red: #ff0000;
+            --dark-bg: #000000;
             --card-bg: #1a1a1a;
             --white: #ffffff;
             --light-gray: #e6e6e6;
         }
 
-        /* ensure full-height flex layout */
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
-
         body {
+            font-family: 'Arial', sans-serif;
+            color: var(--white);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            font-family: Arial, sans-serif;
-            color: var(--white);
-            background: var(--dark-bg)
-            url('https://quickcarvaluation.com/wp-content/uploads/2018/02/Vehicle-Repair-Centers.jpg')
-            no-repeat center center fixed;
+            background: var(--dark-bg) url('https://quickcarvaluation.com/wp-content/uploads/2018/02/Vehicle-Repair-Centers.jpg') no-repeat center center fixed;
             background-size: cover;
             position: relative;
         }
@@ -52,7 +43,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background-color: rgba(0, 0, 0, 0.7);
             z-index: -1;
         }
 
@@ -60,130 +51,277 @@
             background-color: var(--card-bg) !important;
             border-bottom: 3px solid var(--primary-red);
         }
+
         .navbar-brand {
             font-weight: 700;
             color: var(--white) !important;
             font-size: 1.5rem;
         }
+
         .nav-link {
             color: var(--light-gray) !important;
             font-weight: 500;
-            padding: .5rem 1rem !important;
-            margin: 0 .25rem !important;
-            transition: all .3s;
+            transition: all 0.3s;
         }
-        .nav-link:hover,
+
+        .nav-link:hover {
+            color: var(--primary-red) !important;
+        }
+
         .nav-link.active {
             color: var(--primary-red) !important;
-        }
-        .nav-btn {
-            border-radius: 30px;
-            padding: .5rem 1.5rem !important;
-            margin: 0 .5rem !important;
-            transition: all .3s ease;
-        }
-        .add-btn {
-            background-color: var(--primary-red);
-            color: var(--white) !important;
-        }
-        .view-btn {
-            border: 2px solid var(--primary-red);
-            color: var(--primary-red) !important;
-        }
-        .add-btn:hover,
-        .view-btn:hover {
-            background-color: #cc0000;
-            color: var(--white) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,0,0,0.4);
+            font-weight: 600;
         }
 
         .main-content {
-            flex: 1 0 auto;
+            flex: 1;
             padding: 2rem 0;
         }
-        .form-box {
-            max-width: 700px;
-            margin: auto;
-            background: rgba(26,26,26,0.9);
-            padding: 2rem;
-            border-radius: 10px;
-            border-top: 4px solid var(--primary-red);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 4rem 2rem;
         }
-        .form-label {
-            color: var(--light-gray);
-            font-weight: 500;
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            text-transform: uppercase;
         }
-        .form-label.required-field::after {
-            content: " *";
+
+        .hero-title span {
+            display: block;
+        }
+
+        .red-text {
             color: var(--primary-red);
         }
-        .form-control, .form-select {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: var(--white);
-            padding: .75rem;
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--light-gray);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
-        .form-control:focus, .form-select:focus {
-            background: rgba(255,255,255,0.2);
-            border-color: var(--primary-red);
-            box-shadow: 0 0 0 .25rem rgba(255,0,0,0.25);
-            color: var(--white);
+
+        .action-buttons {
+            margin-bottom: 2rem;
         }
+
         .btn-red {
             background-color: var(--primary-red);
             color: var(--white);
             border: none;
             font-weight: 600;
-            padding: .75rem 2rem;
+            padding: 0.75rem 2rem;
+            transition: all 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: all .3s;
+            margin: 0 10px;
         }
+
         .btn-red:hover {
             background-color: #cc0000;
+            color: var(--white);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,0,0,0.4);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
         }
+
         .btn-outline-red {
-            background: transparent;
+            background-color: transparent;
             color: var(--primary-red);
             border: 2px solid var(--primary-red);
             font-weight: 600;
-            padding: .75rem 2rem;
+            padding: 0.75rem 2rem;
+            transition: all 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: all .3s;
+            margin: 0 10px;
         }
+
         .btn-outline-red:hover {
             background-color: var(--primary-red);
             color: var(--white);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,0,0,0.4);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
         }
 
-        footer {
-            background: var(--card-bg);
-            color: var(--white);
+        .stats-container {
+            margin: 4rem auto;
+            max-width: 300px;
+        }
+
+        .stat-card {
+            background-color: rgba(26, 26, 26, 0.8);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-top: 4px solid var(--primary-red);
+            transition: transform 0.3s, box-shadow 0.3s;
             text-align: center;
-            padding: 1.5rem 0;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 0, 0, 0.4);
+        }
+
+        .stat-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-red);
+        }
+
+        .footer-section {
+            background-color: var(--card-bg);
+            color: var(--white);
+            padding: 2rem 0 0.5rem;
             border-top: 3px solid var(--primary-red);
             margin-top: auto;
         }
-        .copyright {
-            font-size: .9rem;
+        .footer-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .footer-title i {
+            color: var(--primary-red);
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+        .footer-text {
             color: var(--light-gray);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        .footer-heading {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 1rem;
+            position: relative;
+            padding-bottom: 0.3rem;
+        }
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary-red);
+        }
+        .footer-heading i {
+            color: var(--primary-red);
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+        .footer-list {
+            list-style: none;
+            padding: 0;
             margin: 0;
         }
+        .footer-list li {
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+        .footer-list li a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        .footer-list li a i {
+            color: var(--primary-red);
+            margin-right: 0.5rem;
+            transition: all 0.3s;
+            width: 16px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-contact li {
+            margin-bottom: 0.7rem;
+            display: flex;
+            align-items: flex-start;
+        }
+        .footer-contact i {
+            color: var(--primary-red);
+            margin-top: 0.15rem;
+            margin-right: 0.5rem;
+            min-width: 16px;
+            text-align: center;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .footer-contact span {
+            color: var(--light-gray);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        .footer-bottom {
+            color: var(--light-gray);
+            font-size: 0.75rem;
+            padding-top: 1rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        @media (max-width: 767.98px) {
+            .footer-section {
+                text-align: center;
+                padding: 1.5rem 0 0.5rem;
+            }
+
+            .footer-heading {
+                justify-content: center;
+            }
+
+            .footer-heading::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .footer-list li a {
+                justify-content: center;
+            }
+
+            .footer-contact li {
+                justify-content: center;
+            }
+        }
+
     </style>
 </head>
 <body>
-
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="vehicleManagement.jsp">
-            <i class="fas fa-car me-2"></i>AutoPulse
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-car me-2"></i>AutoCare Pro
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#nav">
@@ -192,17 +330,17 @@
         <div class="collapse navbar-collapse" id="nav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="vehicleManagement.jsp">
+                    <a class="nav-link active" href="index.jsp">
                         <i class="fas fa-home me-1"></i>Home
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-btn add-btn" href="addVehicle.jsp">
+                    <a class="nav-link" href="addVehicle.jsp">
                         <i class="fas fa-plus me-1"></i>Add Vehicle
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-btn view-btn active" href="VehicleServlet">
+                    <a class="nav-link" href="VehicleServlet">
                         <i class="fas fa-list me-1"></i>View Vehicles
                     </a>
                 </li>
@@ -213,83 +351,96 @@
 
 <div class="main-content">
     <div class="container">
-        <div class="form-box">
-            <h2 class="text-center mb-4">Edit Vehicle</h2>
-            <form action="VehicleServlet" method="post">
-                <input type="hidden" name="action" value="update"/>
-                <input type="hidden" name="originalNumberPlate" value="<%= v.getNumberPlate() %>"/>
+        <div class="hero-section">
+            <h1 class="hero-title">
+                <span>WE'VE GOT CAR CARE</span>
+                <span class="red-text">DOWN TO</span>
+                <span class="red-text">A SCIENCE</span>
+            </h1>
+            <p class="hero-subtitle">Professional Vehicle Management Solutions</p>
 
-                <div class="mb-3">
-                    <label class="form-label">Registration Number</label>
-                    <input type="text" name="registrationNumber" class="form-control"
-                           value="<%= v.getRegistrationNumber() %>" placeholder="Optional"/>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label required-field">Number Plate</label>
-                    <input type="text" name="numberPlate" class="form-control" required
-                           value="<%= v.getNumberPlate() %>"/>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label required-field">Vehicle Type</label>
-                    <input type="text" name="vehicleType" class="form-control" required
-                           value="<%= v.getVehicleType() %>"/>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label required-field">Owner</label>
-                    <input type="text" name="owner" class="form-control" required
-                           value="<%= v.getOwner() %>"/>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label required-field">Mileage</label>
-                        <input type="number" name="mileage" class="form-control" required
-                               value="<%= v.getMileage() %>"/>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label required-field">Model</label>
-                        <input type="text" name="model" class="form-control" required
-                               value="<%= v.getModel() %>"/>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label required-field">Year</label>
-                        <input type="number" name="year" class="form-control" required
-                               value="<%= v.getYear() %>"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label required-field">Appointment Type</label>
-                        <select name="appointment" class="form-select" required>
-                            <option value="Appointment" <%= "Appointment".equals(v.getAppointment()) ? "selected" : "" %>>
-                                Appointment
-                            </option>
-                            <option value="Direct" <%= "Direct".equals(v.getAppointment()) ? "selected" : "" %>>
-                                Direct
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label required-field">Service Type</label>
-                        <input type="text" name="serviceType" class="form-control" required
-                               value="<%= v.getServiceType() %>"/>
-                    </div>
-                </div>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                    <button type="submit" class="btn btn-red">
-                        <i class="fas fa-save me-1"></i> Save Changes
-                    </button>
-                    <a href="VehicleServlet" class="btn btn-outline-red">
-                        <i class="fas fa-list me-1"></i> Back to List
-                    </a>
-                </div>
-            </form>
+            <div class="action-buttons">
+                <a href="addVehicle.jsp" class="btn btn-red">
+                    <i class="fas fa-plus-circle me-1"></i> Add Vehicle
+                </a>
+                <a href="VehicleServlet" class="btn btn-outline-red">
+                    <i class="fas fa-tasks me-1"></i> Manage Vehicles
+                </a>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <h2 class="stat-title">TOTAL VEHICLES</h2>
+                <p class="stat-value"><%= totalVehicles %></p>
+            </div>
         </div>
     </div>
 </div>
-
-<footer>
+<footer class="footer-section">
     <div class="container">
-        <p class="copyright">© 2025 AutoPulse. All rights reserved. Designed by PGNO 99</p>
+        <div class="row g-3">
+            <!-- About Section -->
+            <div class="col-lg-4 col-md-6">
+                <h3 class="footer-title">
+                    <i class="fas fa-car"></i>AutoPulse Vehicle Management
+                </h3>
+                <p class="footer-text">
+                    Comprehensive vehicle management system for administrators.
+                    Monitor and manage all vehicle details efficiently.
+                </p>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="col-lg-4 col-md-6">
+                <h4 class="footer-heading">
+                    <i class="fas fa-link"></i>Quick Links
+                </h4>
+                <ul class="footer-list">
+                    <li>
+                        <a href="viewVehicles.jsp">
+                            <i class="fas fa-chevron-right"></i>Vehicle Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="addVehicle.jsp">
+                            <i class="fas fa-chevron-right"></i>Add Vehicle
+                        </a>
+                    </li>
+                    <li>
+                        <a href="updateVehicle.jsp">
+                            <i class="fas fa-chevron-right"></i>Update Vehicle
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contact Info Section -->
+            <div class="col-lg-4 col-md-12">
+                <h4 class="footer-heading">
+                    <i class="fas fa-headset"></i>Admin Support
+                </h4>
+                <ul class="footer-contact">
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <span>admin@autopulse.com</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone"></i>
+                        <span>011-1122467</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-clock"></i>
+                        <span>24/7 Monitoring</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Copyright Section -->
+        <div class="footer-bottom">
+            <p class="mb-0">&copy; 2025 AutoPulse Staff Management. Designed by PGNO 99</p>
+        </div>
     </div>
 </footer>
 
