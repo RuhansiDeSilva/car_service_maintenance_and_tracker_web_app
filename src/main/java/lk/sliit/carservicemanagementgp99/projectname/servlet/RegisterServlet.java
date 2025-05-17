@@ -28,6 +28,7 @@ public class RegisterServlet extends HttpServlet {
         String role = request.getParameter("role").trim();
         String subrole = request.getParameter("subrole") != null ? request.getParameter("subrole").trim() : "";
         String id = request.getParameter("ID") != null ? request.getParameter("id").trim() : "";
+
         if (userManager.getUser(username) != null) {
             request.setAttribute("error", "Username already exists!");
             request.getRequestDispatcher("register.jsp").forward(request, response);

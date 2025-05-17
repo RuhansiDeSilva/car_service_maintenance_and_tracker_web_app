@@ -56,7 +56,7 @@
         <url-pattern>/usercrud</url-pattern>
     </servlet-mapping>
 
-    <!-- Your Booking & Appointment modules -->
+    <!-- Your Booking & Appointment modules
     <servlet>
         <servlet-name>BookingServiceServlet</servlet-name>
         <servlet-class>lk.sliit.carservicemanagementgp99.projectname.BookingServiceServlet</servlet-class>
@@ -73,7 +73,7 @@
     <servlet-mapping>
         <servlet-name>ViewAppointmentsServlet</servlet-name>
         <url-pattern>/ViewAppointmentsServlet</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> -->
 
 
 </web-app>
