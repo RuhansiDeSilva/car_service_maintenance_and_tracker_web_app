@@ -1,4 +1,3 @@
-
 package lk.sliit.carservicemanagementgp99.projectname;
 
 import jakarta.servlet.ServletException;
@@ -7,6 +6,7 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet("/VehicleServlet")
 public class VehicleServlet extends HttpServlet {
@@ -19,6 +19,7 @@ public class VehicleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
         String action = req.getParameter("action");
         String plate  = req.getParameter("numberPlate");
 
@@ -31,8 +32,18 @@ public class VehicleServlet extends HttpServlet {
             }
         }
 
-        List<Vehicle> all = manager.getVehicles();
-        req.setAttribute("vehicles", all);
+        String role = (String) session.getAttribute("role");
+        String username = (String) session.getAttribute("username");
+
+        if ("customer".equalsIgnoreCase(role)) {
+            List<Vehicle> filtered = manager.getVehicles().stream()
+                    .filter(v -> username.equalsIgnoreCase(v.getCustomerUsername()))
+                    .collect(Collectors.toList());
+            req.setAttribute("vehicles", filtered);
+        } else {
+            req.setAttribute("vehicles", manager.getVehicles());
+        }
+
         req.getRequestDispatcher("viewVehicles.jsp").forward(req, resp);
     }
 
@@ -42,22 +53,18 @@ public class VehicleServlet extends HttpServlet {
 
         if ("add".equals(action)) {
             String plate = req.getParameter("numberPlate");
-
             if (manager.getVehicle(plate) != null) {
-
                 req.setAttribute("plate", plate);
                 req.getRequestDispatcher("duplicateError.jsp").forward(req, resp);
                 return;
             }
             Vehicle v = formToVehicle(req);
             manager.addVehicle(v);
-        }
-        else if ("update".equals(action)) {
+        } else if ("update".equals(action)) {
             String original = req.getParameter("originalNumberPlate");
             Vehicle v = formToVehicle(req);
             manager.updateVehicle(original, v);
-        }
-        else if ("delete".equals(action)) {
+        } else if ("delete".equals(action)) {
             String plate = req.getParameter("numberPlate");
             manager.deleteVehicle(plate);
         }
@@ -75,7 +82,8 @@ public class VehicleServlet extends HttpServlet {
         int    yr    = Integer.parseInt(req.getParameter("year"));
         String appt  = req.getParameter("appointment");
         String svc   = req.getParameter("serviceType");
+        String username = (String) req.getSession().getAttribute("username");
 
-        return new Vehicle(reg, plate, type, owner, mil, model, yr, appt, svc);
+        return new Vehicle(reg, plate, type, owner, mil, model, yr, appt, svc, username);
     }
 }
