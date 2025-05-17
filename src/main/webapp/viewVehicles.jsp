@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ page import="lk.sliit.carservicemanagementgp99.projectname.VehicleManager,
-                 lk.sliit.carservicemanagementgp99.projectname.Vehicle,
-                 java.util.List" %>
+lk.sliit.carservicemanagementgp99.projectname.Vehicle,
+java.util.List" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     VehicleManager mgr = new VehicleManager();
@@ -224,73 +224,68 @@
                 </div>
             </div>
 
-            <c:choose>
-                <c:when test="${empty vehicles}">
-                    <div class="alert alert-warning text-center py-4 mb-0">
-                        <i class="fas fa-car-alt fa-3x mb-3 text-warning"></i>
-                        <h4>No vehicles found</h4>
-                        <p class="mb-0">Start by adding your first vehicle</p>
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead>
+            <c:if test="${empty vehicles}">
+                <div class="alert alert-info text-center">No vehicles found.</div>
+            </c:if>
+
+            <c:if test="${not empty vehicles}">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover text-center">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Number Plate</th>
+                            <th>Type</th>
+                            <th>Owner</th>
+                            <th>Mileage</th>
+                            <th>Model</th>
+                            <th>Year</th>
+                            <th>Appointment</th>
+                            <th>Service</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="v" items="${vehicles}" varStatus="status">
                             <tr>
-                                <th>#</th>
-                                <th>Plate</th>
-                                <th>Type</th>
-                                <th>Owner</th>
-                                <th>Mileage</th>
-                                <th>Model</th>
-                                <th>Year</th>
-                                <th>Appointment</th>
-                                <th>Service</th>
-                                <th>Actions</th>
+                                <td>${status.index + 1}</td>
+                                <td><span class="badge-plate">${v.numberPlate}</span></td>
+                                <td>${v.vehicleType}</td>
+                                <td>${v.owner}</td>
+                                <td>${v.mileage} km</td>
+                                <td>${v.model}</td>
+                                <td>${v.year}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${v.appointment == 'Direct'}">
+                                            <span class="badge badge-app-direct">${v.appointment}</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="badge badge-app-apt">${v.appointment}</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td>${v.serviceType}</td>
+                                <td>
+                                    <a href="VehicleServlet?action=edit&numberPlate=${v.numberPlate}"
+                                       class="btn btn-warning btn-sm action-btn me-1" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="VehicleServlet" method="post" class="d-inline"
+                                          onsubmit="return confirm('Delete this vehicle?');">
+                                        <input type="hidden" name="action" value="delete"/>
+                                        <input type="hidden" name="numberPlate" value="${v.numberPlate}"/>
+                                        <button class="btn btn-danger btn-sm action-btn" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach var="v" items="${vehicles}" varStatus="loop">
-                                <tr>
-                                    <td>${loop.index + 1}</td>
-                                    <td><span class="badge-plate">${v.numberPlate}</span></td>
-                                    <td>${v.vehicleType}</td>
-                                    <td>${v.owner}</td>
-                                    <td>${v.mileage} km</td>
-                                    <td>${v.model}</td>
-                                    <td>${v.year}</td>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${v.appointment eq 'Direct'}">
-                                                <span class="badge badge-app-direct">${v.appointment}</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span class="badge badge-app-apt">${v.appointment}</span>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                    <td>${v.serviceType}</td>
-                                    <td>
-                                        <a href="VehicleServlet?action=edit&numberPlate=${v.numberPlate}"
-                                           class="btn btn-warning btn-sm action-btn me-1" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form action="VehicleServlet" method="post" class="d-inline"
-                                              onsubmit="return confirm('Delete this vehicle?');">
-                                            <input type="hidden" name="action" value="delete"/>
-                                            <input type="hidden" name="numberPlate" value="${v.numberPlate}"/>
-                                            <button class="btn btn-danger btn-sm action-btn" title="Delete">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
-                </c:otherwise>
-            </c:choose>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </c:if>
         </div>
     </div>
 </div>
