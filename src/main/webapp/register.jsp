@@ -119,26 +119,33 @@
             </div>
             <div class="mb-3">
                 <label for="role" class="form-label">Select Role</label>
-                <select name="role" id="role" class="form-select" required onchange="toggleSubrole()">
+                <select name="role" id="role" class="form-select" required onchange="toggleStaffFields()">
                     <option value="">-- Choose a Role --</option>
                     <option value="Customer">Customer</option>
                     <option value="Staff">Staff</option>
                     <option value="Admin">Admin</option>
                 </select>
             </div>
-            <!-- Subrole -->
-            <div class="mb-3" id="subroleDiv" style="display: none;">
-                <label for="subrole" class="form-label">Sub Role</label>
-                <select name="subrole" id="subrole" class="form-select">
-                    <option value="">-- Choose Sub Role --</option>
-                    <option value="Service">Service</option>
-                    <option value="Management">Management</option>
-                </select>
-            </div>
 
-            <!-- Staff ID (only if role == Staff) -->
-            <div class="mb-3" id="staffIdDiv" style="display: none;">
-                <input type="text" name="staffId" class="form-control" placeholder="Staff ID " />
+            <!-- Staff-only fields -->
+            <div id="staffFields" style="display:none;">
+                <div class="mb-3">
+                    <label for="department" class="form-label">Department</label>
+                    <select name="department" id="department" class="form-select" onchange="onDeptChange()">
+                        <option value="">-- Select Department --</option>
+                        <option value="management">Management Department</option>
+                        <option value="service">Service Department</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="subrole" class="form-label">Sub-Role</label>
+                    <select name="subrole" id="subrole" class="form-select" required>
+                        <option value="">-- Select Sub-Role --</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <input type="text" name="id" class="form-control" placeholder="Staff ID" required />
+                </div>
             </div>
 
             <div class="d-grid">
@@ -163,21 +170,39 @@
 
 <!-- Scripts -->
 <script>
-    function toggleSubrole() {
-        const role = document.getElementById("role").value;
-        const subroleDiv = document.getElementById("subroleDiv");
-        const staffIdDiv = document.getElementById("staffIdDiv");
+    // mapping of subroles per department
+    const subroles = {
+        management: ["Manager", "OperationHead", "Supervisor"],
+        service:    ["Technician", "EngineSpecialist", "Detailer", "LotAttendant"]
+    };
 
-        if (role === "Staff") {
-            subroleDiv.style.display = "block";
-            staffIdDiv.style.display = "block";
+    function toggleStaffFields() {
+        const role = document.getElementById('role').value;
+        const staffFields = document.getElementById('staffFields');
+        if (role === 'Staff') {
+            staffFields.style.display = 'block';
         } else {
-            subroleDiv.style.display = "none";
-            staffIdDiv.style.display = "none";
+            staffFields.style.display = 'none';
+            // reset dependent fields
+            document.getElementById('department').value = '';
+            onDeptChange();
+        }
+    }
+
+    function onDeptChange() {
+        const dept = document.getElementById('department').value;
+        const subSel = document.getElementById('subrole');
+        subSel.innerHTML = '<option value="">-- Select Sub-Role --</option>';
+        if (subroles[dept]) {
+            subroles[dept].forEach(role => {
+                const opt = document.createElement('option');
+                opt.value = role;
+                opt.text = role;
+                subSel.add(opt);
+            });
         }
     }
 </script>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
