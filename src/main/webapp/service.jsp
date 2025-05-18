@@ -8,39 +8,105 @@
     <title>Service Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <style>
+        :root {
+            --primary-red: #e63900;
+            --light-gray: #ccc;
+            --white: #ffffff;
+            --card-bg: #212529;
+        }
+
+        .navbar {
+            background-color: var(--card-bg) !important;
+            border-bottom: 3px solid var(--primary-red);
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--white) !important;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--light-gray) !important;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-red) !important;
+        }
+
+        .nav-link.active {
+            color: var(--primary-red) !important;
+            font-weight: 600;
+        }
+
         body {
             background: url('images/19613.jpg') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
+            margin: 0;
         }
+
         .page-overlay {
             background-color: rgba(0, 0, 0, 0.6);
             padding: 40px;
             border-radius: 15px;
             margin-top: 30px;
         }
+
         .btn-orange-red {
-            background-color: #e63900;
+            background-color: var(--primary-red);
             color: white;
             border: none;
         }
+
         .btn-orange-red:hover {
             background-color: #cc3300;
             color: white;
+        }
+
+        .table-dark {
+            background-color: rgba(33, 37, 41, 0.9);
+        }
+
+        .text-black {
+            color: #000 !important;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .card-header {
+            background-color: var(--card-bg);
+            color: white;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-<jsp:include page="header.jsp" />
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="home.jsp">Auto Pulse</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="service?view=tracker">Service Tracker</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <div class="container page-overlay">
-
     <div class="card mb-4">
         <div class="card-header">Add Service Record</div>
         <div class="card-body">
             <form method="post" action="service">
                 <input type="hidden" name="action" value="addService"/>
+
                 <div class="mb-3">
                     <label class="text-black">Service Type</label>
                     <select name="serviceType" class="form-control" required>
@@ -50,15 +116,31 @@
                 </div>
 
                 <div class="mb-3">
+                    <label class="text-black">Specific Service</label>
+                    <select name="specificServiceType" class="form-control" required>
+                        <option value="Oil Change">Oil Change</option>
+                        <option value="Engine Repair">Engine Repair</option>
+                        <option value="Battery Service">Battery Service</option>
+                        <option value="Tire Services">Tire Services</option>
+                        <option value="Detailing">Detailing</option>
+                        <option value="Electrical Systems">Electrical Systems</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
                     <label class="text-black">Customer Name</label>
                     <input type="text" name="customerName" class="form-control" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="text-black">Vehicle Number Plate</label>
+                    <input type="text" name="numberPlate" class="form-control" required/>
                 </div>
 
                 <div class="mb-3">
                     <label class="text-black">Date</label>
                     <input type="date" name="date" class="form-control" required/>
                 </div>
-
                 <div class="mb-3">
                     <label class="text-black">Cost</label>
                     <input type="number" name="cost" class="form-control" step="0.01" required/>
@@ -106,7 +188,9 @@
         <tr>
             <th>Service ID</th>
             <th>Customer</th>
+            <th>Number Plate</th>
             <th>Type</th>
+            <th>Specific</th>
             <th>Date</th>
             <th>Cost</th>
             <th>Status</th>
@@ -125,7 +209,9 @@
         <tr>
             <td><%= s.getServiceId() %></td>
             <td><%= s.getCustomerName() %></td>
+            <td><%= s.getNumberPlate() %></td>
             <td><%= s.getServiceType() %></td>
+            <td><%= s.getSpecificServiceType() %></td>
             <td><%= s.getFormattedDate() %></td>
             <td><%= s.getCost() %></td>
             <td><span class="<%= statusClass %>"><%= s.getStatus() %></span></td>
@@ -148,4 +234,5 @@
 
 </body>
 </html>
+
 
