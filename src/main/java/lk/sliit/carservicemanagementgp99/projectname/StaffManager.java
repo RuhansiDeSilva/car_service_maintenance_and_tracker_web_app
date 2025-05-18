@@ -156,6 +156,8 @@ public class StaffManager {
     private Staff createStaffInstance(String id, String name, String role, String email, String phone) {
         return switch (role) {
             case "Manager" -> new Manager(id, name, email, phone);
+            case "Supervisor" -> new Supervisor(id, name, email, phone);
+            case "Operation Head" -> new OperationHead(id, name, email, phone);
             case "Technician" -> new Technician(id, name, email, phone);
             case "Detailer" -> new Detailer(id, name, email, phone);
             case "Lot Attendant" -> new LotAttendant(id, name, email, phone);
