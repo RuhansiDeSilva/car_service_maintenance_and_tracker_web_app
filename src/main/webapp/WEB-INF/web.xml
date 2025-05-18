@@ -16,6 +16,10 @@
         <welcome-file>serviceAndInvoiceindex.jsp</welcome-file>
     </welcome-file-list>
 
+            <welcome-file-list>
+        <welcome-file>appointmentmanagement.jsp</welcome-file>
+    </welcome-file-list>
+
     <!-- Registration/Login/Session management -->
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
