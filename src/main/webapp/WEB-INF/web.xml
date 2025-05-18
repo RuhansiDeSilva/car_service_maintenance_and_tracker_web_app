@@ -16,7 +16,7 @@
         <welcome-file>serviceAndInvoiceindex.jsp</welcome-file>
     </welcome-file-list>
 
-   <!--
+    <!-- Registration/Login/Session management -->
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>lk.sliit.carservicemanagementgp99.projectname.servlet.RegisterServlet</servlet-class>
@@ -46,7 +46,7 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
-    
+    <!-- User CRUD -->
     <servlet>
         <servlet-name>UserCRUDServlet</servlet-name>
         <servlet-class>lk.sliit.carservicemanagementgp99.projectname.servlet.UserCRUDServlet</servlet-class>
