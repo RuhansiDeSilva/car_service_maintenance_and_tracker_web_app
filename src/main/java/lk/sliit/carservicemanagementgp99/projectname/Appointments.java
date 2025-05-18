@@ -1,7 +1,7 @@
 package lk.sliit.carservicemanagementgp99.projectname;
 
 
-public class Appointment {
+public class Appointments {
 
     private String id;
     private String customerId;
@@ -11,8 +11,8 @@ public class Appointment {
     private String time;
     private boolean approved;
 
-    public Appointment(String id, String customerId, String vehicleType,
-                       String serviceType, String date, String time, boolean approved) {
+    public Appointments(String id, String customerId, String vehicleType,
+                        String serviceType, String date, String time, boolean approved) {
         this.id = id;
         this.customerId = customerId;
         this.vehicleType = vehicleType;
