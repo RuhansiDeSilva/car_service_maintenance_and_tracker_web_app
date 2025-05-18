@@ -3,78 +3,77 @@ package lk.sliit.carservicemanagementgp99.projectname.servlet;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import lk.sliit.carservicemanagementgp99.projectname.model.User;
-import lk.sliit.carservicemanagementgp99.projectname.model.UserManager;
+import lk.sliit.carservicemanagementgp99.projectname.model.*;
 
 import java.io.IOException;
 
-
+@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
-
     private UserManager userManager;
 
     @Override
-    public void init() throws ServletException {
-        userManager = new UserManager(); // Load users from file
+    public void init() {
+        userManager = new UserManager();
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        // Retrieve and sanitize input
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        if (username != null) username = username.trim();
-        if (password != null) password = password.trim();
-
-        // Validate input
-        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
-            request.setAttribute("error", "Username and password are required!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+        String u = trim(req.getParameter("username"));
+        String p = trim(req.getParameter("password"));
+        if (u.isEmpty() || p.isEmpty()) {
+            req.setAttribute("error", "Username/password required.");
+            req.getRequestDispatcher("login.jsp").forward(req, resp);
             return;
         }
 
-        // Authenticate
-        User user = userManager.validateLogin(username, password);
-
-        if (user != null) {
-            // Set session
-            HttpSession session = request.getSession(true);
-            session.setAttribute("currentUser", user);
-            session.setAttribute("role", user.getRole());
-            session.setMaxInactiveInterval(30 * 60); // 30 minutes
-
-            // Redirect based on role/subrole
-            String role = user.getRole() != null ? user.getRole().trim() : "";
-            String subrole = user.getSubrole() != null ? user.getSubrole().trim() : "";
-
-            switch (role.toLowerCase()) {
-                case "admin":
-                    response.sendRedirect("admin_dashboard.jsp");
-                    break;
-                case "customer":
-                    response.sendRedirect("customer_dashboard.jsp");
-                    break;
-                case "staff":
-                    if ("management".equalsIgnoreCase(subrole)) {
-                        response.sendRedirect("management_staff_dashboard.jsp");
-                    } else if ("service".equalsIgnoreCase(subrole)) {
-                        response.sendRedirect("service_staff_dashboard.jsp");
-                    } else {
-                        request.setAttribute("error", "Unknown staff subrole.");
-                        request.getRequestDispatcher("login.jsp").forward(request, response);
-                    }
-                    break;
-                default:
-                    request.setAttribute("error", "Unknown user role.");
-                    request.getRequestDispatcher("login.jsp").forward(request, response);
-                    break;
-            }
-        } else {
-            request.setAttribute("error", "Invalid username or password!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+        User user = userManager.authenticate(u, p);
+        if (user == null) {
+            req.setAttribute("error", "Invalid credentials.");
+            req.getRequestDispatcher("login.jsp").forward(req, resp);
+            return;
         }
+
+        HttpSession session = req.getSession(true);
+        session.setAttribute("currentUser", user);
+
+        // route by role / subrole
+        String role    = user.getRole().toLowerCase();
+        String sub     = user.getSubrole().toLowerCase().replaceAll("[^a-z]", "");
+
+        switch (role) {
+            case "admin":
+                resp.sendRedirect("admin_dashboard.jsp");
+                break;
+            case "customer":
+                resp.sendRedirect("customer_dashboard.jsp");
+                break;
+            case "staff":
+                switch (sub) {
+                    case "manager":
+                    case "operationhead":
+                    case "supervisor":
+                        resp.sendRedirect("management_staff_dashboard.jsp");
+                        break;
+                    case "technician":
+                    case "enginespecialist":
+                    case "detailer":
+                    case "lotattendant":
+                        resp.sendRedirect("service_staff_dashboard.jsp");
+                        break;
+                    default:
+                        req.setAttribute("error", "Unknown staff sub-role: “" + user.getSubrole() + "”");
+                        req.getRequestDispatcher("login.jsp").forward(req, resp);
+                }
+                break;
+            default:
+                req.setAttribute("error", "Unknown role: “" + user.getRole() + "”");
+                req.getRequestDispatcher("login.jsp").forward(req, resp);
+        }
+    }
+
+    private String trim(String s) {
+        return s == null ? "" : s.trim();
     }
 }
