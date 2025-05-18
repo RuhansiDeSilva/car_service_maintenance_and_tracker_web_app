@@ -1,13 +1,14 @@
 package lk.sliit.carservicemanagementgp99.projectname.servlet;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import lk.sliit.carservicemanagementgp99.projectname.model.*;
 
 import java.io.IOException;
 
+@WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
-
     private UserManager userManager;
 
     @Override
@@ -16,46 +17,68 @@ public class RegisterServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        // Get form input and trim
-        String username = request.getParameter("username").trim();
-        String password = request.getParameter("password").trim();
-        String fullName = request.getParameter("fullName").trim();
-        String email = request.getParameter("email").trim();
-        String phone = request.getParameter("phone").trim();
-        String role = request.getParameter("role").trim();
-        String subrole = request.getParameter("subrole") != null ? request.getParameter("subrole").trim() : "";
+        // 1. Gather & trim
+        String username = trim(req.getParameter("username"));
+        String password = trim(req.getParameter("password"));
+        String fullName = trim(req.getParameter("fullName"));
+        String email    = trim(req.getParameter("email"));
+        String phone    = trim(req.getParameter("phone"));
+        String role     = trim(req.getParameter("role"));
 
-        // Check for duplicate username
+        // 2. Required checks
+        if (anyEmpty(username, password, fullName, email, phone, role)) {
+            req.setAttribute("error", "All basic fields are required.");
+            req.getRequestDispatcher("register.jsp").forward(req, resp);
+            return;
+        }
+
+        // 3. No dup usernames
         if (userManager.getUser(username) != null) {
-            request.setAttribute("error", "Username already exists!");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            req.setAttribute("error", "That username is already taken.");
+            req.getRequestDispatcher("register.jsp").forward(req, resp);
             return;
         }
 
-        // Write to file manually — avoid UserManager.addUser() if it forces extra comma
-        String line;
-
+        User newUser;
         if ("Staff".equalsIgnoreCase(role)) {
-            line = username + "," + password + "," + fullName + "," + email + "," + phone + "," + role + "," + subrole;
-        } else {
-            line = username + "," + password + "," + fullName + "," + email + "," + phone + "," + role;
-        }
+            // staff fields:
+            String dept    = trim(req.getParameter("department"));     // "management" or "service"
+            String subrole = trim(req.getParameter("subrole"));
+            String id      = trim(req.getParameter("id"));
 
-        try {
-            java.io.FileWriter fw = new java.io.FileWriter("C:\\Users\\ASUS\\Desktop\\ProjectFile\\users.txt", true);
-            java.io.BufferedWriter bw = new java.io.BufferedWriter(fw);
-            bw.write(line);
-            bw.newLine();
-            bw.close();
-        } catch (IOException e) {
-            request.setAttribute("error", "Error saving user: " + e.getMessage());
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            if (dept.isEmpty() || subrole.isEmpty() || id.isEmpty()) {
+                req.setAttribute("error", "You must select department, sub-role and enter staff ID.");
+                req.getRequestDispatcher("register.jsp").forward(req, resp);
+                return;
+            }
+
+            // instantiate with exactly the subrole they chose:
+            newUser = new Staff(username, password, fullName, email, phone, subrole, id);
+
+        } else if ("Customer".equalsIgnoreCase(role)) {
+            newUser = new Customer(username, password, fullName, email, phone);
+        } else if ("Admin".equalsIgnoreCase(role)) {
+            newUser = new Admin(username, password, fullName, email, phone);
+        } else {
+            req.setAttribute("error", "Invalid role selection.");
+            req.getRequestDispatcher("register.jsp").forward(req, resp);
             return;
         }
 
-        response.sendRedirect("login.jsp");
+        // 4. Save & redirect
+        userManager.addUser(newUser);
+        resp.sendRedirect("login.jsp");
+    }
+
+    // === helpers ===
+    private String trim(String s) {
+        return s == null ? "" : s.trim();
+    }
+    private boolean anyEmpty(String... ss) {
+        for (String s : ss) if (s.isEmpty()) return true;
+        return false;
     }
 }

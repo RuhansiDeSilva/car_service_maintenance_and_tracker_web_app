@@ -8,8 +8,10 @@ public class User {
     protected String phone;
     protected String role;
     protected String subrole;
+    protected String id;
 
-    public User(String username, String password, String fullName, String email, String phone, String role, String subrole) {
+
+    public User(String username, String password, String fullName, String email, String phone, String role, String subrole,String id) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
@@ -17,6 +19,7 @@ public class User {
         this.phone = phone;
         this.role = role;
         this.subrole = subrole;
+        this.id=id;
     }
 
 
@@ -40,4 +43,8 @@ public class User {
 
     public String getSubrole() { return subrole; }
     public void setSubrole(String subrole) { this.subrole = subrole; }
+
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+
 }

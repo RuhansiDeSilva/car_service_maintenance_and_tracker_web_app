@@ -106,7 +106,6 @@
         <div class="card-body">
             <form method="post" action="service">
                 <input type="hidden" name="action" value="addService"/>
-
                 <div class="mb-3">
                     <label class="text-black">Service Type</label>
                     <select name="serviceType" class="form-control" required>
@@ -141,6 +140,7 @@
                     <label class="text-black">Date</label>
                     <input type="date" name="date" class="form-control" required/>
                 </div>
+
                 <div class="mb-3">
                     <label class="text-black">Cost</label>
                     <input type="number" name="cost" class="form-control" step="0.01" required/>
@@ -234,5 +234,4 @@
 
 </body>
 </html>
-
 

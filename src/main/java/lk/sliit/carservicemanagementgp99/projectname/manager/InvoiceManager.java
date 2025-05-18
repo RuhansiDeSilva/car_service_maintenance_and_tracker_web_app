@@ -1,7 +1,9 @@
 package lk.sliit.carservicemanagementgp99.projectname.manager;
 
 import lk.sliit.carservicemanagementgp99.projectname.model.Invoice;
+
 import lk.sliit.carservicemanagementgp99.projectname.model.AdditionalCostItem;
+
 
 import java.io.*;
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class InvoiceManager {
             rewriteAllInvoices();
         }
     }
+
     private void loadInvoices() {
         invoiceList.clear();
         File file = new File(filePath);
@@ -51,6 +54,7 @@ public class InvoiceManager {
                 String[] parts = line.split(",");
                 if(parts.length != 5) continue;
                 Invoice invoice = new Invoice(parts[0], parts[1], parts[2], Double.parseDouble(parts[3]), parts[4]);
+
                 invoiceList.add(invoice);
             }
         } catch (IOException e) {
@@ -62,6 +66,7 @@ public class InvoiceManager {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
             bw.write(invoice.getInvoiceId() + "," + invoice.getCustomerName() + "," +
                     invoice.getServiceId() + "," + invoice.getBaseAmount());
+
             bw.newLine();
         } catch (IOException e) {
             e.printStackTrace();

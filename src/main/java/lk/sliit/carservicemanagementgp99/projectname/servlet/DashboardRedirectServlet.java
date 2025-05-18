@@ -1,13 +1,12 @@
 package lk.sliit.carservicemanagementgp99.projectname.servlet;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
 import lk.sliit.carservicemanagementgp99.projectname.model.User;
 
 import java.io.IOException;
+
 
 public class DashboardRedirectServlet extends HttpServlet {
 
@@ -16,31 +15,42 @@ public class DashboardRedirectServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
+
         if (session == null || session.getAttribute("currentUser") == null) {
             response.sendRedirect("login.jsp");
             return;
         }
 
         User user = (User) session.getAttribute("currentUser");
+        String role = user.getRole() != null ? user.getRole().trim().toLowerCase() : "";
+        String subrole = user.getSubrole() != null ? user.getSubrole().trim().toLowerCase() : "";
 
-        // Ensure trimming to prevent issues from extra spaces in users.txt
-        String role = user.getRole() != null ? user.getRole().trim() : "";
-        String subrole = user.getSubrole() != null ? user.getSubrole().trim() : "";
-
-        if (role.equalsIgnoreCase("Admin")) {
-            response.sendRedirect("admin_dashboard.jsp");
-        } else if (role.equalsIgnoreCase("Customer")) {
-            response.sendRedirect("customer_dashboard.jsp");
-        } else if (role.equalsIgnoreCase("Staff")) {
-            if (subrole.equalsIgnoreCase("Service")) {
-                response.sendRedirect("service_staff_dashboard.jsp");
-            } else if (subrole.equalsIgnoreCase("Management")) {
-                response.sendRedirect("management_staff_dashboard.jsp");
-            } else {
-                response.sendRedirect("error.jsp"); // Unknown staff type
-            }
-        } else {
-            response.sendRedirect("error.jsp"); // Unknown role
+        switch (role) {
+            case "admin":
+                response.sendRedirect("admin_dashboard.jsp");
+                break;
+            case "customer":
+                response.sendRedirect("customer_dashboard.jsp");
+                break;
+            case "staff":
+                // Match management subroles
+                if (subrole.equals("manager") || subrole.equals("operationhead") || subrole.equals("supervisor")) {
+                    response.sendRedirect("management_staff_dashboard.jsp");
+                }
+                // Match service subroles
+                else if (subrole.equals("technician") || subrole.equals("enginespecialist") ||
+                        subrole.equals("detailer") || subrole.equals("lotattendant")) {
+                    response.sendRedirect("service_staff_dashboard.jsp");
+                }
+                else {
+                    request.setAttribute("error", "Unrecognized staff subrole.");
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                }
+                break;
+            default:
+                request.setAttribute("error", "Unrecognized user role.");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                break;
         }
     }
 }

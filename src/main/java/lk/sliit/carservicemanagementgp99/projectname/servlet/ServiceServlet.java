@@ -36,11 +36,9 @@ public class ServiceServlet extends HttpServlet {
         if ("addService".equals(action)) {
             try {
                 String serviceType = request.getParameter("serviceType");
-                //String serviceId = request.getParameter("serviceId");
                 String customerName = request.getParameter("customerName");
                 Date date = sdf.parse(request.getParameter("date"));
                 double cost = Double.parseDouble(request.getParameter("cost"));
-
                 String serviceId = "SRV-" + System.currentTimeMillis();
                 String status = request.getParameter("status");
                 String specificServiceType = request.getParameter("specificServiceType");
@@ -57,6 +55,7 @@ public class ServiceServlet extends HttpServlet {
                 invoice.setSpecificServiceType(service.getSpecificServiceType());
 
                 invoiceManager.addInvoice(invoice);
+
                 request.setAttribute("message", "Service added successfully!");
 
             } catch (Exception e) {
@@ -119,12 +118,14 @@ public class ServiceServlet extends HttpServlet {
             request.getRequestDispatcher("invoice.jsp").forward(request, response);
         }
         else if("updateStatus".equals(action)) {
+
             String serviceId = request.getParameter("serviceId");
             String newStatus = request.getParameter("newStatus");
             serviceManager.updateServiceStatus(serviceId, newStatus);
             response.sendRedirect("service?view=tracker");
         }
     }
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String view = request.getParameter("view");

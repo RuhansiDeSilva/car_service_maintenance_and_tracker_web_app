@@ -26,6 +26,7 @@ public abstract class Service {
     public String getCustomerName() { return customerName; }
     public Date getDate() { return date; }
     public double getCost() { return cost; }
+
     public String getFormattedDate() {
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(this.date);

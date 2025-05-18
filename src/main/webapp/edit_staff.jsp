@@ -205,7 +205,7 @@
 
             <div class="mb-3">
                 <label class="form-label">Full Name</label>
-                <input type="text" name="staffName" class="form-control" value="<%= staff.getName() %>" required>
+                <input type="text" name="staffName" class="form-control" value="<%= staff.getFullName() %>" required>
             </div>
 
             <div class="mb-3">

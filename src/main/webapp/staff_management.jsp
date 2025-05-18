@@ -244,7 +244,7 @@
         <div class="collapse navbar-collapse" id="nav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="staff_management.jsp">
+                    <a class="nav-link" href="home.jsp">
                         <i class="fas fa-home me-1"></i>Home
                     </a>
                 </li>
