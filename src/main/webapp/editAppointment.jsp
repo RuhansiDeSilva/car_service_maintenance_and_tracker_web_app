@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="lk.sliit.carservicemanagementgp99.projectname.Appointment" %>
+<%@ page import="lk.sliit.carservicemanagementgp99.projectname.Appointments" %>
 <%
     // The servlet must have done: req.setAttribute("appointment", theAppointment);
-    Appointment appointment = (Appointment) request.getAttribute("appointment");
+    Appointments appointment = (Appointments) request.getAttribute("appointment");
 %>
 <!DOCTYPE html>
 <html lang="en">

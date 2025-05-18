@@ -111,12 +111,14 @@
                     <h5>Invoice Making</h5>
                 </div>
             </div>
+
             <div class="col-md-3">
-                <div class="dashboard-option" data-bs-toggle="modal" data-bs-target="#appointmentModal">
+                <a href="appointmentmanagement.jsp" class="dashboard-option">
                     <div class="dashboard-icon">📅</div>
                     <h5>Appointment Handling</h5>
-                </div>
+                </a>
             </div>
+
             <div class="col-md-3">
                 <a href="staff_management.jsp" class="dashboard-option">
                     <div class="dashboard-icon">👤</div>

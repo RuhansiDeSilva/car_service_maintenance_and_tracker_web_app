@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List, lk.sliit.carservicemanagementgp99.projectname.Appointment" %>
+<%@ page import="java.util.List, lk.sliit.carservicemanagementgp99.projectname.Appointments" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
