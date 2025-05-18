@@ -15,12 +15,12 @@ public class AppointmentServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String action = req.getParameter("action");
-        List<Appointment> all = mgr.loadAll();
+        List<Appointments> all = mgr.loadAll();
         mgr.sortByDateTime(all);
 
         if ("edit".equals(action)) {
             String id = req.getParameter("id");
-            for (Appointment a : all) {
+            for (Appointments a : all) {
                 if (a.getId().equals(id)) {
                     req.setAttribute("appointment", a);
                     break;
@@ -39,11 +39,11 @@ public class AppointmentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String action = req.getParameter("action");
-        List<Appointment> all = mgr.loadAll();
+        List<Appointments> all = mgr.loadAll();
 
         switch (action) {
             case "create":
-                Appointment newA = new Appointment(
+                Appointments newA = new Appointments(
                         UUID.randomUUID().toString(),
                         req.getParameter("customerId"),
                         req.getParameter("vehicleType"),
@@ -57,7 +57,7 @@ public class AppointmentServlet extends HttpServlet {
 
             case "update":
                 String updId = req.getParameter("id");
-                for (Appointment a : all) {
+                for (Appointments a : all) {
                     if (a.getId().equals(updId)) {
                         a.setCustomerId(req.getParameter("customerId"));
                         a.setVehicleType(req.getParameter("vehicleType"));
