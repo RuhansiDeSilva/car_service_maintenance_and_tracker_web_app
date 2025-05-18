@@ -8,10 +8,46 @@
     <title>Service Tracker</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <style>
+        :root {
+            --primary-red: #e63900;
+            --light-gray: #ccc;
+            --white: #ffffff;
+            --card-bg: #212529;
+        }
+
+        .navbar {
+            background-color: var(--card-bg) !important;
+            border-bottom: 3px solid var(--primary-red);
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--white) !important;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--light-gray) !important;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-red) !important;
+        }
+
+        .nav-link.active {
+            color: var(--primary-red) !important;
+            font-weight: 600;
+        }
+
         body {
             background: url('images/19613.jpg') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
+            margin: 0;
         }
 
         .page-overlay {
@@ -22,7 +58,7 @@
         }
 
         .btn-orange-red {
-            background-color: #e63900;
+            background-color: var(--primary-red);
             color: white;
             border: none;
         }
@@ -31,18 +67,30 @@
             background-color: #cc3300;
             color: white;
         }
+
+        .table-dark {
+            background-color: rgba(33, 37, 41, 0.9);
+        }
     </style>
 </head>
 <body>
-
-<jsp:include page="header.jsp" />
+<!-- You can keep your integrated header here or use an include -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="home.jsp">Auto Pulse</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="service.jsp">Back</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <div class="container page-overlay">
     <h2 class="mb-4 text-white">Vehicle Service Tracker</h2>
 
     <%
         List<Service> services = (List<Service>) request.getAttribute("services");
-
 
         if (services != null && !services.isEmpty()) {
     %>
@@ -117,6 +165,6 @@
 </div>
 
 <jsp:include page="serviceFooter.jsp" />
-
 </body>
 </html>
+

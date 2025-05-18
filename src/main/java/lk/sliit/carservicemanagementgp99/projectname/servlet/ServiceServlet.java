@@ -36,22 +36,24 @@ public class ServiceServlet extends HttpServlet {
         if ("addService".equals(action)) {
             try {
                 String serviceType = request.getParameter("serviceType");
-                String serviceId = request.getParameter("serviceId");
                 String customerName = request.getParameter("customerName");
                 Date date = sdf.parse(request.getParameter("date"));
                 double cost = Double.parseDouble(request.getParameter("cost"));
-
-                 serviceId = "SRV-" + System.currentTimeMillis();
+                String serviceId = "SRV-" + System.currentTimeMillis();
                 String status = request.getParameter("status");
+                String specificServiceType = request.getParameter("specificServiceType");
+                String numberPlate = request.getParameter("numberPlate");
 
                 if ("Regular".equalsIgnoreCase(serviceType)) {
-                    service = new RegularService(serviceId, customerName, date, cost, status);
+                    service = new RegularService(serviceId, customerName, date, cost, status, specificServiceType, numberPlate);
                 } else {
-                    service = new MajorRepair(serviceId, customerName, date, cost, status);
+                    service = new MajorRepair(serviceId, customerName, date, cost, status, specificServiceType, numberPlate);
                 }
                 serviceManager.addService(service);
                 String invoiceId = "INV-" + System.currentTimeMillis();
-                Invoice invoice = new Invoice(invoiceId, customerName,serviceId, cost);
+                Invoice invoice = new Invoice(invoiceId, customerName,serviceId, cost, specificServiceType);
+                invoice.setSpecificServiceType(service.getSpecificServiceType());
+
                 invoiceManager.addInvoice(invoice);
 
                 request.setAttribute("message", "Service added successfully!");
@@ -62,28 +64,69 @@ public class ServiceServlet extends HttpServlet {
             request.getRequestDispatcher("service.jsp").forward(request, response);
         } else if ("addInvoice".equals(action)) {
             try {
-                String invoiceId = request.getParameter("invoiceId");
+                //String invoiceId = request.getParameter("invoiceId");
                 String customerName = request.getParameter("customerName");
                 String serviceId = request.getParameter("serviceId");
-                double amount = Double.parseDouble(request.getParameter("amount"));
+                double baseAmount = Double.parseDouble(request.getParameter("baseAmount"));
+                double totalAmount = Double.parseDouble(request.getParameter("totalAmount"));
 
-                 invoiceId = "INV-" + System.currentTimeMillis();
 
-                Invoice invoice = new Invoice(invoiceId, customerName, serviceId, amount);
+                //Invoice invoice = new Invoice(invoiceId, customerName, serviceId, amount, service.getSpecificServiceType());
+                Service selectedService = serviceManager.getServicebyId(serviceId);
+                if(selectedService == null) {
+                    request.setAttribute("error", "Service not found!");
+                    request.getRequestDispatcher("invoice.jsp").forward(request, response);
+                }
+                String specificServiceType = selectedService.getSpecificServiceType();
+                String invoiceId = "INV-" + System.currentTimeMillis();
+                Invoice invoice = new Invoice(invoiceId, customerName,serviceId, totalAmount, specificServiceType);
+
                 invoiceManager.addInvoice(invoice);
                 request.setAttribute("message", "Invoice created successfully!");
             } catch (Exception e) {
                 request.setAttribute("error", "Failed to create invoice: " + e.getMessage());
             }
             request.getRequestDispatcher("invoice.jsp").forward(request, response);
-        } else if("updateStatus".equals(action)) {
+        }
+        else if("updateInvoice".equals(action)) {
+            try {
+                String invoiceId = request.getParameter("invoiceId");
+                List<Invoice> allInvoices = invoiceManager.getAllInvoices();
+
+                for(Invoice inv : allInvoices) {
+                    if(inv.getInvoiceId().equals(invoiceId)) {
+                        int index = 0;
+                        while (true) {
+                            String name = request.getParameter("costName" + index);
+                            String amountStr = request.getParameter("costAmount" + index);
+                            if(name == null || amountStr == null) break;
+
+                            double amount = Double.parseDouble(amountStr);
+                            inv.addAdditionalCost(name, amount);
+                            index++;
+                        }
+                        break;
+                    }
+                }
+
+                invoiceManager.rewriteAllInvoices();
+                request.setAttribute("message", "Invoice updated successfully!");
+            } catch (Exception e) {
+                request.setAttribute("error", "Failed to update invoice: " + e.getMessage());
+            }
+            request.setAttribute("invoices", invoiceManager.getAllInvoices());
+            request.getRequestDispatcher("invoice.jsp").forward(request, response);
+        }
+        else if("updateStatus".equals(action)) {
+
             String serviceId = request.getParameter("serviceId");
             String newStatus = request.getParameter("newStatus");
             serviceManager.updateServiceStatus(serviceId, newStatus);
             response.sendRedirect("service?view=tracker");
         }
     }
-    // Handle get request to show service history
+
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String view = request.getParameter("view");
 
@@ -98,9 +141,52 @@ public class ServiceServlet extends HttpServlet {
             request.getRequestDispatcher("service.jsp").forward(request, response);
         }
         else if ("invoices".equals(view)) {
-            List<Invoice> invoices = invoiceManager.getAllInvoices();
+            //List<Invoice> invoices = invoiceManager.getAllInvoices();
+            //List<Service> services = serviceManager.getAllServices();
+            //request.setAttribute("invoices", invoices);
+            //request.setAttribute("services", services);
+            //request.getRequestDispatcher("invoice.jsp").forward(request, response);
+            String search = request.getParameter("search");
+            List<Invoice> invoices;
+
+            if (search != null && !search.trim().isEmpty()) {
+                invoices = invoiceManager.searchInvoices(search.trim());
+            } else {
+                invoices = invoiceManager.getAllInvoices();
+            }
+
+            List<Service> services = serviceManager.getAllServices();
             request.setAttribute("invoices", invoices);
+            request.setAttribute("services", services);
             request.getRequestDispatcher("invoice.jsp").forward(request, response);
         }
+        else if ("editInvoice".equals(view)) {
+            String invoiceId = request.getParameter("invoiceId");
+            Invoice invoice = invoiceManager.getInvoiceById(invoiceId);
+            if(invoice != null) {
+                request.setAttribute("invoice", invoice);
+                request.getRequestDispatcher("edit_invoice.jsp").forward(request, response);
+            } else {
+                request.setAttribute("error", "Invoice not found!");
+                request.getRequestDispatcher("invoice.jsp").forward(request, response);
+            }
+        }
+        else if("details".equals(view)) {
+            String invoiceId = request.getParameter("invoiceId");
+            Invoice invoice = invoiceManager.getInvoiceById(invoiceId);
+
+            if(invoice != null) {
+                request.setAttribute("invoice", invoice);
+                request.getRequestDispatcher("invoice_details.jsp").forward(request, response);
+            }else {
+                request.setAttribute("error", "Invoice not found!");
+                request.getRequestDispatcher("invoice.jsp").forward(request, response);
+            }
+        }
+    }
+
+    private void forward(HttpServletRequest request, HttpServletResponse response, String path)
+            throws ServletException, IOException {
+        request.getRequestDispatcher(path).forward(request, response);
     }
 }
