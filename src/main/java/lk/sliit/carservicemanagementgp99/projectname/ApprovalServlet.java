@@ -15,8 +15,8 @@ public class ApprovalServlet extends HttpServlet {
             throws ServletException, IOException {
         String id = req.getParameter("id");
         String decision = req.getParameter("decision");
-        List<Appointment> all = mgr.loadAll();
-        for (Appointment a : all) {
+        List<Appointments> all = mgr.loadAll();
+        for (Appointments a : all) {
             if (a.getId().equals(id)) {
                 a.setApproved("approve".equals(decision));
                 break;
