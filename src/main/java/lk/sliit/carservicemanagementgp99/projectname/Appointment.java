@@ -1,7 +1,9 @@
 package lk.sliit.carservicemanagementgp99.projectname;
 
+
 public class Appointment {
-    private String appointmentId;
+
+    private String id;
     private String customerId;
     private String vehicleType;
     private String serviceType;
@@ -9,32 +11,29 @@ public class Appointment {
     private String time;
     private boolean approved;
 
-    public Appointment(String appointmentId, String customerId, String vehicleType,
-                       String serviceType, String date, String time) {
-        this.appointmentId = appointmentId;
+    public Appointment(String id, String customerId, String vehicleType,
+                       String serviceType, String date, String time, boolean approved) {
+        this.id = id;
         this.customerId = customerId;
         this.vehicleType = vehicleType;
         this.serviceType = serviceType;
         this.date = date;
         this.time = time;
-        this.approved = false; // default not approved
+        this.approved = approved;
     }
 
-    // Getters
-    public String getAppointmentId() { return appointmentId; }
+    // Getters & Setters
+    public String getId() { return id; }
     public String getCustomerId() { return customerId; }
-    public String getVehicleType() { return vehicleType; }
-    public String getServiceType() { return serviceType; }
-    public String getDate() { return date; }
-    public String getTime() { return time; }
-    public boolean isApproved() { return approved; }
-
-    // Setters
-    public void setAppointmentId(String appointmentId) { this.appointmentId = appointmentId; }
     public void setCustomerId(String customerId) { this.customerId = customerId; }
+    public String getVehicleType() { return vehicleType; }
     public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+    public String getServiceType() { return serviceType; }
     public void setServiceType(String serviceType) { this.serviceType = serviceType; }
+    public String getDate() { return date; }
     public void setDate(String date) { this.date = date; }
+    public String getTime() { return time; }
     public void setTime(String time) { this.time = time; }
+    public boolean isApproved() { return approved; }
     public void setApproved(boolean approved) { this.approved = approved; }
 }
