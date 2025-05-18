@@ -39,6 +39,7 @@ public class Invoice {
         }
         return total;
     }
+
     public void addAdditionalCost(String name, double amount) {
         this.additionalCosts.add(new AdditionalCostItem(name, amount));
     }

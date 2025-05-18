@@ -20,6 +20,7 @@ public class InvoiceManager {
         invoiceList.add(invoice);
         saveInvoiceToFile(invoice);
     }
+
     public List<Invoice> getAllInvoices() {
         return new ArrayList<>(invoiceList);
     }
@@ -31,6 +32,7 @@ public class InvoiceManager {
         }
         return null;
     }
+
     public void addAdditionalCostToInvoice(String invoiceId, AdditionalCostItem item) {
         Invoice invoice = getInvoiceById(invoiceId);
         if (invoice != null) {
@@ -76,6 +78,7 @@ public class InvoiceManager {
             e.printStackTrace();
         }
     }
+
     public List<Invoice> searchInvoices(String query) {
         List<Invoice> result = new ArrayList<>();
         for (Invoice invoice : invoiceList) {

@@ -17,6 +17,7 @@ public class ServiceManager {
         this.serviceList = new ArrayList<>();
         loadService();
     }
+
     public void addService(Service service) {
         serviceList.add(service);
         saveServiceToFile(service);
@@ -44,6 +45,7 @@ public class ServiceManager {
         }
         return sorted;
     }
+
     private void loadService() {
         serviceList.clear();
         File file = new File(filePath);

@@ -20,7 +20,8 @@ public abstract class Service {
         this.specificServiceType = specificServiceType;
         this.numberPlate = numberPlate;
     }
-    // Getters
+
+
     public String getServiceId() { return serviceId; }
     public String getCustomerName() { return customerName; }
     public Date getDate() { return date; }
@@ -40,6 +41,5 @@ public abstract class Service {
     public void setNumberPlate(String numberPlate) {
         this.numberPlate = numberPlate;
     }
-
     public abstract String getServiceType();
 }

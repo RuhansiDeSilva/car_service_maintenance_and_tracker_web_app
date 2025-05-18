@@ -159,7 +159,6 @@ public class ServiceServlet extends HttpServlet {
             request.setAttribute("services", services);
             request.getRequestDispatcher("invoice.jsp").forward(request, response);
         }
-
         else if ("editInvoice".equals(view)) {
             String invoiceId = request.getParameter("invoiceId");
             Invoice invoice = invoiceManager.getInvoiceById(invoiceId);
@@ -184,6 +183,7 @@ public class ServiceServlet extends HttpServlet {
             }
         }
     }
+
     private void forward(HttpServletRequest request, HttpServletResponse response, String path)
             throws ServletException, IOException {
         request.getRequestDispatcher(path).forward(request, response);
