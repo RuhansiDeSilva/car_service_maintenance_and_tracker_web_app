@@ -37,14 +37,14 @@ public class StaffServlet extends HttpServlet {
     }
 
     private void handleAddStaff(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        // First check for duplicates
+
         String duplicateReason = checkForDuplicates(request);
         if (duplicateReason != null) {
             response.sendRedirect("error_staff.jsp?reason=" + URLEncoder.encode(duplicateReason, StandardCharsets.UTF_8));
             return;
         }
 
-        // Process the staff addition
+
         boolean success = processStaff(request);
         if (success) {
             response.sendRedirect("add_staff.jsp?success=Staff member added successfully");
@@ -136,6 +136,8 @@ public class StaffServlet extends HttpServlet {
     private Staff createStaffInstance(String id, String name, String role, String email, String phone) {
         return switch (role) {
             case "Manager" -> new Manager(id, name, email, phone);
+            case "Supervisor" -> new Supervisor(id, name, email, phone);
+            case "Operation Head" -> new OperationHead(id, name, email, phone);
             case "Technician" -> new Technician(id, name, email, phone);
             case "Engine Specialist" -> new EngineSpecialist(id, name, email, phone);
             case "Detailer" -> new Detailer(id, name, email, phone);
