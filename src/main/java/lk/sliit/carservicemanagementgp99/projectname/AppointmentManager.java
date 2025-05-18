@@ -20,15 +20,15 @@ public class AppointmentManager {
         return path;
     }
 
-    public LinkedList<Appointment> loadAll() throws IOException {
+    public LinkedList<Appointments> loadAll() throws IOException {
         Path path = getPath();  // now guaranteed to exist
-        LinkedList<Appointment> list = new LinkedList<>();
+        LinkedList<Appointments> list = new LinkedList<>();
         try (BufferedReader br = Files.newBufferedReader(path)) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] p = line.split(",");
                 if (p.length == 7) {
-                    list.add(new Appointment(
+                    list.add(new Appointments(
                             p[0], p[1], p[2], p[3], p[4], p[5],
                             Boolean.parseBoolean(p[6])
                     ));
@@ -38,11 +38,11 @@ public class AppointmentManager {
         return list;
     }
 
-    public void saveAll(List<Appointment> appointments) throws IOException {
+    public void saveAll(List<Appointments> appointments) throws IOException {
         Path path = getPath();  // ensures parent folder & file
         try (BufferedWriter bw = Files.newBufferedWriter(
                 path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
-            for (Appointment a : appointments) {
+            for (Appointments a : appointments) {
                 bw.write(String.join(",",
                         a.getId(),
                         a.getCustomerId(),
@@ -57,7 +57,7 @@ public class AppointmentManager {
         }
     }
 
-    public void sortByDateTime(List<Appointment> list) {
+    public void sortByDateTime(List<Appointments> list) {
         for (int i = 0; i < list.size() - 1; i++) {
             int minIdx = i;
             for (int j = i + 1; j < list.size(); j++) {
