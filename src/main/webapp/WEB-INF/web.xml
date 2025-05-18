@@ -4,35 +4,8 @@
          version="4.0">
 
     <welcome-file-list>
-        <welcome-file>vehicleManagement.jsp</welcome-file>
+        <welcome-file>appointmentmanagement.jsp</welcome-file>
     </welcome-file-list>
 
-
-    <!-- Define the BookingServiceServlet -->
-    <servlet>
-        <servlet-name>BookingServiceServlet</servlet-name>
-        <servlet-class>lk.sliit.carservicemanagementgp99.projectname.BookingServiceServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>BookingServiceServlet</servlet-name>
-        <url-pattern>/BookServiceServlet</url-pattern>
-    </servlet-mapping>
-
-    <!-- Define the ViewAppointmentsServlet -->
-    <servlet>
-        <servlet-name>ViewAppointmentsServlet</servlet-name>
-        <servlet-class>lk.sliit.carservicemanagementgp99.projectname.ViewAppointmentsServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>ViewAppointmentsServlet</servlet-name>
-        <url-pattern>/ViewAppointmentsServlet</url-pattern>
-    </servlet-mapping>
-
-    <!-- Configure the default welcome file -->
-    <welcome-file-list>
-        <welcome-file>service_appointment.jsp</welcome-file>
-    </welcome-file-list>
 
 </web-app>
