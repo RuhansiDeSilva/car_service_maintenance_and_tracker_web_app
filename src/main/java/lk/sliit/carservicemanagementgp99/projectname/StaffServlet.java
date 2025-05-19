@@ -65,7 +65,7 @@ public class StaffServlet extends HttpServlet {
     private void handleUpdateStaff(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String staffId = request.getParameter("staffId");
         if (staffId != null) {
-            manager.removeStaff(staffId); // Remove old record first
+            manager.removeStaff(staffId);
         }
 
         boolean success = processStaff(request);
