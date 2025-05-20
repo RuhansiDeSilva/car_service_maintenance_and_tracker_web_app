@@ -39,7 +39,7 @@ public class DeleteFeedbackServlet extends HttpServlet {
             }
         }
 
-        // Re
+        // R
         Files.delete(inputFile.toPath());
         Files.move(tempFile.toPath(), inputFile.toPath());
 
