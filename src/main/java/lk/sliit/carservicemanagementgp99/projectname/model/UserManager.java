@@ -144,6 +144,7 @@ public class UserManager {
     }
 
     public LinkedList<User> getAllUsers() {
+
         return users;
     }
 }
