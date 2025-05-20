@@ -216,6 +216,8 @@
                     <option value="Engine Specialist" <%= staff.getRole().equals("Engine Specialist") ? "selected" : "" %>>Engine Specialist</option>
                     <option value="Detailer" <%= staff.getRole().equals("Detailer") ? "selected" : "" %>>Detailer</option>
                     <option value="Lot Attendant" <%= staff.getRole().equals("Lot Attendant") ? "selected" : "" %>>Lot Attendant</option>
+                    <option value="Supervisor" <%= staff.getRole().equals("Supervisor") ? "selected" : "" %>>Supervisor</option>
+                    <option value="Operation Head" <%= staff.getRole().equals("OperationHead") ? "selected" : "" %>>OperationHead</option>
                 </select>
             </div>
 
