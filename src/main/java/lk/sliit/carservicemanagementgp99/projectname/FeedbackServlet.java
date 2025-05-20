@@ -21,7 +21,6 @@ public class FeedbackServlet extends HttpServlet {
             writer.println(name + "," + email + "," + rating + "," + comments);
         }
 
-        // Redirect to thank-you or dashboard
         response.sendRedirect("feedback.jsp?success=true");
     }
 }
