@@ -13,218 +13,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <style>
-        /* Root Theme Colors */
-        :root {
-            --primary-dark: #0a0a0a;
-            --primary-red: #d92332;
-            --accent-red: #a71d2a;
-            --light-gray: #e8eaf6;
-            --highlight: #d92332;
-            --dark-bg: rgba(0, 0, 0, 0.85);
-        }
-
-        /* Section Titles */
-        .section-title {
-            font-family: 'Oswald', sans-serif;
-            color: var(--primary-dark);
-            font-weight: 600;
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background-color: var(--primary-red);
-        }
-
-        /* Testimonials */
-        .testimonial-card {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-            position: relative;
-            border-top: 3px solid var(--accent-red);
-        }
-
-        .testimonial-card::before {
-            content: '\201C';
-            font-family: Georgia, serif;
-            font-size: 60px;
-            color: var(--light-gray);
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            line-height: 1;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-red);
-            box-shadow: 0 0 0 0.25rem rgba(217, 35, 50, 0.25);
-        }
-
-        /* Additional Styles */
-        body {
-            font-family: 'Montserrat', sans-serif;
-            color: #333;
-        }
-
-        .navbar {
-            background-color: var(--dark-bg);
-            transition: all 0.3s;
-        }
-
-        .navbar.scrolled {
-            background-color: var(--primary-dark);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-brand {
-            font-family: 'Oswald', sans-serif;
-            font-weight: 600;
-            font-size: 1.5rem;
-        }
-
-        .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/hero-bg.jpg') no-repeat center center;
-            background-size: cover;
-            color: white;
-            padding: 180px 0 120px;
-            text-align: center;
-        }
-
-        .hero-title {
-            font-family: 'Oswald', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 30px;
-        }
-
-        .service-card {
-            border: none;
-            border-radius: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .service-icon {
-            font-size: 2.5rem;
-            color: var(--primary-red);
-            margin-bottom: 20px;
-        }
-
-        .feature-box {
-            text-align: center;
-            padding: 30px 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            height: 100%;
-        }
-
-        .feature-icon {
-            font-size: 2rem;
-            color: var(--primary-red);
-            margin-bottom: 20px;
-        }
-
-        .appointment-form {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        footer {
-            background-color: var(--primary-dark);
-            color: white;
-            padding: 60px 0 20px;
-        }
-
-        .footer-title {
-            font-family: 'Oswald', sans-serif;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: white;
-        }
-
-        .footer-links a {
-            display: block;
-            color: #aaa;
-            margin-bottom: 10px;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: white;
-        }
-
-        .social-icons a {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 40px;
-            margin-right: 10px;
-            transition: all 0.3s;
-        }
-
-        .social-icons a:hover {
-            background-color: var(--primary-red);
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #aaa;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-red);
-            border-color: var(--primary-red);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--accent-red);
-            border-color: var(--accent-red);
-        }
-
-        .btn-outline-primary {
-            color: var(--primary-red);
-            border-color: var(--primary-red);
-        }
-
-        .btn-outline-primary:hover {
-            background-color: var(--primary-red);
-            border-color: var(--primary-red);
-            color: white;
-        }
-    </style>
+    <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
 <!-- Navigation -->
@@ -479,7 +268,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-4 mb-4">
-                <h4 class="footer-title"><i class="fas fa-car me-2"></i>AUTOPULSE PRO</h4>
+                <h4 class="footer-title"><img src="images/logo.png" alt="CarShine Logo" width="30" height="30" class="me-2">CARSHINE PRO</h4>
                 <p>Providing premium automotive services with integrity and excellence. Your trusted partner for all vehicle maintenance and repair needs.</p>
                 <div class="social-icons mt-4">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -512,7 +301,7 @@
                 <h4 class="footer-title">Contact Us</h4>
                 <p><i class="fas fa-map-marker-alt me-2"></i> Gamunupura 1st Lane,Kothalawala,Kaduwela.</p>
                 <p><i class="fas fa-phone me-2"></i> 011-47-257-78 </p>
-                <p><i class="fas fa-envelope me-2"></i> info@autopulsepro.com</p>
+                <p><i class="fas fa-envelope me-2"></i> info@carshinepro.com</p>
                 <p><i class="fas fa-clock me-2"></i> Mon-Fri: 8AM - 6PM<br>Sat: 9AM - 4PM<br>Sun: Closed</p>
             </div>
         </div>
@@ -521,6 +310,7 @@
         </div>
     </div>
 </footer>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

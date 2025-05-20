@@ -2,11 +2,7 @@ package lk.sliit.carservicemanagementgp99.projectname.model;
 
 import java.io.Serializable;
 
-/**
- * Base class for all users in the system.
- * Now includes department, subrole, and id for Staff/Admin,
- * and defaults to empty strings for Customer.
- */
+
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -17,30 +13,11 @@ public class User implements Serializable {
     protected String phone;
 
     protected String role;
-    protected String department;  // e.g. "Management" or "Service"
-    protected String subrole;     // e.g. "Technician", "Manager"
-    protected String id;          // Staff or Admin ID
+    protected String department;
+    protected String subrole;
+    protected String id;
 
-    /**
-     * @param username   unique login name
-     * @param password   hashed or plaintext password
-     * @param fullName   user's display name
-     * @param email      contact email
-     * @param phone      contact phone
-     * @param role       "Customer", "Staff", or "Admin"
-     * @param department for Staff/Admin: their department; for Customer: ""
-     * @param subrole    for Staff/Admin: their sub-role; for Customer: ""
-     * @param id         for Staff/Admin: their staff/admin ID; for Customer: ""
-     */
-    public User(String username,
-                String password,
-                String fullName,
-                String email,
-                String phone,
-                String role,
-                String department,
-                String subrole,
-                String id) {
+    public User(String username, String password, String fullName, String email, String phone, String role, String department, String subrole, String id) {
         this.username   = username;
         this.password   = password;
         this.fullName   = fullName;
@@ -52,7 +29,7 @@ public class User implements Serializable {
         this.id         = id;
     }
 
-    // --- Getters & Setters ---
+
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
