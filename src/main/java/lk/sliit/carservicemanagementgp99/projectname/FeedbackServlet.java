@@ -20,7 +20,7 @@ public class FeedbackServlet extends HttpServlet {
         try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_PATH, true))) {
             writer.println(name + "," + email + "," + rating + "," + comments);
         }
- 
+  
         response.sendRedirect("feedback.jsp?success=true");
     }
 }
