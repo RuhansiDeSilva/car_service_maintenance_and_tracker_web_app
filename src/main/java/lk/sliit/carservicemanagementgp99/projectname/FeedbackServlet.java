@@ -17,7 +17,6 @@ public class FeedbackServlet extends HttpServlet {
         String rating = request.getParameter("rating");
         String comments = request.getParameter("comments").trim().replaceAll("[\\r\\n]+", " ");
 
-        // Append feedback to file
         try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_PATH, true))) {
             writer.println(name + "," + email + "," + rating + "," + comments);
         }
