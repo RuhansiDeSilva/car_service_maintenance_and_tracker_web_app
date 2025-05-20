@@ -17,12 +17,12 @@ public class FeedbackServlet extends HttpServlet {
         String rating = request.getParameter("rating");
         String comments = request.getParameter("comments").trim().replaceAll("[\\r\\n]+", " ");
 
-        // Append feedback to file
+//write file
         try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_PATH, true))) {
             writer.println(name + "," + email + "," + rating + "," + comments);
         }
 
-        // Redirect to thank-you or dashboard
+//success
         response.sendRedirect("feedback.jsp?success=true");
     }
 }

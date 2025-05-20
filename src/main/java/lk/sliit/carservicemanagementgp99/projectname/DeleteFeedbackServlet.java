@@ -39,7 +39,7 @@ public class DeleteFeedbackServlet extends HttpServlet {
             }
         }
 
-        // Replace original file with updated temp file
+//temp file update sadee
         Files.delete(inputFile.toPath());
         Files.move(tempFile.toPath(), inputFile.toPath());
 

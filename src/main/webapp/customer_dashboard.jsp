@@ -35,13 +35,22 @@
             width:100%; max-width:1200px; text-align:center;
         }
         .dashboard-option {
-            background:rgba(0,0,0,0.75); border-radius:15px;
-            padding:30px; color:#fff; text-decoration:none;
-            transition:transform .3s, background .3s;
-        }
-        .dashboard-option:hover {
-            transform:scale(1.05); background:rgba(0,0,0,0.85);
-        }
+                    display: block;
+                    background-color: rgba(0, 0, 0, 0.75);
+                    border-radius: 15px;
+                    padding: 30px 20px;
+                    box-shadow: 0 0 15px white;
+                    transition: transform 0.3s ease;
+                    cursor: pointer;
+                    text-decoration: none;
+                    color: white;
+                }
+
+                .dashboard-option:hover {
+                    transform: scale(1.05);
+                    color: white;
+                    text-decoration: none;
+                }
         .dashboard-icon { font-size:40px; margin-bottom:10px; }
     </style>
 </head>
