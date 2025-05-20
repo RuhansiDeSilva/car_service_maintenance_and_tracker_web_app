@@ -192,6 +192,8 @@
                     <option value="Engine Specialist">Engine Specialist</option>
                     <option value="Detailer">Detailer</option>
                     <option value="Lot Attendant">Lot Attendant</option>
+                    <option value="Supervisor">Supervisor</option>
+                    <option value="OperationHead">SOperation Head</option>
                 </select>
             </div>
             <div class="mb-3">
