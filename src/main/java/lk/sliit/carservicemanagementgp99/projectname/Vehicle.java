@@ -37,8 +37,7 @@ public class Vehicle implements Serializable, Comparable<Vehicle> {
         this.serviceType       = serviceType;
     }
 
-    // --- Getters & Setters ---
-
+   
     public String getRegistrationNumber() {
         return registrationNumber;
     }
