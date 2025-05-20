@@ -3,6 +3,7 @@ package lk.sliit.carservicemanagementgp99.projectname.servlet;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import lk.sliit.carservicemanagementgp99.projectname.model.UserManager;
 import lk.sliit.carservicemanagementgp99.projectname.model.*;
 
 import java.io.IOException;
@@ -26,49 +27,61 @@ public class RegisterServlet extends HttpServlet {
         String fullName = trim(req.getParameter("fullName"));
         String email    = trim(req.getParameter("email"));
         String phone    = trim(req.getParameter("phone"));
-        String role     = trim(req.getParameter("role"));
 
-        // 2. Required checks
-        if (anyEmpty(username, password, fullName, email, phone, role)) {
-            req.setAttribute("error", "All basic fields are required.");
+        //  If no role was sent, assume Customer
+        String role     = trim(req.getParameter("role"));
+        if (role.isEmpty()) {
+            role = "Customer";
+        }
+
+        // 2. Required checks (exclude role so customers don’t fail here)
+        if (anyEmpty(username, password, fullName, email, phone)) {
+            req.setAttribute("error", "Username, password, full name, email & phone are required.");
             req.getRequestDispatcher("register.jsp").forward(req, resp);
             return;
         }
 
-        // 3. No dup usernames
+        // 3. No duplicate usernames
         if (userManager.getUser(username) != null) {
             req.setAttribute("error", "That username is already taken.");
             req.getRequestDispatcher("register.jsp").forward(req, resp);
             return;
         }
 
+        // 4. Build the appropriate User subtype
         User newUser;
         if ("Staff".equalsIgnoreCase(role)) {
-            // staff fields:
-            String dept    = trim(req.getParameter("department"));     // "management" or "service"
-            String subrole = trim(req.getParameter("subrole"));
-            String id      = trim(req.getParameter("id"));
+            String department = trim(req.getParameter("department"));  // e.g. "Management" or "Service"
+            String subrole    = trim(req.getParameter("subrole"));     // e.g. "Technician"
+            String id         = trim(req.getParameter("id"));          // staff ID
 
-            if (dept.isEmpty() || subrole.isEmpty() || id.isEmpty()) {
-                req.setAttribute("error", "You must select department, sub-role and enter staff ID.");
+            if (anyEmpty(department, subrole, id)) {
+                req.setAttribute("error", "Department, sub-role & staff ID are required for staff.");
                 req.getRequestDispatcher("register.jsp").forward(req, resp);
                 return;
             }
 
-            // instantiate with exactly the subrole they chose:
-            newUser = new Staff(username, password, fullName, email, phone, subrole, id);
+            // <-- pass department, subrole, id in that order -->
+            newUser = new Staff(
+                    username,
+                    password,
+                    fullName,
+                    email,
+                    phone,
+                    department,
+                    subrole,
+                    id
+            );
 
-        } else if ("Customer".equalsIgnoreCase(role)) {
-            newUser = new Customer(username, password, fullName, email, phone);
         } else if ("Admin".equalsIgnoreCase(role)) {
             newUser = new Admin(username, password, fullName, email, phone);
+
         } else {
-            req.setAttribute("error", "Invalid role selection.");
-            req.getRequestDispatcher("register.jsp").forward(req, resp);
-            return;
+            // default and catch-all: Customer
+            newUser = new Customer(username, password, fullName, email, phone);
         }
 
-        // 4. Save & redirect
+        // 5. Persist & redirect to login
         userManager.addUser(newUser);
         resp.sendRedirect("login.jsp");
     }
@@ -78,7 +91,9 @@ public class RegisterServlet extends HttpServlet {
         return s == null ? "" : s.trim();
     }
     private boolean anyEmpty(String... ss) {
-        for (String s : ss) if (s.isEmpty()) return true;
+        for (String s : ss) {
+            if (s == null || s.isEmpty()) return true;
+        }
         return false;
     }
 }

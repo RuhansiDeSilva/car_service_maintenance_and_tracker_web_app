@@ -1,6 +1,16 @@
 package lk.sliit.carservicemanagementgp99.projectname;
 
-public class Vehicle {
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Represents a vehicle registered in the system.
+ * Implements {@link Comparable} so vehicles can be
+ * naturally ordered by numberPlate (case-insensitive).
+ */
+public class Vehicle implements Serializable, Comparable<Vehicle> {
+    private static final long serialVersionUID = 1L;
+
     private String registrationNumber;
     private String numberPlate;
     private String vehicleType;
@@ -11,6 +21,19 @@ public class Vehicle {
     private String appointment;
     private String serviceType;
 
+    /**
+     * Full constructor.
+     *
+     * @param registrationNumber optional registration number
+     * @param numberPlate        unique number plate (required)
+     * @param vehicleType        type/category of vehicle
+     * @param owner              owner's full name or ID
+     * @param mileage            current mileage
+     * @param model              vehicle model
+     * @param year               manufacture year
+     * @param appointment        "Appointment" or "Direct"
+     * @param serviceType        description of service package
+     */
     public Vehicle(String registrationNumber,
                    String numberPlate,
                    String vehicleType,
@@ -31,31 +54,110 @@ public class Vehicle {
         this.serviceType       = serviceType;
     }
 
+    // --- Getters & Setters ---
 
-    public String getRegistrationNumber() { return registrationNumber; }
-    public void setRegistrationNumber(String registrationNumber) { this.registrationNumber = registrationNumber; }
+    public String getRegistrationNumber() {
+        return registrationNumber;
+    }
+    public void setRegistrationNumber(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
+    }
 
-    public String getNumberPlate() { return numberPlate; }
-    public void setNumberPlate(String numberPlate) { this.numberPlate = numberPlate; }
+    public String getNumberPlate() {
+        return numberPlate;
+    }
+    public void setNumberPlate(String numberPlate) {
+        this.numberPlate = numberPlate;
+    }
 
-    public String getVehicleType() { return vehicleType; }
-    public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+    public String getVehicleType() {
+        return vehicleType;
+    }
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
+    }
 
-    public String getOwner() { return owner; }
-    public void setOwner(String owner) { this.owner = owner; }
+    public String getOwner() {
+        return owner;
+    }
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
 
-    public int getMileage() { return mileage; }
-    public void setMileage(int mileage) { this.mileage = mileage; }
+    public int getMileage() {
+        return mileage;
+    }
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
+    }
 
-    public String getModel() { return model; }
-    public void setModel(String model) { this.model = model; }
+    public String getModel() {
+        return model;
+    }
+    public void setModel(String model) {
+        this.model = model;
+    }
 
-    public int getYear() { return year; }
-    public void setYear(int year) { this.year = year; }
+    public int getYear() {
+        return year;
+    }
+    public void setYear(int year) {
+        this.year = year;
+    }
 
-    public String getAppointment() { return appointment; }
-    public void setAppointment(String appointment) { this.appointment = appointment; }
+    public String getAppointment() {
+        return appointment;
+    }
+    public void setAppointment(String appointment) {
+        this.appointment = appointment;
+    }
 
-    public String getServiceType() { return serviceType; }
-    public void setServiceType(String serviceType) { this.serviceType = serviceType; }
+    public String getServiceType() {
+        return serviceType;
+    }
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    // --- Comparable based on numberPlate (ignore case) ---
+    @Override
+    public int compareTo(Vehicle other) {
+        if (other == null) return 1;
+        return this.numberPlate
+                .compareToIgnoreCase(other.numberPlate);
+    }
+
+    // --- equals & hashCode use numberPlate (case-insensitive) ---
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vehicle)) return false;
+        Vehicle that = (Vehicle) o;
+        return this.numberPlate != null
+                && that.numberPlate != null
+                && this.numberPlate.equalsIgnoreCase(that.numberPlate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                numberPlate == null ? "" : numberPlate.toLowerCase()
+        );
+    }
+
+    // --- toString for debugging/logging ---
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "regNo='" + registrationNumber + '\'' +
+                ", plate='" + numberPlate + '\'' +
+                ", type='" + vehicleType + '\'' +
+                ", owner='" + owner + '\'' +
+                ", mileage=" + mileage +
+                ", model='" + model + '\'' +
+                ", year=" + year +
+                ", appointment='" + appointment + '\'' +
+                ", serviceType='" + serviceType + '\'' +
+                '}';
+    }
 }

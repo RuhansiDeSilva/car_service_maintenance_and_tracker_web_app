@@ -56,7 +56,7 @@ public class UserCRUDServlet extends HttpServlet {
                 updatedUser = new Customer(username, password, fullName, email, phone);
                 break;
             case "staff":
-                updatedUser = new Staff(username, password, fullName, email, phone, subrole,id);
+                updatedUser = new Staff(username, password, fullName, email, phone, subrole,id, id);
                 break;
             case "admin":
                 updatedUser = new Admin(username, password, fullName, email, phone);

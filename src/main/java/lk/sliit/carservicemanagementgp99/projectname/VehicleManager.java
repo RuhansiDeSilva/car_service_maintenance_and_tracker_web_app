@@ -1,11 +1,24 @@
 package lk.sliit.carservicemanagementgp99.projectname;
 
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import lk.sliit.carservicemanagementgp99.projectname.Vehicle;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.stream.Collectors;
 
 public class VehicleManager {
     private static final Logger LOGGER = Logger.getLogger(VehicleManager.class.getName());
@@ -20,7 +33,6 @@ public class VehicleManager {
     ).toString();
     private static final String VEHICLE_FILE = Paths.get(DIRECTORY, "vehicle_data.txt").toString();
     private static final String BACKUP_FILE  = Paths.get(DIRECTORY, "vehicle_data_backup.txt").toString();
-
 
     private final LinkedList<Vehicle> vehicles = new LinkedList<>();
     private final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
@@ -43,12 +55,31 @@ public class VehicleManager {
         }
     }
 
-
+    /**
+     * Returns an unmodifiable list of all vehicles.
+     */
     public List<Vehicle> getVehicles() {
         rwLock.readLock().lock();
         try {
-
             return Collections.unmodifiableList(new LinkedList<>(vehicles));
+        } finally {
+            rwLock.readLock().unlock();
+        }
+    }
+
+    /**
+     * Returns an unmodifiable list of vehicles whose owner matches
+     * the given ownerName (case-insensitive), sorted by numberPlate.
+     */
+    public List<Vehicle> getVehiclesByOwner(String ownerName) {
+        if (ownerName == null) return Collections.emptyList();
+        rwLock.readLock().lock();
+        try {
+            return vehicles.stream()
+                    .filter(v -> v.getOwner() != null
+                            && ownerName.equalsIgnoreCase(v.getOwner()))
+                    .sorted()  // relies on Vehicle implementing Comparable<Vehicle>
+                    .collect(Collectors.toUnmodifiableList());
         } finally {
             rwLock.readLock().unlock();
         }
@@ -58,7 +89,6 @@ public class VehicleManager {
         if (v == null) throw new IllegalArgumentException("Vehicle cannot be null");
         rwLock.writeLock().lock();
         try {
-
             for (Vehicle ex : vehicles) {
                 if (ex.getNumberPlate().equalsIgnoreCase(v.getNumberPlate())) {
                     throw new IllegalArgumentException("Vehicle with number plate "
@@ -77,7 +107,6 @@ public class VehicleManager {
         }
     }
 
-
     public boolean updateVehicle(String originalPlate, Vehicle updated) {
         if (updated == null) throw new IllegalArgumentException("Updated vehicle cannot be null");
         rwLock.writeLock().lock();
@@ -86,7 +115,6 @@ public class VehicleManager {
             while (it.hasNext()) {
                 Vehicle curr = it.next();
                 if (curr.getNumberPlate().equalsIgnoreCase(originalPlate)) {
-
                     if (!originalPlate.equalsIgnoreCase(updated.getNumberPlate())) {
                         for (Vehicle v : vehicles) {
                             if (v.getNumberPlate().equalsIgnoreCase(updated.getNumberPlate())) {
@@ -111,7 +139,6 @@ public class VehicleManager {
         }
     }
 
-
     public boolean deleteVehicle(String numberPlate) {
         rwLock.writeLock().lock();
         try {
@@ -132,7 +159,6 @@ public class VehicleManager {
         }
     }
 
-
     public Vehicle getVehicle(String plate) {
         if (plate == null || plate.trim().isEmpty()) return null;
         rwLock.readLock().lock();
@@ -147,7 +173,6 @@ public class VehicleManager {
             rwLock.readLock().unlock();
         }
     }
-
 
     private void loadVehicles() {
         rwLock.writeLock().lock();
@@ -165,7 +190,7 @@ public class VehicleManager {
                 while ((line = in.readLine()) != null) {
                     lineNum++;
                     line = line.trim();
-                    if (line.isEmpty()) continue;  // skip blanks
+                    if (line.isEmpty()) continue;
                     String[] f = line.split(",", -1);
                     if (f.length != 9) {
                         LOGGER.warning("Bad record at line " + lineNum + ": " + line);
@@ -173,15 +198,15 @@ public class VehicleManager {
                     }
                     try {
                         Vehicle v = new Vehicle(
-                                f[0].trim(),                  // registrationNumber
-                                f[1].trim(),                  // numberPlate
-                                f[2].trim(),                  // vehicleType
-                                f[3].trim(),                  // owner
-                                Integer.parseInt(f[4].trim()),// mileage
-                                f[5].trim(),                  // model
-                                Integer.parseInt(f[6].trim()),// year
-                                f[7].trim(),                  // appointment
-                                f[8].trim()                   // serviceType
+                                f[0].trim(),
+                                f[1].trim(),
+                                f[2].trim(),
+                                f[3].trim(),
+                                Integer.parseInt(f[4].trim()),
+                                f[5].trim(),
+                                Integer.parseInt(f[6].trim()),
+                                f[7].trim(),
+                                f[8].trim()
                         );
                         vehicles.add(v);
                     } catch (NumberFormatException nfe) {
@@ -199,7 +224,6 @@ public class VehicleManager {
         }
     }
 
-
     private void persistAll() throws IOException {
         Path tmp = Paths.get(VEHICLE_FILE + ".tmp");
         try (BufferedWriter out = Files.newBufferedWriter(tmp)) {
@@ -211,7 +235,6 @@ public class VehicleManager {
         Files.move(tmp, Paths.get(VEHICLE_FILE), StandardCopyOption.REPLACE_EXISTING);
     }
 
-
     private void createBackup() throws IOException {
         Path src = Paths.get(VEHICLE_FILE);
         if (Files.exists(src)) {
@@ -219,7 +242,6 @@ public class VehicleManager {
             LOGGER.info("Backup created");
         }
     }
-
 
     public boolean restoreFromBackup() {
         rwLock.writeLock().lock();
@@ -237,25 +259,12 @@ public class VehicleManager {
         }
     }
 
-
+    /**
+     * Sorts vehicles in-place by their numberPlate (case-insensitive),
+     * leveraging Vehicle.compareTo().
+     */
     private void sortVehicles() {
-        int n = vehicles.size();
-        for (int i = 0; i < n - 1; i++) {
-            int minIdx = i;
-            String minPlate = vehicles.get(i).getNumberPlate();
-            for (int j = i + 1; j < n; j++) {
-                String plateJ = vehicles.get(j).getNumberPlate();
-                if (plateJ.compareToIgnoreCase(minPlate) < 0) {
-                    minIdx = j;
-                    minPlate = plateJ;
-                }
-            }
-            if (minIdx != i) {
-                Vehicle tmp = vehicles.get(i);
-                vehicles.set(i, vehicles.get(minIdx));
-                vehicles.set(minIdx, tmp);
-            }
-        }
+        vehicles.sort(null);
     }
 
     private String format(Vehicle v) {

@@ -43,6 +43,10 @@ public class Invoice {
     public void addAdditionalCost(String name, double amount) {
         this.additionalCosts.add(new AdditionalCostItem(name, amount));
     }
+
+    public Object getAmount() {
+        return null;
+    }
 }
 
 
