@@ -7,7 +7,7 @@ import java.util.*;
 public class AppointmentManager {
     private static final String FILE_PATH = "C:\\Users\\ASUS\\Desktop\\ProjectFile\\appointment.txt";
 
-    // Ensures the directory and file exist, then returns the Path
+   
     private Path getPath() throws IOException {
         Path path = Paths.get(FILE_PATH);
         Path parent = path.getParent();
