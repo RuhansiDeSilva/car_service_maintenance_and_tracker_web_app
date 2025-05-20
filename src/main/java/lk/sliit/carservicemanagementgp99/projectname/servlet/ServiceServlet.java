@@ -24,9 +24,9 @@ public class ServiceServlet extends HttpServlet {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public void init() throws ServletException {
-       
-        String servicePath = "C:\\Users\\ASUS\\Desktop\\ProjectFile\\services.txt\\data\\services.txt";
-        String invoicePath = "C:\\Users\\ASUS\\Desktop\\ProjectFile\\services.txt\\invoices.txt";
+        // Update these paths to your actual PC absolute file paths
+        String servicePath = "C:\\Users\\ASUS\\Desktop\\ProjectFile\\services.txt";
+        String invoicePath = "C:\\Users\\ASUS\\Desktop\\ProjectFile\\invoices.txt";
 
         serviceManager = new ServiceManager(servicePath);
         invoiceManager = new InvoiceManager(invoicePath);
@@ -40,11 +40,11 @@ public class ServiceServlet extends HttpServlet {
             try {
                 String numberPlate = request.getParameter("numberPlate");
                 Vehicle vehicle = vehicleManager.getVehicle(numberPlate);
-                /*if (vehicle == null) {
+                if (vehicle == null) {
                     request.setAttribute("error", "Vehicle not found for plate: " + numberPlate);
                     request.getRequestDispatcher("service.jsp").forward(request, response);
                     return;
-                }*/
+                }
                 String customerName = vehicle.getOwner();
                 Date date = sdf.parse(request.getParameter("date"));
                 double cost = Double.parseDouble(request.getParameter("cost"));
