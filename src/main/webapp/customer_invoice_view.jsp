@@ -97,7 +97,6 @@
     <div><a href="service_tracker.jsp" class="nav-link">Service Tracker</a></div>
 </div>
 
-<!-- Page Content -->
 <div class="container overlay-container">
     <h2>View Your Invoices</h2>
 
