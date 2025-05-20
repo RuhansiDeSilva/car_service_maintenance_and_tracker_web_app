@@ -28,9 +28,9 @@ public class AppointmentServlet extends HttpServlet {
             }
         }
 
-        // always expose the full list to the JSP
+        
         req.setAttribute("appointments", all);
-        // forward to our single JSP which now contains both table and inline‐edit form
+       
         req.getRequestDispatcher("viewAppointments.jsp")
                 .forward(req, resp);
     }
@@ -76,7 +76,7 @@ public class AppointmentServlet extends HttpServlet {
         }
 
         mgr.saveAll(all);
-        // redirect back to the GET to show the updated list
+       
         resp.sendRedirect("AppointmentServlet");
     }
 }
