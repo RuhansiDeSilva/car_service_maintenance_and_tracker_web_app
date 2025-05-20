@@ -39,7 +39,6 @@ public class DeleteFeedbackServlet extends HttpServlet {
             }
         }
 
-        /
         Files.delete(inputFile.toPath());
         Files.move(tempFile.toPath(), inputFile.toPath());
 
