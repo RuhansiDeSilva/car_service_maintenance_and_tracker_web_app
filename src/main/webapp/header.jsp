@@ -44,7 +44,6 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="service.jsp">Manage Services</a></li>
                 <li class="nav-item"><a class="nav-link" href="service?view=tracker">Service Tracker</a></li>
-                <li class="nav-item"><a class="nav-link" href="invoice.jsp">Manage Invoices</a></li>
             </ul>
         </div>
     </div>

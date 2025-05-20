@@ -106,10 +106,10 @@
         <h1 class="mb-5 fw-bold text-white">Welcome, <%= user.getFullName() %>!</h1>
         <div class="row g-4 justify-content-center">
             <div class="col-md-3">
-                <div class="dashboard-option" data-bs-toggle="modal" data-bs-target="#invoiceModal">
+                <a href="invoice.jsp" class="dashboard-option">
                     <div class="dashboard-icon">🧾</div>
                     <h5>Invoice Making</h5>
-                </div>
+                </a>
             </div>
 
             <div class="col-md-3">

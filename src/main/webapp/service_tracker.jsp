@@ -74,7 +74,7 @@
     </style>
 </head>
 <body>
-<!-- You can keep your integrated header here or use an include -->
+<!-- Integrated Header Content -->
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <a class="navbar-brand" href="home.jsp">Auto Pulse</a>
@@ -167,4 +167,3 @@
 <jsp:include page="serviceFooter.jsp" />
 </body>
 </html>
-

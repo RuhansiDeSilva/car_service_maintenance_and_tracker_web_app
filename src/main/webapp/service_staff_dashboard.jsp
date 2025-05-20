@@ -112,10 +112,10 @@
                 </a>
             </div>
             <div class="col-md-3">
-                <div class="dashboard-option" data-bs-toggle="modal" data-bs-target="#serviceTrackingModal">
+                <a href="serviceAndInvoiceindex.jsp" class="dashboard-option">
                     <div class="dashboard-icon">🔧</div>
                     <h5>Service Tracking</h5>
-                </div>
+                </a>
             </div>
         </div>
     </div>

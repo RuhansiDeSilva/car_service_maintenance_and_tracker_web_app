@@ -53,7 +53,6 @@
         <div class="d-grid gap-3 col-6 mx-auto">
             <a href="service.jsp" class="btn btn-orange-red btn-lg">Manage Services</a>
             <a href="service?view=tracker" class="btn btn-orange-red btn-lg">Service Tracker</a>
-            <a href="invoice.jsp" class="btn btn-orange-red btn-lg">Manage Invoices</a>
         </div>
         </div>
     </div>

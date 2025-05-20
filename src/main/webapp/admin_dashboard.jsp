@@ -101,13 +101,13 @@
         <h1 class="mb-5 fw-bold text-white">Welcome, <%= user.getFullName() %>!</h1>
         <div class="row g-4 justify-content-center">
             <div class="col-md-3">
-                <a href="appointments_accept.jsp" class="dashboard-option">
+                <a href="viewAppointments.jsp" class="dashboard-option">
                     <div class="dashboard-icon">✅</div>
                     <h5>Appointment Accepting</h5>
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="invoiceacceptd.jsp" class="dashboard-option">
+                <a href="invoice_details.jsp" class="dashboard-option">
                     <div class="dashboard-icon">🧾</div>
                     <h5>Invoice Accepting</h5>
                 </a>

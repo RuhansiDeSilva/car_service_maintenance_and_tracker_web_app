@@ -63,7 +63,7 @@
 <%
 
     List<Integer> ratings = new ArrayList<>();
-    try (BufferedReader reader = new BufferedReader(new FileReader("F:/SLIIT/Y1S2/OOP/Assignment/car_service_maintenance_and_tracker_web_app/feedback.txt"))) {
+    try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\ASUS\\Desktop\\ProjectFile/feedback.txt"))) {
         String line;
         while ((line = reader.readLine()) != null) {
             String[] parts = line.split(",", 4);
