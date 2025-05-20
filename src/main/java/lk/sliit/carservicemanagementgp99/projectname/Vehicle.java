@@ -3,11 +3,6 @@ package lk.sliit.carservicemanagementgp99.projectname;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * Represents a vehicle registered in the system.
- * Implements {@link Comparable} so vehicles can be
- * naturally ordered by numberPlate (case-insensitive).
- */
 public class Vehicle implements Serializable, Comparable<Vehicle> {
     private static final long serialVersionUID = 1L;
 
@@ -21,19 +16,7 @@ public class Vehicle implements Serializable, Comparable<Vehicle> {
     private String appointment;
     private String serviceType;
 
-    /**
-     * Full constructor.
-     *
-     * @param registrationNumber optional registration number
-     * @param numberPlate        unique number plate (required)
-     * @param vehicleType        type/category of vehicle
-     * @param owner              owner's full name or ID
-     * @param mileage            current mileage
-     * @param model              vehicle model
-     * @param year               manufacture year
-     * @param appointment        "Appointment" or "Direct"
-     * @param serviceType        description of service package
-     */
+
     public Vehicle(String registrationNumber,
                    String numberPlate,
                    String vehicleType,
@@ -119,7 +102,7 @@ public class Vehicle implements Serializable, Comparable<Vehicle> {
         this.serviceType = serviceType;
     }
 
-    // --- Comparable based on numberPlate (ignore case) ---
+
     @Override
     public int compareTo(Vehicle other) {
         if (other == null) return 1;
@@ -127,7 +110,7 @@ public class Vehicle implements Serializable, Comparable<Vehicle> {
                 .compareToIgnoreCase(other.numberPlate);
     }
 
-    // --- equals & hashCode use numberPlate (case-insensitive) ---
+ 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -145,7 +128,6 @@ public class Vehicle implements Serializable, Comparable<Vehicle> {
         );
     }
 
-    // --- toString for debugging/logging ---
     @Override
     public String toString() {
         return "Vehicle{" +
