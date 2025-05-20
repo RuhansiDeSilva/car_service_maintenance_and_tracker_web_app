@@ -46,6 +46,7 @@
             width: 100%;
         }
 
+
         .table {
             background: white;
             color: black;
