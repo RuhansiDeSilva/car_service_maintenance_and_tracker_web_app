@@ -22,7 +22,7 @@ public class Appointments {
         this.approved = approved;
     }
 
-    // Getters & Setters
+   
     public String getId() { return id; }
     public String getCustomerId() { return customerId; }
     public void setCustomerId(String customerId) { this.customerId = customerId; }
