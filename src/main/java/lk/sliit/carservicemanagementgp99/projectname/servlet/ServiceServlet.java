@@ -29,7 +29,7 @@ public class ServiceServlet extends HttpServlet {
 
         serviceManager = new ServiceManager(servicePath);
         invoiceManager = new InvoiceManager(invoicePath);
-        vehicleManager = new VehicleManager(); // Fetch owner by plate
+        vehicleManager = new VehicleManager();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -61,7 +61,7 @@ public class ServiceServlet extends HttpServlet {
 
                 serviceManager.addService(service);
 
-                // Auto-create invoice
+                
                 String invoiceId = "INV-" + System.currentTimeMillis();
                 Invoice invoice = new Invoice(invoiceId, customerName, serviceId, cost, specificServiceType);
                 invoiceManager.addInvoice(invoice);
@@ -73,8 +73,7 @@ public class ServiceServlet extends HttpServlet {
             request.getRequestDispatcher("service.jsp").forward(request, response);
         }
 
-        // Keep other actions (addInvoice, updateInvoice, updateStatus) unchanged
-        // If needed, let me know and I’ll rewrite those as well.
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
