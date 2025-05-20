@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
-    // use the implicit 'session' object rather than redeclaring HttpSession
+
     if (session == null || session.getAttribute("currentUser") == null) {
         response.sendRedirect("login.jsp");
         return;

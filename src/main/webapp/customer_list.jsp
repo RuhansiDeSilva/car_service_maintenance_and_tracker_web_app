@@ -4,7 +4,7 @@
 <%@ page import="lk.sliit.carservicemanagementgp99.projectname.model.*" %>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 
-<%-- Session Validation --%>
+
 <%
     session = request.getSession(false);
     if (session == null) {
