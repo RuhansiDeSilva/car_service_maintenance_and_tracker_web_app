@@ -22,15 +22,7 @@ import java.util.stream.Collectors;
 
 public class VehicleManager {
     private static final Logger LOGGER = Logger.getLogger(VehicleManager.class.getName());
-    private static final String DIRECTORY = Paths.get(
-            System.getProperty("user.home"),
-            "OneDrive - Sri Lanka Institute of Information Technology",
-            "new",
-            "OneDrive - Sri Lanka Institute of Information Technology",
-            "Desktop",
-            "projectsave",
-            "vehicleinfo"
-    ).toString();
+    private static final String DIRECTORY = "C:\\Users\\ASUS\\Desktop\\ProjectFile";
     private static final String VEHICLE_FILE = Paths.get(DIRECTORY, "vehicle_data.txt").toString();
     private static final String BACKUP_FILE  = Paths.get(DIRECTORY, "vehicle_data_backup.txt").toString();
 
@@ -55,9 +47,7 @@ public class VehicleManager {
         }
     }
 
-    /**
-     * Returns an unmodifiable list of all vehicles.
-     */
+    
     public List<Vehicle> getVehicles() {
         rwLock.readLock().lock();
         try {
@@ -67,10 +57,7 @@ public class VehicleManager {
         }
     }
 
-    /**
-     * Returns an unmodifiable list of vehicles whose owner matches
-     * the given ownerName (case-insensitive), sorted by numberPlate.
-     */
+
     public List<Vehicle> getVehiclesByOwner(String ownerName) {
         if (ownerName == null) return Collections.emptyList();
         rwLock.readLock().lock();
@@ -78,7 +65,7 @@ public class VehicleManager {
             return vehicles.stream()
                     .filter(v -> v.getOwner() != null
                             && ownerName.equalsIgnoreCase(v.getOwner()))
-                    .sorted()  // relies on Vehicle implementing Comparable<Vehicle>
+                    .sorted()  
                     .collect(Collectors.toUnmodifiableList());
         } finally {
             rwLock.readLock().unlock();
@@ -259,10 +246,6 @@ public class VehicleManager {
         }
     }
 
-    /**
-     * Sorts vehicles in-place by their numberPlate (case-insensitive),
-     * leveraging Vehicle.compareTo().
-     */
     private void sortVehicles() {
         vehicles.sort(null);
     }
