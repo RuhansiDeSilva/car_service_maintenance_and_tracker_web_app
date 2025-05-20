@@ -22,6 +22,7 @@ public class DeleteFeedbackServlet extends HttpServlet {
         File inputFile = new File(FEEDBACK_FILE);
         File tempFile = new File("temp_feedback.txt");
 
+        
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
              BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
             String line;
@@ -39,6 +40,7 @@ public class DeleteFeedbackServlet extends HttpServlet {
             }
         }
 
+        
         Files.delete(inputFile.toPath());
         Files.move(tempFile.toPath(), inputFile.toPath());
 
