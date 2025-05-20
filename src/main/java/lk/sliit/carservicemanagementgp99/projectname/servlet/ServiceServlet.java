@@ -24,7 +24,7 @@ public class ServiceServlet extends HttpServlet {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public void init() throws ServletException {
-        // Update these paths to your actual PC absolute file paths
+       
         String servicePath = "C:\\Users\\ASUS\\Desktop\\ProjectFile\\services.txt\\data\\services.txt";
         String invoicePath = "C:\\Users\\ASUS\\Desktop\\ProjectFile\\services.txt\\invoices.txt";
 
