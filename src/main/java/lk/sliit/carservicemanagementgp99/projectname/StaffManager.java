@@ -124,7 +124,7 @@ public class StaffManager {
             while ((line = reader.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
 
-                String[] parts = line.split(DELIMITER, -1); // -1 to keep trailing empty fields
+                String[] parts = line.split(DELIMITER, -1);
                 if (parts.length < 6) continue;
 
                 String id = parts[0].trim();
