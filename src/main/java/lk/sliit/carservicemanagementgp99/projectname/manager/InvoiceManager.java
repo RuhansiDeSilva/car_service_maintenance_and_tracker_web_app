@@ -15,7 +15,7 @@ public class InvoiceManager {
 
     public InvoiceManager(String filePath) {
         this.filePath = filePath;
-        this.invoiceList = new ArrayList<>();
+        this.invoiceList = new LinkedList<>();
         loadInvoices();
     }
     public void addInvoice(Invoice invoice) {
@@ -24,7 +24,7 @@ public class InvoiceManager {
     }
 
     public List<Invoice> getAllInvoices() {
-        return new ArrayList<>(invoiceList);
+        return new LinkedList<>(invoiceList);
     }
     public Invoice getInvoiceById(String invoiceId) {
         for (Invoice invoice : invoiceList) {
@@ -85,7 +85,7 @@ public class InvoiceManager {
     }
 
     public List<Invoice> searchInvoices(String query) {
-        List<Invoice> result = new ArrayList<>();
+        List<Invoice> result = new LinkedList<>();
         for (Invoice invoice : invoiceList) {
             if (invoice.getCustomerName().toLowerCase().contains(query.toLowerCase()) ||
                     invoice.getServiceId().toLowerCase().contains(query.toLowerCase())) {
