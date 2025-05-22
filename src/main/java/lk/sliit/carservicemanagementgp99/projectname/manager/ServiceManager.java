@@ -1,53 +1,39 @@
 package lk.sliit.carservicemanagementgp99.projectname.manager;
 
+import lk.sliit.carservicemanagementgp99.projectname.LinkedList.ServiceLinkedList;
 import lk.sliit.carservicemanagementgp99.projectname.model.*;
-
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 public class ServiceManager {
-    private List<Service> serviceList;
+    private final ServiceLinkedList serviceLinkedList;
     private final String filePath;
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public ServiceManager(String filePath) {
         this.filePath = filePath;
-        this.serviceList = new LinkedList<>();
+        this.serviceLinkedList = new ServiceLinkedList();
         loadService();
     }
 
     public void addService(Service service) {
-        serviceList.add(service);
+        serviceLinkedList.addService(service);
         saveServiceToFile(service);
     }
 
     public Service getServicebyId(String serviceId) {
-        for (Service s : serviceList) {
-            if (s.getServiceId().equals(serviceId)) {
-                return s;
-            }
-        }
-        return null;
+        return serviceLinkedList.getServiceById(serviceId);
     }
 
     public List<Service> getAllServicesSortedByDate() {
-        List<Service> sorted = new LinkedList<>(serviceList);
-        for(int i = 0; i < sorted.size() - 1; i++) {
-            int minIdx = i;
-            for(int j = i + 1; j < sorted.size(); j++) {
-                if(sorted.get(j).getDate().before(sorted.get(minIdx).getDate())) {
-                    minIdx = j;
-                }
-            }
-            Collections.swap(sorted, i, minIdx);
-        }
-        return sorted;
+        return serviceLinkedList.getAllServicesSortedByDate();
     }
 
     private void loadService() {
-        serviceList.clear();
+        serviceLinkedList.clearList();
         File file = new File(filePath);
         if(!file.exists()) { return; }
 
@@ -71,40 +57,40 @@ public class ServiceManager {
                 } else {
                     service = new MajorRepair(serviceId, customerName, date, cost, status, specificServiceType, numberPlate);
                 }
-                serviceList.add(service);
+                serviceLinkedList.addService(service);
             }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }
+
     private void saveServiceToFile(Service service) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
             bw.write(service.getServiceType() + "," + service.getServiceId() +
                     "," + service.getCustomerName() + "," + sdf.format(service.getDate()) +
-                    "," + service.getCost() + "," + service.getStatus() + "," + service.getSpecificServiceType() + "," + service.getNumberPlate());
+                    "," + service.getCost() + "," + service.getStatus() + "," +
+                    service.getSpecificServiceType() + "," + service.getNumberPlate());
             bw.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     public List<Service> getAllServices() {
-        return serviceList;
+        return serviceLinkedList.getAllServices();
     }
+
     public void updateServiceStatus(String serviceId, String status) {
-        for(Service s : serviceList) {
-            if(s.getServiceId().equals(serviceId)) {
-                s.setStatus(status);
-                break;
-            }
-        }
+        serviceLinkedList.updateServiceStatus(serviceId, status);
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
-            for(Service s : serviceList) {
+            for(Service s : serviceLinkedList.getAllServices()) {
                 bw.write(s.getServiceType() + "," + s.getServiceId() + "," +
                         s.getCustomerName() + "," + sdf.format(s.getDate()) + "," +
-                        s.getCost() + "," + s.getStatus() + "," + s.getSpecificServiceType() + "," + s.getNumberPlate());
+                        s.getCost() + "," + s.getStatus() + "," +
+                        s.getSpecificServiceType() + "," + s.getNumberPlate());
                 bw.newLine();
             }
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
