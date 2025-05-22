@@ -14,7 +14,7 @@ public class ServiceManager {
 
     public ServiceManager(String filePath) {
         this.filePath = filePath;
-        this.serviceList = new ArrayList<>();
+        this.serviceList = new LinkedList<>();
         loadService();
     }
 
@@ -33,7 +33,7 @@ public class ServiceManager {
     }
 
     public List<Service> getAllServicesSortedByDate() {
-        List<Service> sorted = new ArrayList<>(serviceList);
+        List<Service> sorted = new LinkedList<>(serviceList);
         for(int i = 0; i < sorted.size() - 1; i++) {
             int minIdx = i;
             for(int j = i + 1; j < sorted.size(); j++) {
