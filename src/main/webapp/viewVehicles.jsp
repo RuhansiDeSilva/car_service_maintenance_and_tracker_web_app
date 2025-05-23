@@ -190,7 +190,7 @@
         <div class="collapse navbar-collapse" id="nav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="vehicleManagement.jsp">
+                    <a class="nav-link" href="service_staff_dashboard.jsp">
                         <i class="fas fa-home me-1"></i>Home
                     </a>
                 </li>
